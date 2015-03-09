@@ -1,0 +1,47 @@
+<!DOCTYPE tiles-definitions PUBLIC  
+        "-//Apache Software Foundation//DTD Tiles Configuration 3.0//EN"  
+        "http://tiles.apache.org/dtds/tiles-config_3_0.dtd">
+
+<tiles-definitions>
+
+    <definition name="appLogin" template="/WEB-INF/views/login.jsp" />
+    
+    <definition name="unauthorized" template="/WEB-INF/views/403.jsp" />
+    
+    <definition name="itemsCatalog" template="/WEB-INF/views/mainLayout.jsp">
+        <put-attribute name="header" value="/WEB-INF/views/generalHeader.jsp" />
+        <put-attribute name="body" value="/WEB-INF/views/catalogs/itemsCatalog.jsp" />
+        <put-attribute name="footer" value="" />
+    </definition>
+    
+    <definition name="itemCapture" template="/WEB-INF/views/mainLayout.jsp">
+        <put-attribute name="header" value="/WEB-INF/views/generalHeader.jsp" />
+        <put-attribute name="body" value="/WEB-INF/views/catalogs/itemCapture.jsp" />
+        <put-attribute name="footer" value="" />
+    </definition>
+    	
+    <definition name="categoriesCatalog" template="/WEB-INF/views/mainLayout.jsp">
+        <put-attribute name="header" value="/WEB-INF/views/generalHeader.jsp" />
+        <put-attribute name="body" value="/WEB-INF/views/catalogs/categoriesCatalog.jsp" />
+        <put-attribute name="footer" value="" />
+    </definition>
+
+    <definition name="locationsCatalog" template="/WEB-INF/views/mainLayout.jsp">
+        <put-attribute name="header" value="/WEB-INF/views/generalHeader.jsp" />
+        <put-attribute name="body" value="/WEB-INF/views/catalogs/locationsCatalog.jsp" />
+        <put-attribute name="footer" value="" />
+    </definition>
+
+    <definition name="projectsCatalog" template="/WEB-INF/views/mainLayout.jsp">
+        <put-attribute name="header" value="/WEB-INF/views/generalHeader.jsp" />
+        <put-attribute name="body" value="/WEB-INF/views/catalogs/projectsCatalog.jsp" />
+        <put-attribute name="footer" value="" />
+    </definition>
+
+    <definition name="unitsCatalog" template="/WEB-INF/views/mainLayout.jsp">
+        <put-attribute name="header" value="/WEB-INF/views/generalHeader.jsp" />
+        <put-attribute name="body" value="/WEB-INF/views/catalogs/unitsOfMeasureCatalog.jsp" />
+        <put-attribute name="footer" value="" />
+    </definition>
+    	
+</tiles-definitions>
