@@ -19,13 +19,18 @@
 	</mapping>
 	
 	<mapping>
-        <class-a>mx.com.mindbits.argos.inventory.entity.Location</class-a>
-        <class-b>mx.com.mindbits.argos.inventory.vo.LocationVO</class-b>
+        <class-a>mx.com.mindbits.argos.inventory.entity.ItemClassification</class-a>
+        <class-b>mx.com.mindbits.argos.inventory.vo.ItemClassificationVO</class-b>
     </mapping>
-    
-    <mapping>
-        <class-a>mx.com.mindbits.argos.inventory.entity.Project</class-a>
-        <class-b>mx.com.mindbits.argos.inventory.vo.ProjectVO</class-b>
+	
+	<mapping>
+        <class-a>mx.com.mindbits.argos.inventory.entity.ItemLocation</class-a>
+        <class-b>mx.com.mindbits.argos.inventory.vo.ItemLocationVO</class-b>
+    </mapping>
+	
+	<mapping>
+        <class-a>mx.com.mindbits.argos.inventory.entity.ItemPicture</class-a>
+        <class-b>mx.com.mindbits.argos.inventory.vo.ItemPictureVO</class-b>
     </mapping>
 	
 	<mapping>
@@ -36,11 +41,6 @@
     <mapping>
         <class-a>mx.com.mindbits.argos.inventory.entity.UnitOfMeasure</class-a>
         <class-b>mx.com.mindbits.argos.inventory.vo.UnitOfMeasureVO</class-b>
-    </mapping>
-	
-	<mapping>
-        <class-a>mx.com.mindbits.argos.inventory.entity.ItemClassification</class-a>
-        <class-b>mx.com.mindbits.argos.inventory.vo.ItemClassificationVO</class-b>
     </mapping>
 	
 </mappings> 

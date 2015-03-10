@@ -1,6 +1,5 @@
 package mx.com.mindbits.argos.inventory.entity;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -36,13 +35,13 @@ public class ItemClassification extends BaseEntity<Integer> {
 		return super.getId();
 	}
 	
-	@OneToOne(cascade = {CascadeType.ALL})
+	@OneToOne
 	@JoinColumn(name = "ITEM_ID")
 	public Item getItem() {
 		return item;
 	}
 	
-	@ManyToOne(cascade = {CascadeType.ALL})
+	@ManyToOne
 	@JoinColumn(name = "CATEGORY_ID")
 	public Category getCategory() {
 		return category;

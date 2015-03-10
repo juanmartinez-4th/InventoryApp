@@ -10,8 +10,6 @@
         <section id="nav_nivel_2">
             <ul class="nav navbar-nav">
                 <li><a href="" class="active">Categorías</a></li>
-				<li><a href="${pageContext.request.contextPath}/adminLocations">Ubicaciones</a></li>
-				<li><a href="${pageContext.request.contextPath}/adminProjects">Proyectos</a></li>
 				<li><a href="${pageContext.request.contextPath}/adminUnitsOfMeasure">Unidades de medida</a></li>
             </ul>
         </section>
@@ -188,7 +186,7 @@
                             <li onclick="javascript:setParentCategory(0)"><a href="#">Ninguna</a></li>
                             <c:if test="${not empty categoriesList}">
                                 <c:forEach items="${categoriesList}" var="currCategory">
-                                    <li onclick="javascript:setParentCategory(${currCategory.id}, 'true')"><a href="#">${currCategory.name}</a></li>
+                                    <li onclick="javascript:setParentCategory(${currCategory.id})"><a href="#">${currCategory.name}</a></li>
                                 </c:forEach>
                             </c:if>
                         </ul>

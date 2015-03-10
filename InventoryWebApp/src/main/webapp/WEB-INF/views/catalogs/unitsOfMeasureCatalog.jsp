@@ -10,8 +10,6 @@
         <section id="nav_nivel_2">
             <ul class="nav navbar-nav">
                 <li><a href="${pageContext.request.contextPath}/adminCategories">Categorías</a></li>
-                <li><a href="${pageContext.request.contextPath}/adminLocations">Ubicaciones</a></li>
-                <li><a href="${pageContext.request.contextPath}/adminProjects">Proyectos</a></li>
                 <li><a href="" class="active">Unidades de medida</a></li>
             </ul>
         </section>

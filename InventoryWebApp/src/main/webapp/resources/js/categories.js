@@ -85,6 +85,8 @@ function setParentCategory(selectedCategory) {
 			}
 		});
 	}
+	
+	event.preventDefault();
 }
 
 var deleteCategory = function() {
@@ -126,15 +128,14 @@ function showCategoryModal(id, name, description, parentCategory) {
 		$('#catModalTitle').text('Actualizar categoría');
 		$('#txt_categoria_nombre').val(name);
 		$('#txt_descripcion').val(description);
-		setParentCategory(parentCategory, false);
+		setParentCategory(parentCategory);
 		$('#btnSaveCategory').text('Actualizar');
 	} else {
 		$('#categoryAction').val('new');
 		$('#catModalTitle').text('Nueva categoría');
 		$('#txt_categoria_nombre').val('');
 		$('#txt_descripcion').val('');
-		$('#parentCategory').val('0');
-		setParentCategory(0, true);
+		setParentCategory(0);
 		$('#btnSaveCategory').text('Guardar');
 	}
 	$('#modal_nueva_categoria').modal({backdrop: 'static'/*, keyboard: false*/})

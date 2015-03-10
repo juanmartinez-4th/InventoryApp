@@ -26,18 +26,6 @@
         <put-attribute name="footer" value="" />
     </definition>
 
-    <definition name="locationsCatalog" template="/WEB-INF/views/mainLayout.jsp">
-        <put-attribute name="header" value="/WEB-INF/views/generalHeader.jsp" />
-        <put-attribute name="body" value="/WEB-INF/views/catalogs/locationsCatalog.jsp" />
-        <put-attribute name="footer" value="" />
-    </definition>
-
-    <definition name="projectsCatalog" template="/WEB-INF/views/mainLayout.jsp">
-        <put-attribute name="header" value="/WEB-INF/views/generalHeader.jsp" />
-        <put-attribute name="body" value="/WEB-INF/views/catalogs/projectsCatalog.jsp" />
-        <put-attribute name="footer" value="" />
-    </definition>
-
     <definition name="unitsCatalog" template="/WEB-INF/views/mainLayout.jsp">
         <put-attribute name="header" value="/WEB-INF/views/generalHeader.jsp" />
         <put-attribute name="body" value="/WEB-INF/views/catalogs/unitsOfMeasureCatalog.jsp" />

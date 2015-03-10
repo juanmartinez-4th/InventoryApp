@@ -2,7 +2,7 @@ package mx.com.mindbits.argos.inventory.vo;
 
 import java.io.Serializable;
 
-public class ItemPicture implements Serializable {	
+public class ItemPictureVO implements Serializable {	
 
 	private static final long serialVersionUID = 9114517267070378117L;
 

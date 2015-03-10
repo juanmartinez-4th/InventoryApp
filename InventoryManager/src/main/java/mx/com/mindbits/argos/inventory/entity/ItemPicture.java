@@ -1,6 +1,5 @@
 package mx.com.mindbits.argos.inventory.entity;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -32,7 +31,7 @@ public class ItemPicture extends BaseEntity<Integer> {
 		return fileName;
 	}
 	
-	@OneToOne(cascade = {CascadeType.ALL})
+	@OneToOne
 	@JoinColumn(name = "ITEM_ID")
 	public Item getItem() {
 		return item;

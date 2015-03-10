@@ -80,14 +80,14 @@ public class InventoryDAOTest extends AbstractTransactionalJUnit4SpringContextTe
 		assertTrue(itemClassification.getId() > 0);
 	}
 
-	@Test
-	public void testGetItemClassification() {
-		ItemClassification itemClassification = itemClassificationDAO.getItemClassification(Integer.valueOf(1));
-		
-		assertNotNull(itemClassification);
-		assertNotNull(itemClassification.getItem());
-		assertNotNull(itemClassification.getCategory());
-	}
+//	@Test
+//	public void testGetItemClassification() {
+//		ItemClassification itemClassification = itemClassificationDAO.getItemClassification(Integer.valueOf(1));
+//		
+//		assertNotNull(itemClassification);
+//		assertNotNull(itemClassification.getItem());
+//		assertNotNull(itemClassification.getCategory());
+//	}
 	
 	@Test
 	public void testGetAllItems() {

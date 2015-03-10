@@ -9,10 +9,11 @@ import javax.servlet.http.HttpSession;
 import mx.com.mindbits.argos.common.Message;
 import mx.com.mindbits.argos.inventory.bsn.CatalogManager;
 import mx.com.mindbits.argos.inventory.vo.CategoryVO;
+import mx.com.mindbits.argos.inventory.vo.ItemClassificationVO;
+import mx.com.mindbits.argos.inventory.vo.ItemLocationVO;
 import mx.com.mindbits.argos.inventory.vo.ItemVO;
-import mx.com.mindbits.argos.inventory.vo.LocationVO;
-import mx.com.mindbits.argos.inventory.vo.ProjectVO;
 import mx.com.mindbits.argos.inventory.vo.UnitOfMeasureVO;
+import mx.com.mindbits.argos.inventory.webapp.form.ItemCaptureForm;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -39,21 +40,22 @@ public class CatalogsController {
 	
 	private static final String CATEGORIES_CATALOG_VIEW = "categoriesCatalog";
 	
-	private static final String LOCATIONS_CATALOG_VIEW = "locationsCatalog";
-	
-	private static final String PROJECTS_CATALOG_VIEW = "projectsCatalog";
-	
 	private static final String UNITS_CATALOG_VIEW = "unitsCatalog";
 	
 	/// TODO: Consider keeping catalogs in cache 
 
 	@RequestMapping(value = "/listItems", method = RequestMethod.GET)
-	public String listItems(Model model) {
+	public String listItems(Model model, HttpServletRequest request) {
 		List<ItemVO> items = inventoryManager.getAllItems();
 		model.addAttribute("itemsList", items);
 		
 		List<CategoryVO> categories = inventoryManager.getAllCategories();
 		model.addAttribute("categoriesList", categories);
+		
+		Message alertMessage = getAlertMessage(request);
+		if(alertMessage != null) {
+			model.addAttribute("alertMsg", alertMessage);
+		}
 		
 		return ITEMS_CATALOG_VIEW;
 	}
@@ -73,15 +75,12 @@ public class CatalogsController {
 	}
 	
 	@RequestMapping(value = "/captureItem", method = RequestMethod.GET)
-	public String captureItem(Model model) {
+	public String captureItem(Model model, HttpServletRequest request) {
 		List<CategoryVO> categories = inventoryManager.getAllCategories();
-		List<LocationVO> locations = inventoryManager.getAllLocations();
-		List<ProjectVO> projects = inventoryManager.getAllProjects();
 		List<UnitOfMeasureVO> unitsOfMeasure = inventoryManager.getAllUnitsOfMeasure();
 		
+		model.addAttribute("itemCaptureForm", new ItemCaptureForm());
 		model.addAttribute("categoriesList", categories);
-		model.addAttribute("locationsList", locations);
-		model.addAttribute("projectsList", projects);
 		model.addAttribute("unitsList", unitsOfMeasure);
 		
 		return ITEM_CAPTURE_VIEW;
@@ -89,11 +88,28 @@ public class CatalogsController {
 	
 	@RequestMapping(value = "/insertItem", method = RequestMethod.POST)
 	@ResponseBody
-	public String insertItem(Model model) {
-		List<ItemVO> results = inventoryManager.getAllItems();	
-		model.addAttribute("itemsList", results);
+	public Message insertItem(@ModelAttribute(value="itemCaptureForm") ItemCaptureForm itemCaptureForm) {
+		Message response;
 		
-		return ITEMS_CATALOG_VIEW;
+		ItemVO item = itemCaptureForm.getItem();
+		ItemLocationVO itemLocation = itemCaptureForm.getLocation();
+		
+		ItemClassificationVO itemClassification = new ItemClassificationVO();
+		itemClassification.setCategory(itemCaptureForm.getCategory());
+		
+		try {
+			item = inventoryManager.createItem(item, itemClassification, itemLocation);
+			
+			if(item != null && item.getId() != null) {	
+				response = Message.successMessage("Nuevo artículo creado", item);
+			}else {
+				response = Message.failMessage("No fue posible crear el nuevo artículo, intente más tarde");
+			}
+		}catch(Exception e) {
+			response = Message.failMessage("No fue posible crear el nuevo artículo, intente más tarde");
+		}
+		
+		return response;
 	}
 	
 	@RequestMapping(value = "/updateItem", method = RequestMethod.POST)
@@ -214,148 +230,6 @@ public class CatalogsController {
 		}else {
 			return category.getName();
 		}
-	}
-	
-	@RequestMapping(value = "/adminLocations", method = RequestMethod.GET)
-	public String listLocations(Model model, HttpServletRequest request) {
-//		if (isRememberMeAuthenticated()) {
-//			// require password for adminstration
-//			setRememberMeTargetUrlToSession(request, "/adminCatalogs");
-//			model.addAttribute("loginUpdate", true);
-//			
-//			return "appLogin";
-//		}
-		
-		List<LocationVO> results = inventoryManager.getAllLocations();
-		model.addAttribute("locationsList", results);
-		model.addAttribute("location", new LocationVO());
-		
-		Message alertMessage = getAlertMessage(request);
-		if(alertMessage != null) {
-			model.addAttribute("alertMsg", alertMessage);
-		}
-		
-		return LOCATIONS_CATALOG_VIEW;
-	}
-	
-	@RequestMapping(value = "/insertLocation", method = RequestMethod.POST)
-	@ResponseBody
-	public Message insertLocation(@ModelAttribute(value="location") LocationVO newLocation) {
-		LocationVO location = newLocation;
-		Message response; 
-		
-		location.setId(null);
-		location = inventoryManager.saveLocation(location);
-		
-		if(location != null && location.getId() != null) {
-			response = Message.successMessage("Ubicación creada", location);
-		}else {
-			response = Message.failMessage("No fue posible crear la nueva ubicación, intente más tarde");
-		}
-		
-		return response;
-		
-	}
-	
-	@RequestMapping(value = "/updateLocation", method = RequestMethod.POST)
-	@ResponseBody
-	public Message updateLocation(@ModelAttribute(value="location") LocationVO location) {
-		LocationVO locationToUpdate = location;
-		Message response;
-		
-		locationToUpdate = inventoryManager.updateLocation(locationToUpdate);
-		if(locationToUpdate != null) {
-			response = Message.successMessage("Ubicación actualizada", location);
-		}else {
-			response = Message.failMessage("No fue posible actualizar la ubicación, intente más tarde");
-		}
-		
-		return response;
-	}
-	
-	@RequestMapping(value = "/deleteLocation", method = RequestMethod.POST)
-	@ResponseBody
-	public Message deleteLocation(@ModelAttribute(value="locationId") Integer locationId) {
-		Message response = Message.successMessage("Ubicación eliminada", null);
-		
-		try {
-			inventoryManager.deleteLocation(locationId);
-		}catch(Exception e) {
-			if (e instanceof DataIntegrityViolationException) {
-				response = Message.failMessage("Imposible realizar la operación, "
-						+ "algunos elementos ya se encuentran asignados a esta ubicación.");
-			}else {
-				response = Message.failMessage("No fue posible realizar la operación, intente más tarde.");
-			}
-		}
-		return response;
-	}
-	
-	@RequestMapping(value = "/adminProjects", method = RequestMethod.GET)
-	public String listProjects(Model model, HttpServletRequest request) {
-		List<ProjectVO> results = inventoryManager.getAllProjects();
-		model.addAttribute("projectsList", results);
-		model.addAttribute("project", new ProjectVO());
-		
-		Message alertMessage = getAlertMessage(request);
-		if(alertMessage != null) {
-			model.addAttribute("alertMsg", alertMessage);
-		}
-		
-		return PROJECTS_CATALOG_VIEW;
-	}
-	
-	@RequestMapping(value = "/insertProject", method = RequestMethod.POST)
-	@ResponseBody
-	public Message insertProject(@ModelAttribute(value="project") ProjectVO newProject) {
-		ProjectVO project = newProject;
-		Message response; 
-		
-		project.setId(null);
-		project = inventoryManager.saveProject(project);
-		
-		if(project != null && project.getId() != null) {
-			response = Message.successMessage("Proyecto creado", project);
-		}else {
-			response = Message.failMessage("No fue posible crear el nuevo proyecto, intente más tarde");
-		}
-		
-		return response;
-		
-	}
-	
-	@RequestMapping(value = "/updateProject", method = RequestMethod.POST)
-	@ResponseBody
-	public Message updateProject(@ModelAttribute(value="project") ProjectVO project) {
-		ProjectVO projectToUpdate = project;
-		Message response;
-		
-		projectToUpdate = inventoryManager.updateProject(projectToUpdate);
-		if(projectToUpdate != null) {
-			response = Message.successMessage("Proyecto actualizado", project);
-		}else {
-			response = Message.failMessage("No fue posible actualizar el proyecto, intente más tarde");
-		}
-		
-		return response;
-	}
-	
-	@RequestMapping(value = "/deleteProject", method = RequestMethod.POST)
-	@ResponseBody
-	public Message deleteProject(@ModelAttribute(value="projectId") Integer projectId) {
-		Message response = Message.successMessage("Proyecto eliminado", null);
-		
-		try {
-			inventoryManager.deleteProject(projectId);
-		}catch(Exception e) {
-			if (e instanceof DataIntegrityViolationException) {
-				response = Message.failMessage("Imposible realizar la operación, "
-						+ "algunos elementos ya se encuentran asignados a este proyecto.");
-			}else {
-				response = Message.failMessage("No fue posible realizar la operación, intente más tarde.");
-			}
-		}
-		return response;
 	}
 	
 	@RequestMapping(value = "/adminUnitsOfMeasure", method = RequestMethod.GET)

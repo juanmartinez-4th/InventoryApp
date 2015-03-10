@@ -1,6 +1,7 @@
 package mx.com.mindbits.argos.inventory.vo;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 
 public class ItemVO implements Serializable {
 	
@@ -16,6 +17,14 @@ public class ItemVO implements Serializable {
 	
 	private UnitOfMeasureVO unitOfMeasure;
 
+	private BigDecimal cost;
+	
+	private BigDecimal salePrice;
+	
+	private BigDecimal rentPrice;
+	
+	private Integer existence;
+	
 	/**
 	 * @return the id
 	 */
@@ -84,6 +93,62 @@ public class ItemVO implements Serializable {
 	 */
 	public void setUnitOfMeasure(UnitOfMeasureVO unitOfMeasure) {
 		this.unitOfMeasure = unitOfMeasure;
+	}
+
+	/**
+	 * @return the cost
+	 */
+	public BigDecimal getCost() {
+		return cost;
+	}
+
+	/**
+	 * @param cost the cost to set
+	 */
+	public void setCost(BigDecimal cost) {
+		this.cost = cost;
+	}
+
+	/**
+	 * @return the salePrice
+	 */
+	public BigDecimal getSalePrice() {
+		return salePrice;
+	}
+
+	/**
+	 * @param salePrice the salePrice to set
+	 */
+	public void setSalePrice(BigDecimal salePrice) {
+		this.salePrice = salePrice;
+	}
+
+	/**
+	 * @return the rentPrice
+	 */
+	public BigDecimal getRentPrice() {
+		return rentPrice;
+	}
+
+	/**
+	 * @param rentPrice the rentPrice to set
+	 */
+	public void setRentPrice(BigDecimal rentPrice) {
+		this.rentPrice = rentPrice;
+	}
+
+	/**
+	 * @return the existence
+	 */
+	public Integer getExistence() {
+		return existence;
+	}
+
+	/**
+	 * @param existence the existence to set
+	 */
+	public void setExistence(Integer existence) {
+		this.existence = existence;
 	}
 
 	@Override

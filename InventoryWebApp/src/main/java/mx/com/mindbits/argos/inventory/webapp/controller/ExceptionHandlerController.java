@@ -179,7 +179,7 @@ public class ExceptionHandlerController {
         })
     public Message otherException(HttpServletRequest req, Exception e) {
     	LOGGER.error("Other exception", e);
-        return Message.failMessage(e.getMessage());
+    	return Message.failMessage(INTERNAL_SERVER_ERROR);
     }
     
 }

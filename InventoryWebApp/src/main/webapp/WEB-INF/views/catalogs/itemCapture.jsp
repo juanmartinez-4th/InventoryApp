@@ -1,9 +1,14 @@
 <%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="utf-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ page session="true" %>
 
+<input type="hidden" id="appContextPath" value="${pageContext.request.contextPath}">
+
+<form:form modelAttribute="itemCaptureForm" id="itemCaptureForm" method="POST">
 <main>
     <article class="container">
+        <form:input path="item.id" type="hidden" id="itemId" value="0" />
         
 <!--        SECCION 1 -->
         <section class="row">
@@ -14,7 +19,7 @@
                 <div class="row">        
                     <div class="col-xs-8">
                         <div class="input-group" >
-                          <input id="txt_codigo" type="text" class="form-control" placeholder="MOB0000000001SIL">
+                          <form:input path="item.code" id="txt_codigo" type="text" class="form-control" placeholder="MOB0000000001SIL" readonly="" />
                           <span class="input-group-btn">
                             <button class="btn_chico btn btn-default" type="button"><span class="glyphicon glyphicon-info-sign"></span></button>
                           </span>
@@ -34,10 +39,11 @@
                 <div class="row">        
                     <div class="col-xs-8">
                         <div class="input-group" >
-                            <div id="txt_categoria" class="form-control">
-                                <ol class="breadcrumb" id="breadcrumbParentcat">
-                                    <li><a href="#">Categoría</a></li>
-                                    <li>Subcategoría</li>
+                            <div id="txt_categoria" class="form-control"
+                                    data-toggle="popover" data-placement="top" title="Indique la categoría del artículo">
+                                <form:input path="category.id" type="hidden" id="itemCategory" value="0" />
+                                <ol class="breadcrumb" id="breadcrumbCategory">
+                                    <li class="active">Categoría</li>
                                 </ol>
                             </div>
                             <span class="input-group-btn">
@@ -53,7 +59,7 @@
                         <ul class="dropdown-menu" role="menu">
                             <c:if test="${not empty categoriesList}">
                                 <c:forEach items="${categoriesList}" var="currCategory">
-                                    <li><a href="#">${currCategory.name}</a></li>
+                                    <li onclick="javascript:setCategory(${currCategory.id})"><a href="#">${currCategory.name}</a></li>
                                 </c:forEach>
                             </c:if>
                         </ul>
@@ -63,7 +69,7 @@
 <!--                CAMPO 03 / Descripción   -->
                 <label for="txt_descripcion">Descripción</label>
                 <div class="input-group" >
-                    <input id="txt_descripcion" type="text" class="form-control" placeholder="">
+                    <form:input path="item.description" id="txt_descripcion" type="text" class="form-control" placeholder="" />
                     <span class="input-group-btn">
                         <button class="btn_chico btn btn-default" type="button"><span class="glyphicon glyphicon-info-sign"></span></button>
                     </span>
@@ -90,17 +96,17 @@
                 <div class="row">
                     <div class="col-xs-4">
                         <label for="txt_costo">Costo</label>
-                        <input type="text" class="form-control" id="txt_costo" placeholder="">
+                        <form:input path="item.cost" type="text" class="form-control" id="txt_costo" placeholder="" />
                     </div>
                     
                     <div class="col-xs-4">
                         <label for="txt_precio_venta">Precio de venta</label>
-                        <input type="text" class="form-control" id="txt_precio_venta" placeholder="">
+                        <form:input path="item.salePrice" type="text" class="form-control" id="txt_precio_venta" placeholder="" />
                     </div>
                     
                     <div class="col-xs-4">
                         <label for="txt_precio_renta">Precio de renta</label>
-                        <input type="text" class="form-control" id="txt_precio_renta" placeholder="">
+                        <form:input path="item.rentPrice" type="text" class="form-control" id="txt_precio_renta" placeholder="" />
                     </div>
                 </div>
             
@@ -110,9 +116,9 @@
                 <div class="row">        
                     <div class="col-xs-8">
                         <div class="input-group" >
-                            <input type="text" class="form-control" id="txt_existencia" placeholder="">
+                            <form:input path="location.quantity" type="text" class="form-control" id="txt_existencia" placeholder="" />
                             <span class="input-group-btn">
-                                <button class="btn_chico btn btn-default" type="button"><span class="glyphicon glyphicon-info-sign"></span></button>
+                                <button id="btnUnitOfM" class="btn_chico btn btn-default" type="button"><span class="glyphicon glyphicon-info-sign"></span></button>
                             </span>
                         </div><!-- /input-group -->
                     </div>
@@ -122,9 +128,10 @@
                             Unidad de medida <span class="caret"></span>
                         </button>
                         <ul class="dropdown-menu" role="menu">
+                            <form:input path="item.unitOfMeasure.id" type="hidden" id="itemUnit" value="0" />
                             <c:if test="${not empty unitsList}">
                                 <c:forEach items="${unitsList}" var="currUnit">
-                                    <li><a href="#">${currUnit.name}</a></li>
+                                    <li onclick="javascript:setUnitOfMeasure(${currUnit.id}, '${currUnit.name}')"><a href="#">${currUnit.name}</a></li>
                                 </c:forEach>
                             </c:if>
                         </ul>
@@ -136,14 +143,29 @@
 <!--                CAMPO 07 / Localización -->
                 <label for="txt_localización">Localización</label>   
                 <div class="row">
-                    <c:if test="${not empty locationsList}">
-                        <c:forEach items="${locationsList}" var="currLocation">
-                            <div class="col-xs-2">
-		                        <label for="txt_${currLocation.name}_${currLocation.id}">${currLocation.name}</label>
-		                        <input type="text" class="form-control" id="txt_${currLocation.name}_${currLocation.id}" placeholder="">
-		                    </div>
-                        </c:forEach>
-                    </c:if>
+                    <div class="col-xs-2 col-xs-offset-1">
+                        <label for="txt_casilla">Proyecto</label>
+                        <form:input path="location.project" type="text" class="form-control" id="txt_casilla" placeholder="" />
+                    </div>
+                    <div class="col-xs-2">
+                        <label for="txt_seccion">Sección</label>
+                        <form:input path="location.section" type="text" class="form-control" id="txt_seccion" placeholder="" />
+                    </div>
+                    
+                    <div class="col-xs-2">
+                        <label for="txt_pasillo">Pasillo</label>
+                        <form:input path="location.hall" type="text" class="form-control" id="txt_pasillo" placeholder="" />
+                    </div>
+                    
+                    <div class="col-xs-2">
+                        <label for="txt_anaquel">Anaquel</label>
+                        <form:input path="location.rack" type="text" class="form-control" id="txt_anaquel" placeholder="" />
+                    </div>
+                    
+                    <div class="col-xs-2">
+                        <label for="txt_casilla">Casilla</label>
+                        <form:input path="location.box" type="text" class="form-control" id="txt_casilla" placeholder="" />
+                    </div>
                 </div>
             </div>
         </section>
@@ -151,22 +173,22 @@
         <section class="row">
             <div class="col-sm-6">
                 <label for="txt_area_caracteristicas">Características / Observaciones</label>
-                <textarea class="form-control" rows="4" id="txt_area_caracteristicas" placeholder="Material, Color, Detalles, Estado de conservación"></textarea>
+                <form:textarea path="item.detail" class="form-control" rows="4" id="txt_area_caracteristicas" placeholder="Material, Color, Detalles, Estado de conservación" />
             </div>
         </section>
-        
+    
     </article>
     
 </main>
 
 <footer class="navbar navbar-default navbar-fixed-bottom">
     <article class="container">
-        <button type="button" class="btn btn-success pull-right">
+        <button id="btnSaveNewItem" class="btn btn-success pull-right">
             <span class="glyphicon glyphicon-ok"></span>
             Guardar Nuevo
         </button>
 
-        <button type="button" class="btn btn-default pull-right">
+        <button id="btnSaveItem" class="btn btn-default pull-right">
             <span class="glyphicon glyphicon-floppy-disk"></span>
             Guardar
         </button>
@@ -178,6 +200,7 @@
     </article>
 </footer>
 
+</form:form>
 
 <!-- -------------- SCRIPTS ---------------- -->
 <script src="${pageContext.request.contextPath}/resources/js/items.js"></script>
