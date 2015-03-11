@@ -11,6 +11,10 @@ public interface CategoryDAO extends BaseDAO<Integer, Category> {
 	
 	List<Category> getAllCategories();
 	
+	List<Category> getMainCategories();
+	
+	List<Category> getCategoryDescendants(Integer categoryId);
+	
 	Category saveCategory(Category category);
 	
 	Category updateCategory(Category categoryToUpdate);

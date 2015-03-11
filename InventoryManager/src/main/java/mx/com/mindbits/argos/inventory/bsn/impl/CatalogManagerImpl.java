@@ -68,6 +68,28 @@ public class CatalogManagerImpl implements CatalogManager {
 	}
 
 	@Override
+	public List<ItemVO> getItemsByCategory(Integer categoryId) {
+		ArrayList<ItemVO> results;
+		
+		List<ItemClassification> classificationItems = itemClassificationDAO.getClassificationItems(categoryId);
+		results = new ArrayList<>(classificationItems.size());
+		
+		for (ItemClassification classification : classificationItems) {
+			ItemVO result = mapper.map(classification.getItem(), ItemVO.class);
+			results.add(result);
+		}
+		
+		// Get items from descendant categories too
+		List<Category> descCategories = categoryDAO.getCategoryDescendants(categoryId);
+		for (Category category : descCategories) {
+			List<ItemVO> descItems = getItemsByCategory(category.getId());
+			results.addAll(descItems);
+		}
+		
+		return results;
+	}
+	
+	@Override
 	public ItemVO createItem(ItemVO itemToSave, ItemClassificationVO itemClassification, ItemLocationVO itemLocation) throws Exception {
 		Item item = mapper.map(itemToSave, Item.class);
 		item.setId(null);
@@ -103,6 +125,32 @@ public class CatalogManagerImpl implements CatalogManager {
 	public CategoryVO getCategory(Integer categoryId) {
 		Category category = categoryDAO.getCategory(categoryId);
 		return mapper.map(category, CategoryVO.class);
+	}
+	
+	@Override
+	public List<CategoryVO> getCategoriesTree(Integer categoryId) {
+		List<Category> categories;
+		
+		if(categoryId != null) {
+			categories = categoryDAO.getCategoryDescendants(categoryId);
+		}else {
+			categories = categoryDAO.getMainCategories();
+		}
+		
+		List<CategoryVO> result = new ArrayList<CategoryVO>(categories.size());
+		
+		for (Category category : categories) {
+			CategoryVO leafCategory = new CategoryVO();
+			leafCategory.setId(category.getId());
+			leafCategory.setName(category.getName());
+
+			List<CategoryVO> descCategories = getCategoriesTree(leafCategory.getId());
+			leafCategory.getDescendantCategories().addAll(descCategories);
+			
+			result.add(leafCategory);
+		}
+		
+		return result;
 	}
 
 	@Override

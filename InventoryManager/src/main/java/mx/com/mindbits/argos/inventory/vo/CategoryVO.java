@@ -1,6 +1,8 @@
 package mx.com.mindbits.argos.inventory.vo;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 public class CategoryVO implements Serializable {
 	
@@ -13,6 +15,8 @@ public class CategoryVO implements Serializable {
 	private String description;
 	
 	private CategoryVO parentCategory;
+	
+	private List<CategoryVO> descendantCategories;
 
 	/**
 	 * @return the id
@@ -75,6 +79,17 @@ public class CategoryVO implements Serializable {
 		}else {
 			return category + "NONE}]";
 		}
+	}
+
+	/**
+	 * @return the descendantCategories
+	 */
+	public List<CategoryVO> getDescendantCategories() {
+		if(descendantCategories == null) {
+			descendantCategories = new ArrayList<CategoryVO>(1);
+		}
+		
+		return descendantCategories;
 	}
 	
 }

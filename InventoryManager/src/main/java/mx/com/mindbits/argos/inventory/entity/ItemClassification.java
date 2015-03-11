@@ -18,6 +18,10 @@ import javax.persistence.Table;
 	@NamedQuery(
 			name="getItemClassification", 
 			query="from ItemClassification where ITEM_ID = :itemId"
+	),
+	@NamedQuery(
+			name="getClassificationItems", 
+			query="from ItemClassification where CATEGORY_ID = :categoryId"
 	)
 })
 public class ItemClassification extends BaseEntity<Integer> {

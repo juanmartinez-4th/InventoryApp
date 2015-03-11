@@ -6,11 +6,19 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
 @Table(name="CATEGORY")
+@NamedQueries({
+	@NamedQuery(name="getCategoryDescendants", 
+				query="from Category where PARENT_CATEGORY = :parentId"), 
+	@NamedQuery(name="getMainCategories", 
+				query="from Category where PARENT_CATEGORY is NULL")
+})
 public class Category extends BaseEntity<Integer> {	
 	
 	private static final long serialVersionUID = 4938217472935286123L;

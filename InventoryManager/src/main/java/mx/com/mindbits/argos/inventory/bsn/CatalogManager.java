@@ -14,6 +14,8 @@ public interface CatalogManager {
 	
 	List<CategoryVO> getAllCategories();
 	
+	List<CategoryVO> getCategoriesTree(Integer categoryId);
+	
 	CategoryVO saveCategory(CategoryVO newCategory);
 	
 	CategoryVO updateCategory(CategoryVO categoryToUpdate);
@@ -23,6 +25,8 @@ public interface CatalogManager {
 	ItemVO getItem(Integer itemId);
 	
 	List<ItemVO> getAllItems();
+	
+	List<ItemVO> getItemsByCategory(Integer categoryId);
 	
 	ItemVO createItem(ItemVO itemToSave, ItemClassificationVO itemClassification, ItemLocationVO itemLocation) throws Exception;
 	
