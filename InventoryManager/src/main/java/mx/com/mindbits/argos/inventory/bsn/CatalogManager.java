@@ -16,6 +16,8 @@ public interface CatalogManager {
 	
 	List<CategoryVO> getCategoriesTree(Integer categoryId);
 	
+	List<CategoryVO> getCategoryHierachy(Integer categoryId);
+	
 	CategoryVO saveCategory(CategoryVO newCategory);
 	
 	CategoryVO updateCategory(CategoryVO categoryToUpdate);

@@ -1,6 +1,7 @@
 package mx.com.mindbits.argos.inventory.bsn.impl;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import mx.com.mindbits.argos.inventory.bsn.CatalogManager;
@@ -125,6 +126,33 @@ public class CatalogManagerImpl implements CatalogManager {
 	public CategoryVO getCategory(Integer categoryId) {
 		Category category = categoryDAO.getCategory(categoryId);
 		return mapper.map(category, CategoryVO.class);
+	}
+
+	@Override
+	public List<CategoryVO> getCategoryHierachy(Integer categoryId) {
+		CategoryVO category = getCategory(categoryId);
+		List<CategoryVO> hierarchy = new ArrayList<CategoryVO>(1);
+		
+		if(category != null && category.getParentCategory() != null) {
+			CategoryVO parent = category.getParentCategory();
+			
+			while(parent != null) {
+				CategoryVO parentCategory = new CategoryVO();
+				parentCategory.setId(parent.getId());
+				parentCategory.setName(parent.getName());
+				hierarchy.add(parentCategory);
+				
+				parent = parent.getParentCategory();
+			}			
+			Collections.reverse(hierarchy);
+		}
+		
+		CategoryVO originCategory = new CategoryVO();
+		originCategory.setId(category.getId());
+		originCategory.setName(category.getName());
+		hierarchy.add(originCategory);
+		
+		return hierarchy;
 	}
 	
 	@Override
