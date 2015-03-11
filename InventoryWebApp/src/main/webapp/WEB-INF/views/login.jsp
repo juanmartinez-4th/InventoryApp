@@ -12,14 +12,14 @@
     <title>Argos - Control de Almacén</title>
     
     <!-- Cargar archivos CSS -->
-    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/util/bootstrap.min.css">
-    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/argos_styles.css">
+    <link rel="stylesheet" type="text/css" href="<c:url value='/resources/css/util/bootstrap.min.css'/>">
+    <link rel="stylesheet" type="text/css" href="<c:url value='/resources/css/argos_styles.css'/>">
     
     <!-- Cargar fuente de google fonts -->
     <link href='http://fonts.googleapis.com/css?family=Roboto:400italic,100,100italic,400' rel='stylesheet' type='text/css'>
     
     <!-- Cargar FONT AWESOME para importar librería de íconos -->
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/fonts/util/font-awesome-4.3.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="<c:url value='/resources/fonts/util/font-awesome-4.3.0/css/font-awesome.min.css'/>">
     
 </head>
 
@@ -30,7 +30,7 @@
             <!-- <h1>Empresa</h1> -->
             <figure id="logo_empresa" class="col-sm-6">
                 <img src="http://placehold.it/203x36&text=Logotipo" alt="Logotipo de Empresa" class="img-responsive pull_left_md">
-                <!-- <img src="${pageContext.request.contextPath}/images/logotipo_argos.png" alt="Logotipo de Empresa" class="img-responsive"> -->
+                <!-- <img src="<c:url value='/images/logotipo_argos.png'/>" alt="Logotipo de Empresa" class="img-responsive"> -->
             </figure>
             
             <div id="Subtitulo" class="col-sm-6">
@@ -45,7 +45,7 @@
             <section class="row">
                 <div class="col-sm-6">
                     <figure>
-                        <img src="${pageContext.request.contextPath}/resources/images/img_login.png" alt="Logotipo de Empresa" class="img_centered img-responsive">
+                        <img src="<c:url value='/resources/images/img_login.png' />" alt="Logotipo de Empresa" class="img_centered img-responsive">
                     </figure>
                 </div>
 
@@ -97,9 +97,8 @@
     </main>
 
     <!-- -------------- SCRIPTS ---------------- -->
-    <!-- <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>-->
-    <script src="${pageContext.request.contextPath}/resources/js/util/jquery-2.1.3.min.js"></script>
-    <script src="${pageContext.request.contextPath}/resources/js/util/bootstrap.min.js"></script>
+    <script src="<c:url value='/resources/js/util/jquery-2.1.3.min.js' />"></script>
+    <script src="<c:url value='/resources/js/util/bootstrap.min.js' />"></script>
     <!-- -------------- SCRIPTS ---------------- -->
     
     <script>

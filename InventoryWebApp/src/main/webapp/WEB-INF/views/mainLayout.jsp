@@ -13,24 +13,25 @@
 	<title>Argos - Control de Almacén</title>
 	
 	<!-- Cargar archivos CSS -->
-	<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/util/bootstrap.min.css">
-	<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/argos_styles.css">
+	<link rel="stylesheet" type="text/css" href="<c:url value='/resources/css/util/bootstrap.min.css'/>">
+	<link rel="stylesheet" type="text/css" href="<c:url value='/resources/css/argos_styles.css'/>">
 	
 	<!-- Cargar fuente de google fonts -->
 	<link href='http://fonts.googleapis.com/css?family=Roboto:400italic,100,100italic,400' rel='stylesheet' type='text/css'>
 	
 	<!-- Cargar FONT AWESOME para importar librería de íconos -->
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/fonts/util/font-awesome-4.3.0/css/font-awesome.min.css">
-	
-	<!-- -------------- SCRIPTS ---------------- -->
-	<!-- <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>-->
-	<script src="${pageContext.request.contextPath}/resources/js/util/jquery-2.1.3.min.js"></script>
-	<script src="${pageContext.request.contextPath}/resources/js/util/bootstrap.min.js"></script>
-	<!-- -------------- SCRIPTS ---------------- -->
+    <link rel="stylesheet" href="<c:url value='/resources/fonts/util/font-awesome-4.3.0/css/font-awesome.min.css'/>">
+    
+    <!-- -------------- SCRIPTS ---------------- -->
+    <script src="<c:url value='/resources/js/util/jquery-2.1.3.min.js' />"></script>
+    <script src="<c:url value='/resources/js/util/bootstrap.min.js' />"></script>
+    <script>var ctx = "${pageContext.request.contextPath}"</script>
+    <!-- -------------- SCRIPTS ---------------- -->
 </head>
 
 <body>
-    
+
+    <div id="mask"></div>
     <tiles:insertAttribute name="header" />
     <tiles:insertAttribute name="body" />
     <tiles:insertAttribute name="footer" />

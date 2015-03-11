@@ -7,7 +7,7 @@
         <!-- <h1>Empresa</h1> -->
         <figure id="logo_empresa" class="col-sm-6">
             <img src="http://placehold.it/203x36&text=Logotipo" alt="Logotipo de Empresa" class="img-responsive pull_left_md">
-            <!-- <img src="${pageContext.request.contextPath}/resources/images/logotipo_argos.png" alt="Logotipo de Empresa" class="img-responsive"> -->
+            <!-- <img src="<c:url value='/resources/images/logotipo_argos.png'/>" alt="Logotipo de Empresa" class="img-responsive"> -->
         </figure>
         
         <div id="Subtitulo" class="col-sm-6">
@@ -29,7 +29,7 @@
 
         <div class="navbar-collapse collapse img_centered">
             <ul class="nav navbar-nav">
-                <li><a href="${pageContext.request.contextPath}/listItems">
+                <li><a href="<c:url value='/listItems'/>">
                     <span class="glyphicon glyphicon-home"></span> Almacén</a></li>
                 <sec:authorize access="hasRole('ROLE_ADMIN')">
 	                <li class="dropdown" role="presentation">
@@ -40,7 +40,7 @@
 	                        <li><a href="#">Administración de usuarios</a></li>
                             <li><a href="#">Seguridad</a></li>
                             <li><a href="#">Parámetros</a></li>
-                            <li><a href="${pageContext.request.contextPath}/adminCategories">Catálogos</a></li>
+                            <li><a href="<c:url value='/adminCategories'/>">Catálogos</a></li>
 	                    </ul>
 	                </li>
                 </sec:authorize>

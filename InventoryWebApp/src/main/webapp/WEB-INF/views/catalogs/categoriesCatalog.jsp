@@ -3,14 +3,12 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ page session="true" %>
 
-<input type="hidden" id="appContextPath" value="${pageContext.request.contextPath}">
-
 <section id="barra_acciones" class="container">
     <div class="row">        
         <section id="nav_nivel_2">
             <ul class="nav navbar-nav">
                 <li><a href="" class="active">Categorías</a></li>
-				<li><a href="${pageContext.request.contextPath}/adminUnitsOfMeasure">Unidades de medida</a></li>
+				<li><a href="<c:url value='/adminUnitsOfMeasure'/>">Unidades de medida</a></li>
             </ul>
         </section>
         
@@ -136,11 +134,7 @@
             </div>
             
             <!-- CONTENIDO del modal -->
-            <div class="modal-body">
-                <!-- <div class="alert alert-danger" id="captureAlerts" role="alert">
-	                <span class='sr-only'>Error:</span> Indique el nombre de la nueva categoría
-                </div> -->
-            
+            <div class="modal-body">            
                 <!-- CAMPO 01 / Nombre de categoría   -->
                 <label for="txt_categoria_nombre">Nombre</label>
                 <div class="input-group" >
@@ -182,13 +176,8 @@
                         <button type="button" class="btn_chico btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-expanded="false" style="width:100%;">
                             Categorías <span class="caret"></span>
                         </button>
-                        <ul class="dropdown-menu" role="menu">
-                            <li onclick="javascript:setParentCategory(0)"><a href="#">Ninguna</a></li>
-                            <c:if test="${not empty categoriesList}">
-                                <c:forEach items="${categoriesList}" var="currCategory">
-                                    <li onclick="javascript:setParentCategory(${currCategory.id})"><a href="#">${currCategory.name}</a></li>
-                                </c:forEach>
-                            </c:if>
+                        <ul class="dropdown-menu" role="menu" id="categoriesMenu">
+                            <li onclick="javascript:setParentCategory(0)"><a href="#">Ninguna</a></li>                            
                         </ul>
                     </div>
                 </div>
@@ -245,5 +234,6 @@
 
 
 <!-- -------------- SCRIPTS ---------------- -->
-<script src="${pageContext.request.contextPath}/resources/js/categories.js"></script>
+<script src="<c:url value='/resources/js/utils.js'/>"></script>
+<script src="<c:url value='/resources/js/categories.js'/>"></script>
 <!-- -------------- SCRIPTS ---------------- -->

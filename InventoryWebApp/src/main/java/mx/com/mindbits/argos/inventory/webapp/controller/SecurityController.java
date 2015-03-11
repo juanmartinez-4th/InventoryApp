@@ -53,17 +53,14 @@ public class SecurityController {
 	@RequestMapping(value = "/unauthorized", method = RequestMethod.GET)
 	public String accesssDenied(Model model) {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-
 		if (!(auth instanceof AnonymousAuthenticationToken)) {
 			UserDetails userDetail = (UserDetails) auth.getPrincipal();
 			model.addAttribute("username", userDetail.getUsername());
 		}
-
 		return "unauthorized";
-
 	}
 	
-	private String getRememberMeTargetUrlFromSession(HttpServletRequest request){
+	private String getRememberMeTargetUrlFromSession(HttpServletRequest request) {
 		String targetUrl = "";
 		HttpSession session = request.getSession(false);
 		if(session!=null){

@@ -17,16 +17,17 @@ var saveUnit = function() {
 		var actionPath;
 		
 		if($('#unitAction').val() == 'new') {
-			actionPath = '/insertUnitOfMeasure';
+			actionPath = ctx + '/insertUnitOfMeasure';
 		}else {
-			actionPath = '/updateUnitOfMeasure';
+			actionPath = ctx + '/updateUnitOfMeasure';
 		}
 		
 		$('#unitOfMeasure').submit(function() {
 			$.ajax({
 				type : 'POST',
-				url : $('#appContextPath').val() + actionPath,
+				url : actionPath,
 				data : $('#unitOfMeasure').serialize(),
+				beforeSend: maskPage(),
 				success : function(response) {
 					var status = 'success';
 					var msg = '';
@@ -42,13 +43,14 @@ var saveUnit = function() {
 						status = 'error';
 					}
 					
-					window.location = $('#appContextPath').val() + '/adminUnitsOfMeasure?' + status + '=1&msg=' + msg;
+					window.location = ctx + '/adminUnitsOfMeasure?' + status + '=1&msg=' + msg;
 					$('#modal_nueva_unidadMedida').modal('hide');
 				},
 				error: function(e) {
-					window.location = $('#appContextPath').val() + '/adminUnitsOfMeasure?error=1';
+					window.location = ctx + '/adminUnitsOfMeasure?error=1';
 					$('#modal_nueva_unidadMedida').modal('hide');
-				}
+				},
+				complete: maskPage()
 			});
 			return false;
 		});
@@ -58,8 +60,9 @@ var saveUnit = function() {
 var deleteUnit = function() {
 	$.ajax({
 		type : 'POST',
-		url : $('#appContextPath').val() + '/deleteUnitOfMeasure',
+		url : ctx + '/deleteUnitOfMeasure',
 		data : 'unitId=' + $('#unitToDelete').val(),
+		beforeSend: maskPage(),
 		success : function(response) {
 			var status = 'success';
 			var msg = '';
@@ -75,13 +78,14 @@ var deleteUnit = function() {
 				status = 'error';
 			}
 			
-			window.location = $('#appContextPath').val() + '/adminUnitsOfMeasure?' + status + '=1&msg=' + msg;
+			window.location = ctx + '/adminUnitsOfMeasure?' + status + '=1&msg=' + msg;
 			$('#modal_confirm_delete').modal('hide');
 		},
 		error: function(e) {
-			window.location = $('#appContextPath').val() + '/adminUnitsOfMeasure?error=1';
+			window.location = ctx + '/adminUnitsOfMeasure?error=1';
 			$('#modal_confirm_delete').modal('hide');
-		}
+		},
+		complete: maskPage()
 	});
 	
 	return false;

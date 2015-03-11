@@ -1,6 +1,7 @@
 $(function() {
 	$('#btnSaveItem').on('click', saveItem);
 	$('#btnSaveNewItem').on('click', saveItem);
+	setCategoryMenu();
 });
 
 var saveItem = function() {
@@ -11,8 +12,9 @@ var saveItem = function() {
 		$('#itemCaptureForm').submit(function() {
 			$.ajax({
 				type : 'POST',
-				url : $('#appContextPath').val() + '/insertItem',
+				url : ctx + '/insertItem',
 				data : $('#itemCaptureForm').serialize(),
+				beforeSend: maskPage(),
 				success : function(response) {
 					var status = 'success';
 					var msg = '';
@@ -28,11 +30,12 @@ var saveItem = function() {
 						status = 'error';
 					}
 					
-					window.location = $('#appContextPath').val() + '/listItems?' + status + '=1&msg=' + msg;
+					window.location = ctx + '/listItems?' + status + '=1&msg=' + msg;
 				},
 				error: function(e) {
-					window.location = $('#appContextPath').val() + '/listItems?error=1';
-				}
+					window.location = ctx + '/listItems?error=1';
+				},
+				complete: maskPage()
 			});
 			return false;
 		});
@@ -46,17 +49,17 @@ function setCategory(selectedCategory) {
 	}else {
 		$.ajax({
 			type : 'POST',
-			url : $('#appContextPath').val() + '/getCategoryHierarchy',
+			url : ctx + '/getCategoryHierarchy',
 			data : 'categoryId=' + selectedCategory,
+			beforeSend: maskPage(),
 			success : function(response) {
-				var parents = response.split(',');
 				var html = '';
 				
-				for (var i = 0; i < parents.length; i++) {
-					if(parents[i] != '' && (i == (parents.length - 1))) {
-						html += '<li class="active">' + parents[i] + '</li>';
-					}else if(parents[i] != '' && i != (parents.length - 1)) {
-						html += '<li>' + parents[i] + '</li>';
+				for (var i = 0; i < response.length; i++) {
+					if(i == (response.length - 1)) {
+						html += '<li class="active">' + response[i].name + '</li>';
+					}else {
+						html += '<li>' + response[i].name + '</li>';
 					}
 				}
 				
@@ -66,7 +69,8 @@ function setCategory(selectedCategory) {
 			error: function(e) {
 				$('#breadcrumbCategory').html('');
 				$('#itemCategory').val(selectedCategory);
-			}
+			},
+			complete: maskPage()
 		});
 	}
 	
@@ -76,5 +80,51 @@ function setCategory(selectedCategory) {
 function setUnitOfMeasure(selectedUnit, name) {
 	$('#itemUnit').val(selectedUnit);
 	$('#btnUnitOfM').text(name)
+	event.preventDefault();
+}
+
+function buildSubmenu(category) {
+	var html = '<li onclick="javascript:setCategory(' + category.id + ')" class="dropdown-submenu">' + 
+			'<a href="#" class="dropdown-toggle">' + category.name + '</a>' +
+			'<ul class="dropdown-menu">';
+	var descendants = category.descendantCategories;
+	
+	for (var i = 0; i < descendants.length; i++) {
+		if(descendants[i].descendantCategories.length > 0) {
+			html += buildSubmenu(descendants[i]);
+		}else {
+			html += '<li onclick="javascript:setCategory(' + descendants[i].id + ')"><a href="#">' + descendants[i].name + '</a></li>';
+		}
+	}
+	
+	html += '</ul></li>';
+	
+	return html;
+}
+
+function setCategoryMenu() {
+	$.ajax({
+		type : 'POST',
+		url : ctx + '/getCategoryTree',
+		beforeSend: maskPage(),
+		success : function(response) {
+			var html = $('#categoriesMenu').html();
+			
+			for (var i = 0; i < response.length; i++) {
+				if(response[i].descendantCategories.length > 0) {
+					html += buildSubmenu(response[i]);
+				}else {
+					html += '<li onclick="javascript:setCategory(' + response[i].id + ')"><a href="#">' + response[i].name + '</a></li>';
+				}
+			}
+			
+			$('#categoriesMenu').html(html);
+		},
+		error: function(e) {
+			$('#categoriesMenu').html('');
+		},
+		complete: maskPage(),
+	});
+	
 	event.preventDefault();
 }

@@ -49,9 +49,6 @@ public class CatalogsController {
 		List<ItemVO> items = inventoryManager.getAllItems();
 		model.addAttribute("itemsList", items);
 		
-		List<CategoryVO> categories = inventoryManager.getAllCategories();
-		model.addAttribute("categoriesList", categories);
-		
 		Message alertMessage = getAlertMessage(request);
 		if(alertMessage != null) {
 			model.addAttribute("alertMsg", alertMessage);
@@ -59,10 +56,22 @@ public class CatalogsController {
 		
 		return ITEMS_CATALOG_VIEW;
 	}
+	
+	@RequestMapping(value = "/getItemsBycategory", method = RequestMethod.GET)
+	public String getItemsBycategory(Model model, @RequestParam("categoryId") Integer categoryId) {
+		List<ItemVO> items = inventoryManager.getItemsByCategory(categoryId);
+		model.addAttribute("itemsList", items);
+		
+		List<CategoryVO> categories = inventoryManager.getAllCategories();
+		model.addAttribute("categoriesList", categories);
+		model.addAttribute("selectedCategory", categoryId);
+		
+		return ITEMS_CATALOG_VIEW;
+	}
 
 	@RequestMapping(value = "/showItem", method = RequestMethod.GET)
-	public String showItem(Model model, @RequestParam("id") int id) {
-		ItemVO item = inventoryManager.getItem(id);
+	public String showItem(Model model, @RequestParam("id") Integer itemId) {
+		ItemVO item = inventoryManager.getItem(itemId);
 		
 		if(item != null) {
 			List<ItemVO> results = new ArrayList<ItemVO>(1);
@@ -125,7 +134,7 @@ public class CatalogsController {
 	public String listCategories(Model model, HttpServletRequest request) {
 //		if (isRememberMeAuthenticated()) {
 //			// require password for adminstration
-//			setRememberMeTargetUrlToSession(request, "/adminCatalogs");
+//			setRememberMeTargetUrlToSession(request, "/adminCategories");
 //			model.addAttribute("loginUpdate", true);
 //			
 //			return "appLogin";
@@ -206,30 +215,14 @@ public class CatalogsController {
 	
 	@RequestMapping(value = "/getCategoryHierarchy", method = RequestMethod.POST)
 	@ResponseBody
-	public String getCategoryHierarchy(@ModelAttribute(value="categoryId") Integer categoryId) {
-		CategoryVO category = inventoryManager.getCategory(categoryId);
-		List<String> hierarchy;
-		String response = "";
-		
-		if(category != null && category.getParentCategory() != null) {
-			hierarchy = new ArrayList<String>(1);
-			CategoryVO parent = category.getParentCategory();
-			
-			while(parent != null) {
-				hierarchy.add(parent.getName());
-				parent = parent.getParentCategory();
-			}
-			
-			for (int i = (hierarchy.size() - 1); i >= 0; i--) {
-				response += hierarchy.get(i) + ",";
-			}
-			
-			response += category.getName();
-			
-			return response;
-		}else {
-			return category.getName();
-		}
+	public List<CategoryVO> getCategoryHierarchy(@ModelAttribute(value="categoryId") Integer categoryId) {
+		return inventoryManager.getCategoryHierachy(categoryId);
+	}
+	
+	@RequestMapping(value = "/getCategoryTree", method = RequestMethod.POST)
+	@ResponseBody
+	public List<CategoryVO> getCategoryTree() {
+		return inventoryManager.getCategoriesTree(null);
 	}
 	
 	@RequestMapping(value = "/adminUnitsOfMeasure", method = RequestMethod.GET)

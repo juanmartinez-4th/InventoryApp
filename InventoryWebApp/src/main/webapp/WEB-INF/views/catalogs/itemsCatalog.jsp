@@ -2,24 +2,27 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page session="true" %>
 
+<c:if test="${not empty selectedCategory}">
+    <input id="itemCategory" type="hidden" value="${selectedCategory}">
+</c:if>
+<c:if test="${empty selectedCategory}">
+    <input id="itemCategory" type="hidden" value="0">
+</c:if>
+
 <section id="barra_acciones" class="container">
     <div class="row">
         <div class="col-sm-2">
             <button type="button" class="btn_chico btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-expanded="false" style="width:100%;">
                 Categorías <span class="caret"></span>
             </button>
-            <ul class="dropdown-menu" role="menu">
-            <c:if test="${not empty categoriesList}">
-                <c:forEach items="${categoriesList}" var="currCategory">
-                    <li><a href="#"><c:out value="${currCategory.name}" /></a></li>
-                </c:forEach>
-            </c:if>
+            <ul class="dropdown-menu" role="menu" id="categoriesMenu">
+                <li><a href="<c:url value='/listItems'/>">Todo</a></li>
             </ul>
         </div>
 
         <div class="col-sm-4">
-            <div id="" class="form-control" style="border:none; box-shadow:none;">
-                <ol class="breadcrumb">
+            <div class="form-control" style="border:none; box-shadow:none;">
+                <ol class="breadcrumb" id="breadcrumbCategory">
                     <li><a href="#">Categoría seleccionada</a></li>
                 </ol>
             </div>
@@ -35,7 +38,7 @@
                 </button>
             </div>
             <div class="col-sm-4">
-                <a class="btn_chico width_100 btn btn-success" href="${pageContext.request.contextPath}/captureItem">
+                <a class="btn_chico width_100 btn btn-success" href="<c:url value='/captureItem'/>">
 	                <span class="glyphicon glyphicon-plus"></span>
 	                Nuevo artículo
 	            </a>
@@ -84,9 +87,9 @@
 	                    <figure>
 	                        <img src="http://placehold.it/152x152&text=Foto de Producto" alt="Foto de Producto" class="img-responsive">
 	                    </figure>
-	                    <h4><c:out value="${currenItem.description}" /></h4>
-	                    <p><c:out value="${currenItem.code}" /></p>
-	                    <p>Existencia: <c:out value="${currenItem.existence}" /> <c:out value="${currenItem.unitOfMeasure.name}" /></p>
+	                    <h4>${currenItem.description}</h4>
+	                    <p>${currenItem.code}</p>
+	                    <p>Existencia:&nbsp;${currenItem.existence}&nbsp;${currenItem.unitOfMeasure.name}</p>
 	                </div>
 	            </c:forEach>
             </c:when>
@@ -102,5 +105,6 @@
 
 
 <!-- -------------- SCRIPTS ---------------- -->
-<script src="${pageContext.request.contextPath}/resources/js/items.js"></script>
+<script src="<c:url value='/resources/js/utils.js' />"></script>
+<script src="<c:url value='/resources/js/items-catalog.js' />"></script>
 <!-- -------------- SCRIPTS ---------------- -->

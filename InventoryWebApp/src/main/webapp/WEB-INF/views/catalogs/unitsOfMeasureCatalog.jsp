@@ -3,13 +3,11 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ page session="true" %>
 
-<input type="hidden" id="appContextPath" value="${pageContext.request.contextPath}">
-
 <section id="barra_acciones" class="container">
     <div class="row">
         <section id="nav_nivel_2">
             <ul class="nav navbar-nav">
-                <li><a href="${pageContext.request.contextPath}/adminCategories">Categorías</a></li>
+                <li><a href="<c:url value='/adminCategories'/>">Categorías</a></li>
                 <li><a href="" class="active">Unidades de medida</a></li>
             </ul>
         </section>
@@ -187,5 +185,6 @@
 
 
 <!-- -------------- SCRIPTS ---------------- -->
-<script src="${pageContext.request.contextPath}/resources/js/units-of-measure.js"></script>
+<script src="<c:url value='/resources/js/utils.js'/>"></script>
+<script src="<c:url value='/resources/js/units-of-measure.js'/>"></script>
 <!-- -------------- SCRIPTS ---------------- -->

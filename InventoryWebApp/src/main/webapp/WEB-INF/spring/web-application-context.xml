@@ -21,7 +21,7 @@
 		<!-- Interceptors -->
 		<!-- 
 		<mvc:interceptors>
-		    <bean class="mx.com.nextel.portability.inbox.controller.InboxRequestsInterceptor" />
+		    <bean class="mx.com.mindbits.argos.inventory.webapp.controller.SomeInterceptor" />
 		</mvc:interceptors>
 		 -->
 

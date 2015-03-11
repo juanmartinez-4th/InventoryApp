@@ -3,8 +3,6 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ page session="true" %>
 
-<input type="hidden" id="appContextPath" value="${pageContext.request.contextPath}">
-
 <form:form modelAttribute="itemCaptureForm" id="itemCaptureForm" method="POST">
 <main>
     <article class="container">
@@ -56,12 +54,7 @@
                         <button type="button" class="btn_chico btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-expanded="false" style="width:100%;">
                             Categorías <span class="caret"></span>
                         </button>
-                        <ul class="dropdown-menu" role="menu">
-                            <c:if test="${not empty categoriesList}">
-                                <c:forEach items="${categoriesList}" var="currCategory">
-                                    <li onclick="javascript:setCategory(${currCategory.id})"><a href="#">${currCategory.name}</a></li>
-                                </c:forEach>
-                            </c:if>
+                        <ul class="dropdown-menu" role="menu" id="categoriesMenu">
                         </ul>
                     </div>
                 </div>
@@ -81,9 +74,9 @@
             <div class="col-sm-6" id="captura_imagenes">
                 <label for="txt_codigo">Imágenes</label>
                 <div class="row">
-                    <figure class="col-xs-4"><a href="#"><img src="${pageContext.request.contextPath}/resources/images/demo/placeholder_118px_articulo.png" alt="" class="img-responsive"></a></figure>
-                    <figure class="col-xs-4"><a href="#"><img src="${pageContext.request.contextPath}/resources/images/demo/placeholder_118px_articulo.png" alt="" class="img-responsive"></a></figure>
-                    <figure class="col-xs-4"><a href="#"><img src="${pageContext.request.contextPath}/resources/images/demo/placeholder_118px_articulo.png" alt="" class="img-responsive"></a></figure>
+                    <figure class="col-xs-4"><a href="#"><img src="<c:url value='/resources/images/demo/placeholder_118px_articulo.png'/>" alt="" class="img-responsive"></a></figure>
+                    <figure class="col-xs-4"><a href="#"><img src="<c:url value='/resources/images/demo/placeholder_118px_articulo.png'/>" alt="" class="img-responsive"></a></figure>
+                    <figure class="col-xs-4"><a href="#"><img src="<c:url value='/resources/images/demo/placeholder_118px_articulo.png'/>" alt="" class="img-responsive"></a></figure>
                 </div>
                 
             </div>
@@ -193,7 +186,7 @@
             Guardar
         </button>
 
-        <a href="${pageContext.request.contextPath}/listItems" class="btn btn-primary btn_dark">
+        <a href="<c:url value='/listItems'/>" class="btn btn-primary btn_dark">
             <span class="glyphicon glyphicon-remove"></span>
             Cancelar
         </a>
@@ -203,5 +196,6 @@
 </form:form>
 
 <!-- -------------- SCRIPTS ---------------- -->
-<script src="${pageContext.request.contextPath}/resources/js/items.js"></script>
+<script src="<c:url value='/resources/js/utils.js'/>"></script>
+<script src="<c:url value='/resources/js/items.js'/>"></script>
 <!-- -------------- SCRIPTS ---------------- -->

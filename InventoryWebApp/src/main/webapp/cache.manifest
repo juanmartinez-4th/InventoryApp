@@ -1,0 +1,17 @@
+CACHE MANIFEST
+
+# this is a comment
+CACHE:
+resources/js/util/jquery-2.1.3.min.js
+resources/js/util/bootstrap.min.js
+
+NETWORK:
+*
+
+CACHE:
+resources/css/util/bootstrap.min.css
+resources/css/util/argos_styles.css
+resources/fonts/util/font-awesome-4.3.0/css/font-awesome.min.css
+resources/images/logotipo_argos.png
+resources/images/img_login.png
+http://fonts.googleapis.com/css?family=Roboto:400italic,100,100italic,400
