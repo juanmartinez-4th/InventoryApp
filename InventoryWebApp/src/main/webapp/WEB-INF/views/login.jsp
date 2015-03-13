@@ -52,13 +52,13 @@
                 <div class="col-sm-6 _paddings">                
                     <form name="loginForm" action="<c:url value='/auth/login_check?targetUrl=${targetUrl}' />" method="POST" role="form">
                         <c:if test="${not empty error}">
-	                        <div class="form-group alert alert-danger" role="alert">
+	                        <div class="form-group alert alert-danger flash" role="alert">
 	                            <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
 	                            <span class="sr-only">Error: </span> ${error}
 	                        </div>
 	                    </c:if>
 	                    <c:if test="${not empty msg}">
-	                        <div class="form-group alert alert-success" role="alert">
+	                        <div class="form-group alert alert-success flash" role="alert">
 	                            <span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span>
 	                            <span class="sr-only">Mensaje: </span> ${msg}
 	                        </div>
@@ -99,6 +99,7 @@
     <!-- -------------- SCRIPTS ---------------- -->
     <script src="<c:url value='/resources/js/util/jquery-2.1.3.min.js' />"></script>
     <script src="<c:url value='/resources/js/util/bootstrap.min.js' />"></script>
+    <script src="<c:url value='/resources/js/utils.js' />"></script>
     <!-- -------------- SCRIPTS ---------------- -->
     
     <script>

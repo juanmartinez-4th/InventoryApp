@@ -1,11 +1,13 @@
 package mx.com.mindbits.argos.inventory.webapp.form;
 
 import java.io.Serializable;
+import java.util.List;
 
 import mx.com.mindbits.argos.inventory.vo.CategoryVO;
 import mx.com.mindbits.argos.inventory.vo.ItemLocationVO;
-import mx.com.mindbits.argos.inventory.vo.ItemPictureVO;
 import mx.com.mindbits.argos.inventory.vo.ItemVO;
+
+import org.springframework.web.multipart.MultipartFile;
 
 public class ItemCaptureForm implements Serializable {
 	
@@ -17,7 +19,9 @@ public class ItemCaptureForm implements Serializable {
 	
 	private ItemLocationVO location;
 	
-	private ItemPictureVO picture;
+	private List<MultipartFile> pictureFiles;
+	
+	private Boolean redirectNew;
 
 	/**
 	 * @return the item
@@ -62,17 +66,31 @@ public class ItemCaptureForm implements Serializable {
 	}
 
 	/**
-	 * @return the picture
+	 * @return the pictureFiles
 	 */
-	public ItemPictureVO getPicture() {
-		return picture;
+	public List<MultipartFile> getPictureFiles() {
+		return pictureFiles;
 	}
 
 	/**
-	 * @param picture the picture to set
+	 * @param pictureFiles the pictureFiles to set
 	 */
-	public void setPicture(ItemPictureVO picture) {
-		this.picture = picture;
+	public void setPictureFiles(List<MultipartFile> pictureFiles) {
+		this.pictureFiles = pictureFiles;
 	}
-		
+
+	/**
+	 * @return the redirectNew
+	 */
+	public Boolean getRedirectNew() {
+		return redirectNew;
+	}
+
+	/**
+	 * @param redirectNew the redirectNew to set
+	 */
+	public void setRedirectNew(Boolean redirectNew) {
+		this.redirectNew = redirectNew;
+	}
+
 }

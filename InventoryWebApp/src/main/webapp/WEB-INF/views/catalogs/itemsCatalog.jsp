@@ -56,7 +56,7 @@
                 <c:if test="${not empty alertMsg}">
                     <c:choose>
                         <c:when test="${alertMsg.status eq 'FAIL'}">
-                            <div class="alert alert-danger" role="alert">
+                            <div class="alert alert-danger flash" role="alert">
                                 <button type="button" class="close" data-dismiss="alert" aria-label="Cerrar">
                                     <span aria-hidden="true">&times;</span>
                                 </button>
@@ -65,7 +65,7 @@
                             </div>
                         </c:when>
                         <c:when test="${alertMsg.status eq 'SUCCESS'}">
-                            <div class="form-group alert alert-success" role="alert">
+                            <div class="form-group alert alert-success flash" role="alert">
                                 <button type="button" class="close" data-dismiss="alert" aria-label="Cerrar">
                                     <span aria-hidden="true">&times;</span>
                                 </button>
@@ -85,10 +85,12 @@
 	                <!-- LISTADO DE ITEMS -->
 	                <div class="col-md-2 col-sm-3 col-xs-4 grid_item">
 	                    <figure>
-	                        <img src="http://placehold.it/152x152&text=Foto de Producto" alt="Foto de Producto" class="img-responsive">
+	                        <a href="<c:url value='/showItem?itemId=${currenItem.id}' />">
+	                           <img src="http://placehold.it/152x152&text=Foto de Producto" alt="Foto de Producto" class="img-responsive">
+	                        </a>
 	                    </figure>
-	                    <h4>${currenItem.description}</h4>
-	                    <p>${currenItem.code}</p>
+	                    <h4><a href="<c:url value='/showItem?itemId=${currenItem.id}' />">${currenItem.description}</a></h4>
+	                    <p><a href="<c:url value='/showItem?itemId=${currenItem.id}' />">${currenItem.code}</a></p>
 	                    <p>Existencia:&nbsp;${currenItem.existence}&nbsp;${currenItem.unitOfMeasure.name}</p>
 	                </div>
 	            </c:forEach>

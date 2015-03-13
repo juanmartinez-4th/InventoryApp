@@ -196,5 +196,5 @@ function setCategoryMenu() {
 		complete: maskPage(),
 	});
 	
-	event.preventDefault();
+	return false;
 }

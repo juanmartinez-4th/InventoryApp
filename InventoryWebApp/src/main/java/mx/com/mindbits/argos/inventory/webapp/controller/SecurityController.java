@@ -16,6 +16,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 public class SecurityController {
+	
+	private static final String LOGIN_VIEW = "appLogin";
+	
+	private static final String UNAUTHORIZED_VIEW = "unauthorized";
 
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String welcome(Model model) {
@@ -24,7 +28,7 @@ public class SecurityController {
 		if (!(auth instanceof AnonymousAuthenticationToken)) {
 			 return "redirect:/listItems";
 		}else {
-			return "appLogin";
+			return LOGIN_VIEW;
 		}
 	}
 
@@ -47,7 +51,7 @@ public class SecurityController {
 			model.addAttribute("msg", "Ha cerrado sesión correctamente.");
 		}
 
-		return "appLogin";
+		return LOGIN_VIEW;
 	}
 
 	@RequestMapping(value = "/unauthorized", method = RequestMethod.GET)
@@ -57,7 +61,7 @@ public class SecurityController {
 			UserDetails userDetail = (UserDetails) auth.getPrincipal();
 			model.addAttribute("username", userDetail.getUsername());
 		}
-		return "unauthorized";
+		return UNAUTHORIZED_VIEW;
 	}
 	
 	private String getRememberMeTargetUrlFromSession(HttpServletRequest request) {

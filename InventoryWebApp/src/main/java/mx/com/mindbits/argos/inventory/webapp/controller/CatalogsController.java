@@ -1,5 +1,7 @@
 package mx.com.mindbits.argos.inventory.webapp.controller;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,7 +13,9 @@ import mx.com.mindbits.argos.inventory.bsn.CatalogManager;
 import mx.com.mindbits.argos.inventory.vo.CategoryVO;
 import mx.com.mindbits.argos.inventory.vo.ItemClassificationVO;
 import mx.com.mindbits.argos.inventory.vo.ItemLocationVO;
+import mx.com.mindbits.argos.inventory.vo.ItemPictureVO;
 import mx.com.mindbits.argos.inventory.vo.ItemVO;
+import mx.com.mindbits.argos.inventory.vo.ProductionVO;
 import mx.com.mindbits.argos.inventory.vo.UnitOfMeasureVO;
 import mx.com.mindbits.argos.inventory.webapp.form.ItemCaptureForm;
 
@@ -27,6 +31,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 public class CatalogsController {
@@ -35,12 +41,22 @@ public class CatalogsController {
 	private CatalogManager inventoryManager;
 	
 	private static final String ITEMS_CATALOG_VIEW = "itemsCatalog";
+	private static final String ITEMS_CATALOG_VIEW_TITLE = "Artículos";
 	
 	private static final String ITEM_CAPTURE_VIEW = "itemCapture";
+	private static final String ITEM_CAPTURE_VIEW_TITLE = "Captura de artículo";
+	
+	private static final String ITEM_DETAIL_VIEW = "itemDetail";
+	private static final String ITEM_DETAIL_VIEW_TITLE = "Detalle de artículo";
 	
 	private static final String CATEGORIES_CATALOG_VIEW = "categoriesCatalog";
+	private static final String CATEGORIES_CATALOG_VIEW_TITLE = "Categorías";
+	
+	private static final String PRODUCTIONS_CATALOG_VIEW = "productionsCatalog";
+	private static final String PRODUCTIONS_CATALOG_VIEW_TITLE = "Producciones";
 	
 	private static final String UNITS_CATALOG_VIEW = "unitsCatalog";
+	private static final String UNITS_CATALOG_VIEW_TITLE = "Unidades de medida";
 	
 	/// TODO: Consider keeping catalogs in cache 
 
@@ -54,6 +70,8 @@ public class CatalogsController {
 			model.addAttribute("alertMsg", alertMessage);
 		}
 		
+		model.addAttribute("pageTitle", ITEMS_CATALOG_VIEW_TITLE);
+		
 		return ITEMS_CATALOG_VIEW;
 	}
 	
@@ -65,49 +83,71 @@ public class CatalogsController {
 		List<CategoryVO> categories = inventoryManager.getAllCategories();
 		model.addAttribute("categoriesList", categories);
 		model.addAttribute("selectedCategory", categoryId);
+		model.addAttribute("pageTitle", ITEMS_CATALOG_VIEW_TITLE);
 		
 		return ITEMS_CATALOG_VIEW;
 	}
 
 	@RequestMapping(value = "/showItem", method = RequestMethod.GET)
-	public String showItem(Model model, @RequestParam("id") Integer itemId) {
-		ItemVO item = inventoryManager.getItem(itemId);
+	public String showItem(Model model, @RequestParam("itemId") Integer itemId) {
+		ItemCaptureForm itemForm = new ItemCaptureForm();
+		List<ItemLocationVO> itemLocation = inventoryManager.getItemLocations(itemId);
+		ItemClassificationVO itemClassification = inventoryManager.getItemClassification(itemId);
 		
-		if(item != null) {
-			List<ItemVO> results = new ArrayList<ItemVO>(1);
-			results.add(item);
-			
-			model.addAttribute("itemsList", results);
-		}
+		itemForm.setCategory(itemClassification.getCategory());
+		itemForm.setItem(itemLocation.get(0).getItem());
+		itemForm.setLocation(itemLocation.get(0));
 		
-		return ITEMS_CATALOG_VIEW;
+		model.addAttribute("selectedItem", itemForm);
+		model.addAttribute("pageTitle", ITEM_DETAIL_VIEW_TITLE);
+		
+		return ITEM_DETAIL_VIEW;
 	}
 	
 	@RequestMapping(value = "/captureItem", method = RequestMethod.GET)
 	public String captureItem(Model model, HttpServletRequest request) {
 		List<CategoryVO> categories = inventoryManager.getAllCategories();
 		List<UnitOfMeasureVO> unitsOfMeasure = inventoryManager.getAllUnitsOfMeasure();
+		List<ProductionVO> productions = inventoryManager.getAllProductions();
 		
 		model.addAttribute("itemCaptureForm", new ItemCaptureForm());
 		model.addAttribute("categoriesList", categories);
 		model.addAttribute("unitsList", unitsOfMeasure);
+		model.addAttribute("productionsList", productions);
+		
+		Message alertMessage = getAlertMessage(request);
+		if(alertMessage != null) {
+			model.addAttribute("alertMsg", alertMessage);
+		}
+		
+		model.addAttribute("pageTitle", ITEM_CAPTURE_VIEW_TITLE);
 		
 		return ITEM_CAPTURE_VIEW;
 	}
 	
 	@RequestMapping(value = "/insertItem", method = RequestMethod.POST)
-	@ResponseBody
-	public Message insertItem(@ModelAttribute(value="itemCaptureForm") ItemCaptureForm itemCaptureForm) {
+	public String insertItem(@ModelAttribute(value="itemCaptureForm") ItemCaptureForm itemCaptureForm,
+			Model model, RedirectAttributes redirectAttrs) {
 		Message response;
+		boolean redirectNew = itemCaptureForm.getRedirectNew();
 		
 		ItemVO item = itemCaptureForm.getItem();
 		ItemLocationVO itemLocation = itemCaptureForm.getLocation();
 		
 		ItemClassificationVO itemClassification = new ItemClassificationVO();
 		itemClassification.setCategory(itemCaptureForm.getCategory());
+		List<ItemPictureVO> itemPictures;
 		
 		try {
-			item = inventoryManager.createItem(item, itemClassification, itemLocation);
+			List<String> pictureFiles = savePictures(item.getCode(), itemCaptureForm.getPictureFiles());
+			itemPictures = new ArrayList<ItemPictureVO>(pictureFiles.size());
+			for (String fileName : pictureFiles) {
+				ItemPictureVO itemPicture = new ItemPictureVO();
+				itemPicture.setFileName(fileName);
+				
+				itemPictures.add(itemPicture);
+			}
+			item = inventoryManager.createItem(item, itemClassification, itemLocation, itemPictures);
 			
 			if(item != null && item.getId() != null) {	
 				response = Message.successMessage("Nuevo artículo creado", item);
@@ -118,7 +158,14 @@ public class CatalogsController {
 			response = Message.failMessage("No fue posible crear el nuevo artículo, intente más tarde");
 		}
 		
-		return response;
+		redirectAttrs.addFlashAttribute("alertMsg", response);
+		
+		if(redirectNew) {
+			return "redirect:/captureItem";
+		}else {
+			return "redirect:/listItems";
+		}
+		
 	}
 	
 	@RequestMapping(value = "/updateItem", method = RequestMethod.POST)
@@ -126,6 +173,7 @@ public class CatalogsController {
 	public String updateItem(Model model) {
 		List<ItemVO> results = inventoryManager.getAllItems();		
 		model.addAttribute("itemsList", results);
+		model.addAttribute("pageTitle", ITEMS_CATALOG_VIEW_TITLE);
 		
 		return ITEMS_CATALOG_VIEW;
 	}
@@ -148,6 +196,8 @@ public class CatalogsController {
 		if(alertMessage != null) {
 			model.addAttribute("alertMsg", alertMessage);
 		}
+		
+		model.addAttribute("pageTitle", CATEGORIES_CATALOG_VIEW_TITLE);
 		
 		return CATEGORIES_CATALOG_VIEW;
 	}
@@ -236,6 +286,8 @@ public class CatalogsController {
 			model.addAttribute("alertMsg", alertMessage);
 		}
 		
+		model.addAttribute("pageTitle", UNITS_CATALOG_VIEW_TITLE);
+		
 		return UNITS_CATALOG_VIEW;
 	}
 	
@@ -284,7 +336,76 @@ public class CatalogsController {
 		}catch(Exception e) {
 			if (e instanceof DataIntegrityViolationException) {
 				response = Message.failMessage("Imposible realizar la operación, "
-						+ "algunos elementos ya se encuentran asignados a unidad de medida.");
+						+ "esta unidad de medida ya se encuentra asignada a algunos elementos.");
+			}else {
+				response = Message.failMessage("No fue posible realizar la operación, intente más tarde.");
+			}
+		}
+		return response;
+	}
+	
+	@RequestMapping(value = "/adminProductions", method = RequestMethod.GET)
+	public String listProductions(Model model, HttpServletRequest request) {
+		List<ProductionVO> results = inventoryManager.getAllProductions();
+		model.addAttribute("productionsList", results);
+		model.addAttribute("production", new ProductionVO());
+		
+		Message alertMessage = getAlertMessage(request);
+		if(alertMessage != null) {
+			model.addAttribute("alertMsg", alertMessage);
+		}
+		
+		model.addAttribute("pageTitle", PRODUCTIONS_CATALOG_VIEW_TITLE);
+		
+		return PRODUCTIONS_CATALOG_VIEW;
+	}
+	
+	@RequestMapping(value = "/insertProduction", method = RequestMethod.POST)
+	@ResponseBody
+	public Message insertProduction(@ModelAttribute(value="production") ProductionVO newProduction) {
+		ProductionVO production = newProduction;
+		Message response; 
+		
+		production.setId(null);
+		production = inventoryManager.saveProduction(production);
+		
+		if(production != null && production.getId() != null) {
+			response = Message.successMessage("Nueva producción creada", production);
+		}else {
+			response = Message.failMessage("No fue posible crear la nueva producción, intente más tarde");
+		}
+		
+		return response;
+		
+	}
+	
+	@RequestMapping(value = "/updateProduction", method = RequestMethod.POST)
+	@ResponseBody
+	public Message updateProduction(@ModelAttribute(value="production") ProductionVO production) {
+		ProductionVO productionToUpdate = production;
+		Message response;
+		
+		productionToUpdate = inventoryManager.updateProduction(productionToUpdate);
+		if(productionToUpdate != null) {
+			response = Message.successMessage("Producción actualizada", productionToUpdate);
+		}else {
+			response = Message.failMessage("No fue posible actualizar la producción, intente más tarde");
+		}
+		
+		return response;
+	}
+	
+	@RequestMapping(value = "/deleteProduction", method = RequestMethod.POST)
+	@ResponseBody
+	public Message deleteProduction(@ModelAttribute(value="productionId") Integer productionId) {
+		Message response = Message.successMessage("Producción eliminada", null);
+		
+		try {
+			inventoryManager.deleteProduction(productionId);
+		}catch(Exception e) {
+			if (e instanceof DataIntegrityViolationException) {
+				response = Message.failMessage("Imposible realizar la operación, "
+						+ "algunos elementos ya se encuentran asignados a esta producción.");
 			}else {
 				response = Message.failMessage("No fue posible realizar la operación, intente más tarde.");
 			}
@@ -331,6 +452,37 @@ public class CatalogsController {
 		}
 		
 		return message;
+	}
+	
+	private List<String> savePictures(String itemCode, List<MultipartFile> pictureFiles) 
+			throws IllegalStateException, IOException {
+		String saveDirectory = "c:/items/pictures/";
+        List<String> fileNames = new ArrayList<String>(1);
+ 
+        int pictId = 0;
+        
+        if (null != pictureFiles && pictureFiles.size() > 0) {
+        	File file = new File(saveDirectory + itemCode);
+    		
+    		if(!file.exists()) {
+    			file.mkdir();
+    			saveDirectory = saveDirectory + itemCode + "/";
+    		}
+        	
+            for (MultipartFile multipartFile : pictureFiles) {
+            	if(multipartFile.getSize() > 0) {            		
+            		String extension = multipartFile.getOriginalFilename();
+            		extension = extension.substring(extension.lastIndexOf("."));
+	                String fileName = itemCode + "_p" + pictId + extension;
+	                // Handle file content - multipartFile.getInputStream()
+	                multipartFile.transferTo(new File(saveDirectory + fileName));
+	                fileNames.add(fileName);
+            	}
+            	pictId++;
+            }
+        }
+        
+        return fileNames;
 	}
 	
 }

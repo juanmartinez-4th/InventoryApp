@@ -7,6 +7,18 @@
 * {
   font-family: Roboto, helvetica, arial;
 }
+.resalta_rojo {
+  color: #ff0000;
+}
+.resalta_negro {
+  color: black;
+  font-weight: 800;
+  letter-spacing: 1px;
+}
+.subraya_gris {
+  border-bottom: 1px solid #bbb;
+  padding-bottom: 0.7em;
+}
 .container {
   max-width: 960px;
 }
@@ -38,6 +50,13 @@ label {
   margin-bottom: 2px;
   margin-top: 1em;
 }
+input:read-only,
+textarea:read-only {
+  border: none;
+  resize: none;
+  overflow: auto;
+  outline: none;
+}
 .btn {
   font-family: 'Roboto-thin', sans-serif;
 }
@@ -52,6 +71,16 @@ label {
 }
 .img_centered {
   margin: 0 auto;
+}
+.inline-block {
+  display: inline-block;
+}
+.img_redondeada {
+  display: table;
+  border-radius: 6px;
+  border: 1px solid #bbbbbb;
+  margin: 0 auto;
+  overflow: hidden;
 }
 .btn_capsula {
   background: #e92d30;

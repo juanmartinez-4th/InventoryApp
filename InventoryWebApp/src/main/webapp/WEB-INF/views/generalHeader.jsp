@@ -11,7 +11,7 @@
         </figure>
         
         <div id="Subtitulo" class="col-sm-6">
-            <h2>Control de Almacén</h2>
+            <h2><c:if test="${empty pageTitle}">Control de Almacén</c:if><c:if test="${not empty pageTitle}">${pageTitle}</c:if></h2>
         </div>
     </div>
 </header>
@@ -70,9 +70,3 @@
 <form action="${logoutUrl}" method="post" id="logoutForm">
     <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 </form>
-
-<script>
-    function logoutSubmit() {
-        document.getElementById("logoutForm").submit();
-    }
-</script>

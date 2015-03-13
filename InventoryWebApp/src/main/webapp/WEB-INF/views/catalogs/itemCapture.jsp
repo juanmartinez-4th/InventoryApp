@@ -3,10 +3,39 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ page session="true" %>
 
-<form:form modelAttribute="itemCaptureForm" id="itemCaptureForm" method="POST">
+<form:form modelAttribute="itemCaptureForm" id="itemCaptureForm" action="insertItem" enctype="multipart/form-data" method="POST">
 <main>
     <article class="container">
         <form:input path="item.id" type="hidden" id="itemId" value="0" />
+        <form:input path="redirectNew" type="hidden" id="redirectNew" value="false" />
+        
+        <div class="row">
+            <div class="col-sm-12 pull-left">
+                <!-- Mensajes -->
+                <c:if test="${not empty alertMsg}">
+                    <c:choose>
+                        <c:when test="${alertMsg.status eq 'FAIL'}">
+                            <div class="alert alert-danger flash" role="alert">
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Cerrar">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                                <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                                <span class="sr-only">Error: </span> ${alertMsg.message}
+                            </div>
+                        </c:when>
+                        <c:when test="${alertMsg.status eq 'SUCCESS'}">
+                            <div class="form-group alert alert-success flash" role="alert">
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Cerrar">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                                <span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span>
+                                <span class="sr-only">Mensaje: </span> ${alertMsg.message}
+                            </div>
+                        </c:when>
+                    </c:choose>
+                </c:if>
+            </div>
+        </div>
         
 <!--        SECCION 1 -->
         <section class="row">
@@ -17,7 +46,7 @@
                 <div class="row">        
                     <div class="col-xs-8">
                         <div class="input-group" >
-                          <form:input path="item.code" id="txt_codigo" type="text" class="form-control" placeholder="MOB0000000001SIL" readonly="" />
+                          <form:input path="item.code" id="txt_codigo" type="text" class="form-control" placeholder="MOB0000000001SIL" />
                           <span class="input-group-btn">
                             <button class="btn_chico btn btn-default" type="button"><span class="glyphicon glyphicon-info-sign"></span></button>
                           </span>
@@ -40,6 +69,7 @@
                             <div id="txt_categoria" class="form-control"
                                     data-toggle="popover" data-placement="top" title="Indique la categoría del artículo">
                                 <form:input path="category.id" type="hidden" id="itemCategory" value="0" />
+                                <input type="hidden" id="itemCategoryName" value="" />
                                 <ol class="breadcrumb" id="breadcrumbCategory">
                                     <li class="active">Categoría</li>
                                 </ol>
@@ -62,7 +92,8 @@
 <!--                CAMPO 03 / Descripción   -->
                 <label for="txt_descripcion">Descripción</label>
                 <div class="input-group" >
-                    <form:input path="item.description" id="txt_descripcion" type="text" class="form-control" placeholder="" />
+                    <form:input path="item.description" id="txt_descripcion" type="text" class="form-control" placeholder="" 
+                        data-toggle="popover" data-placement="top" title="Capture la descripción del artículo"/>
                     <span class="input-group-btn">
                         <button class="btn_chico btn btn-default" type="button"><span class="glyphicon glyphicon-info-sign"></span></button>
                     </span>
@@ -74,9 +105,36 @@
             <div class="col-sm-6" id="captura_imagenes">
                 <label for="txt_codigo">Imágenes</label>
                 <div class="row">
-                    <figure class="col-xs-4"><a href="#"><img src="<c:url value='/resources/images/demo/placeholder_118px_articulo.png'/>" alt="" class="img-responsive"></a></figure>
-                    <figure class="col-xs-4"><a href="#"><img src="<c:url value='/resources/images/demo/placeholder_118px_articulo.png'/>" alt="" class="img-responsive"></a></figure>
-                    <figure class="col-xs-4"><a href="#"><img src="<c:url value='/resources/images/demo/placeholder_118px_articulo.png'/>" alt="" class="img-responsive"></a></figure>
+                    <figure class="col-xs-4">
+                        <div style='height: 0px;width: 0px; overflow:hidden;'>
+                            <input id="inputFile0" name="pictureFiles[0]" type="file" value="upload" 
+                                onchange="javascripts:setSelectedFile('0')"/>
+                        </div>
+                        <a href="javascript:selectFile('0')">
+                            <img src="<c:url value='/resources/images/demo/placeholder_118px_articulo.png'/>" alt="" class="img-responsive">
+                        </a>
+                        <div id="selectedFileName0"></div>
+                    </figure>
+                    <figure class="col-xs-4">
+                        <div style='height: 0px;width: 0px; overflow:hidden;'>
+                            <input id="inputFile1" name="pictureFiles[1]" type="file" value="upload" 
+                                onchange="javascripts:setSelectedFile('1')"/>
+                        </div>
+                        <a href="javascript:selectFile('1')">
+                            <img src="<c:url value='/resources/images/demo/placeholder_118px_articulo.png'/>" alt="" class="img-responsive">
+                        </a>
+                        <div id="selectedFileName1"></div>
+                    </figure>
+                    <figure class="col-xs-4">
+                        <div style='height: 0px;width: 0px; overflow:hidden;'>
+                            <input id="inputFile2" name="pictureFiles[2]" type="file" value="upload" 
+                                onchange="javascripts:setSelectedFile('2')"/>
+                        </div>
+                        <a href="javascript:selectFile('2')">
+                            <img src="<c:url value='/resources/images/demo/placeholder_118px_articulo.png'/>" alt="" class="img-responsive">
+                        </a>
+                        <div id="selectedFileName2"></div>
+                    </figure>
                 </div>
                 
             </div>
@@ -109,7 +167,8 @@
                 <div class="row">        
                     <div class="col-xs-8">
                         <div class="input-group" >
-                            <form:input path="location.quantity" type="text" class="form-control" id="txt_existencia" placeholder="" />
+                            <form:input path="location.quantity" type="number" pattern="[0-9]+([\.][0-9]+)?" class="form-control" id="txt_existencia" placeholder="" 
+                                data-toggle="popover" data-placement="top" title="Indique la cantidad a ingresar al inventario"/>
                             <span class="input-group-btn">
                                 <button id="btnUnitOfM" class="btn_chico btn btn-default" type="button"><span class="glyphicon glyphicon-info-sign"></span></button>
                             </span>
@@ -133,31 +192,52 @@
             </div>
             
             <div class="col-sm-6">
+                <label for="txt_localización">Producción</label>   
+                <div class="row">
+                    <div class="col-xs-8">
+                        <div class="input-group" >
+                            <form:input path="location.production.id" type="hidden" id="productionId" value="0" />
+                            <input type="text" class="form-control" id="txt_produccion" readonly />
+                            <span class="input-group-btn">
+                                <button class="btn_chico btn btn-default" type="button"><span class="glyphicon glyphicon-info-sign"></span></button>
+                            </span>
+                        </div><!-- /input-group -->
+                    </div>
+
+                    <div class="col-xs-4">
+                        <button type="button" class="btn_chico btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-expanded="false" style="width:100%;">
+                            Producciones <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu" role="menu">
+                            <c:if test="${not empty productionsList}">
+                                <c:forEach items="${productionsList}" var="currProduction">
+                                    <li onclick="javascript:setProduction(${currProduction.id}, '${currProduction.name}')"><a href="#">${currProduction.code} - ${currProduction.name}</a></li>
+                                </c:forEach>
+                            </c:if>
+                        </ul>
+                    </div>
+                </div>
 <!--                CAMPO 07 / Localización -->
                 <label for="txt_localización">Localización</label>   
                 <div class="row">
-                    <div class="col-xs-2 col-xs-offset-1">
-                        <label for="txt_casilla">Proyecto</label>
-                        <form:input path="location.project" type="text" class="form-control" id="txt_casilla" placeholder="" />
-                    </div>
                     <div class="col-xs-2">
                         <label for="txt_seccion">Sección</label>
-                        <form:input path="location.section" type="text" class="form-control" id="txt_seccion" placeholder="" />
+                        <form:input path="location.section" type="text" class="form-control" id="txt_seccion" placeholder="" maxlength="10"/>
                     </div>
                     
                     <div class="col-xs-2">
                         <label for="txt_pasillo">Pasillo</label>
-                        <form:input path="location.hall" type="text" class="form-control" id="txt_pasillo" placeholder="" />
+                        <form:input path="location.hall" type="text" class="form-control" id="txt_pasillo" placeholder="" maxlength="10"/>
                     </div>
                     
                     <div class="col-xs-2">
                         <label for="txt_anaquel">Anaquel</label>
-                        <form:input path="location.rack" type="text" class="form-control" id="txt_anaquel" placeholder="" />
+                        <form:input path="location.rack" type="text" class="form-control" id="txt_anaquel" placeholder="" maxlength="10"/>
                     </div>
                     
                     <div class="col-xs-2">
                         <label for="txt_casilla">Casilla</label>
-                        <form:input path="location.box" type="text" class="form-control" id="txt_casilla" placeholder="" />
+                        <form:input path="location.box" type="text" class="form-control" id="txt_casilla" placeholder="" maxlength="10"/>
                     </div>
                 </div>
             </div>
@@ -176,12 +256,12 @@
 
 <footer class="navbar navbar-default navbar-fixed-bottom">
     <article class="container">
-        <button id="btnSaveNewItem" class="btn btn-success pull-right">
+        <button onclick="javascript:saveItem(true)" id="btnSaveNewItem" class="btn btn-success pull-right">
             <span class="glyphicon glyphicon-ok"></span>
             Guardar Nuevo
         </button>
 
-        <button id="btnSaveItem" class="btn btn-default pull-right">
+        <button onclick="javascript:saveItem(false)" id="btnSaveItem" class="btn btn-default pull-right">
             <span class="glyphicon glyphicon-floppy-disk"></span>
             Guardar
         </button>

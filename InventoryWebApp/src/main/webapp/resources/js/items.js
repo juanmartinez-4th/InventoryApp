@@ -1,44 +1,30 @@
 $(function() {
-	$('#btnSaveItem').on('click', saveItem);
-	$('#btnSaveNewItem').on('click', saveItem);
+	$('#txt_codigo').attr('readonly', '');
+	$('#txt_descripcion').on('keyup', function() {
+		var cat = $('#itemCategoryName').val().trim();
+		var itemDesc = $('#txt_descripcion').val().trim();
+		while(itemDesc.length < 3) {
+			itemDesc += 'X';
+		}
+		var itemCode = (cat != '' ? cat.substring(0, 3).toUpperCase() : 'XXX') + '0000000001' + itemDesc.substring(0, 3).toUpperCase();
+		$('#txt_codigo').val(itemCode);
+	});
 	setCategoryMenu();
 });
 
-var saveItem = function() {
+function saveItem(captureNew) {
 	if($('#itemCategory').val() == 0) {
 		$('#txt_categoria').tooltip('show');
-		return false;
+		event.preventDefault();
+	}else if($('#txt_descripcion').val().trim() == '') {
+		$('#txt_descripcion').tooltip('show');
+		event.preventDefault();
+	}else if($('#txt_existencia').val().trim() == '' || $('#itemUnit').val() == 0) {
+		$('#txt_existencia').tooltip('show');
+		event.preventDefault();
 	}else {
-		$('#itemCaptureForm').submit(function() {
-			$.ajax({
-				type : 'POST',
-				url : ctx + '/insertItem',
-				data : $('#itemCaptureForm').serialize(),
-				beforeSend: maskPage(),
-				success : function(response) {
-					var status = 'success';
-					var msg = '';
-					
-					if(response == null) {
-						status = 'error';
-					}else if (response.status == 'SUCCESS') {
-						msg = escape(response.message);
-					}else if (response.status == 'FAIL') {
-						msg = escape(response.message);
-						status = 'error';
-					}else {
-						status = 'error';
-					}
-					
-					window.location = ctx + '/listItems?' + status + '=1&msg=' + msg;
-				},
-				error: function(e) {
-					window.location = ctx + '/listItems?error=1';
-				},
-				complete: maskPage()
-			});
-			return false;
-		});
+		$('#redirectNew').val(captureNew);
+		$('#itemCaptureForm').submit();
 	}
 }
 
@@ -58,6 +44,13 @@ function setCategory(selectedCategory) {
 				for (var i = 0; i < response.length; i++) {
 					if(i == (response.length - 1)) {
 						html += '<li class="active">' + response[i].name + '</li>';
+						$('#itemCategoryName').val(response[i].name);
+						var codeSufix = $('#txt_descripcion').val().trim();
+						while(codeSufix.length < 3) {
+							codeSufix += 'X';
+						}
+						var itemCode = response[i].name.substring(0, 3).toUpperCase() + '0000000001' + codeSufix.substring(0, 3).toUpperCase();
+						$('#txt_codigo').val(itemCode);
 					}else {
 						html += '<li>' + response[i].name + '</li>';
 					}
@@ -80,6 +73,12 @@ function setCategory(selectedCategory) {
 function setUnitOfMeasure(selectedUnit, name) {
 	$('#itemUnit').val(selectedUnit);
 	$('#btnUnitOfM').text(name)
+	event.preventDefault();
+}
+
+function setProduction(selectedProduction, name) {
+	$('#productionId').val(selectedProduction);
+	$('#txt_produccion').val(name);
 	event.preventDefault();
 }
 
@@ -127,4 +126,15 @@ function setCategoryMenu() {
 	});
 	
 	event.preventDefault();
+}
+
+function selectFile(fileIndex) {
+	$('#inputFile' + fileIndex).click();
+}
+
+function setSelectedFile(fileIndex) {
+	var file = $('#inputFile' + fileIndex).val();
+    var fileName = file.split('\\');
+    $('#selectedFileName' + fileIndex).html(fileName[fileName.length-1]);
+    event.preventDefault();
 }

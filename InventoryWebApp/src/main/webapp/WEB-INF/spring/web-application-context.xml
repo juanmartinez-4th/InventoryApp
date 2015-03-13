@@ -30,6 +30,9 @@
 		<mvc:resources mapping="/resources/images/**" location="/resources/images/" />
 		<mvc:resources mapping="/resources/js/**" location="/resources/js/" />
 		
+		
+		<bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver" />
+        
 		<bean id="viewResolver" class="org.springframework.web.servlet.view.UrlBasedViewResolver">
             <property name="viewClass">
                 <value>org.springframework.web.servlet.view.tiles3.TilesView</value>

@@ -7,8 +7,9 @@
     <div class="row">        
         <section id="nav_nivel_2">
             <ul class="nav navbar-nav">
-                <li><a href="" class="active">Categorías</a></li>
+                <li><a href="#" class="active">Categorías</a></li>
 				<li><a href="<c:url value='/adminUnitsOfMeasure'/>">Unidades de medida</a></li>
+				<li><a href="<c:url value='/adminProductions'/>">Producciones</a></li>
             </ul>
         </section>
         
@@ -30,7 +31,7 @@
 	            <c:if test="${not empty alertMsg}">
                     <c:choose>
                         <c:when test="${alertMsg.status eq 'FAIL'}">
-                            <div class="alert alert-danger" role="alert">
+                            <div class="alert alert-danger flash" role="alert">
 		                        <button type="button" class="close" data-dismiss="alert" aria-label="Cerrar">
 		                            <span aria-hidden="true">&times;</span>
 		                        </button>
@@ -39,7 +40,7 @@
 		                    </div>
                         </c:when>
                         <c:when test="${alertMsg.status eq 'SUCCESS'}">
-                            <div class="form-group alert alert-success" role="alert">
+                            <div class="form-group alert alert-success flash" role="alert">
 		                        <button type="button" class="close" data-dismiss="alert" aria-label="Cerrar">
 		                            <span aria-hidden="true">&times;</span>
 		                        </button>
