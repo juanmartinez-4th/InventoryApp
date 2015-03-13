@@ -32,6 +32,11 @@
         <class-a>mx.com.mindbits.argos.inventory.entity.ItemPicture</class-a>
         <class-b>mx.com.mindbits.argos.inventory.vo.ItemPictureVO</class-b>
     </mapping>
+    
+    <mapping>
+        <class-a>mx.com.mindbits.argos.inventory.entity.Production</class-a>
+        <class-b>mx.com.mindbits.argos.inventory.vo.ProductionVO</class-b>
+    </mapping>    
 	
 	<mapping>
         <class-a>mx.com.mindbits.argos.inventory.entity.Transaction</class-a>

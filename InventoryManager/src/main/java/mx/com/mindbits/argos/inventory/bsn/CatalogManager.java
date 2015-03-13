@@ -5,7 +5,9 @@ import java.util.List;
 import mx.com.mindbits.argos.inventory.vo.CategoryVO;
 import mx.com.mindbits.argos.inventory.vo.ItemClassificationVO;
 import mx.com.mindbits.argos.inventory.vo.ItemLocationVO;
+import mx.com.mindbits.argos.inventory.vo.ItemPictureVO;
 import mx.com.mindbits.argos.inventory.vo.ItemVO;
+import mx.com.mindbits.argos.inventory.vo.ProductionVO;
 import mx.com.mindbits.argos.inventory.vo.UnitOfMeasureVO;
 
 public interface CatalogManager {
@@ -30,7 +32,7 @@ public interface CatalogManager {
 	
 	List<ItemVO> getItemsByCategory(Integer categoryId);
 	
-	ItemVO createItem(ItemVO itemToSave, ItemClassificationVO itemClassification, ItemLocationVO itemLocation) throws Exception;
+	ItemVO createItem(ItemVO itemToSave, ItemClassificationVO itemClassification, ItemLocationVO itemLocation, List<ItemPictureVO> itemPictures) throws Exception;
 	
 	ItemVO updateItem(ItemVO itemToUpdate);
 	
@@ -44,9 +46,21 @@ public interface CatalogManager {
 	
 	void deleteUnitOfMeasure(Integer unitId);
 
+	ProductionVO getProduction(Integer productionId);
+	
+	List<ProductionVO> getAllProductions();
+	
+	ProductionVO saveProduction(ProductionVO newProduction);
+	
+	ProductionVO updateProduction(ProductionVO productionToUpdate);
+	
+	void deleteProduction(Integer productionId);
+	
 	ItemClassificationVO saveItemClassification(ItemClassificationVO itemClassification);
 	
-	List<ItemLocationVO> getItemLocations(ItemVO item);
+	ItemClassificationVO getItemClassification(Integer itemId);
+	
+	List<ItemLocationVO> getItemLocations(Integer itemId);
 
 	ItemLocationVO saveLocation(ItemLocationVO newLocation);
 

@@ -20,7 +20,7 @@ public class ItemLocationVO implements Serializable {
 	
 	private String box;
 	
-	private String project;
+	private ProductionVO production;
 
 	/**
 	 * @return the id
@@ -135,18 +135,18 @@ public class ItemLocationVO implements Serializable {
 
 
 	/**
-	 * @return the project
+	 * @return the production
 	 */
-	public String getProject() {
-		return project;
+	public ProductionVO getProduction() {
+		return production;
 	}
 
 
 	/**
-	 * @param project the project to set
+	 * @param production the production to set
 	 */
-	public void setProject(String project) {
-		this.project = project;
+	public void setProduction(ProductionVO production) {
+		this.production = production;
 	}
 
 	@Override
@@ -158,7 +158,7 @@ public class ItemLocationVO implements Serializable {
 				+ ", hall=" + hall
 				+ ", rack=" + rack
 				+ ", box=" + box
-				+ ", project=" + project + "]";
+				+ ", project=" + production + "]";
 	}
 	
 }

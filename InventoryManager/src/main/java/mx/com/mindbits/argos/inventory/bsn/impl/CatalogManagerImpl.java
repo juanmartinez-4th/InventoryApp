@@ -9,16 +9,22 @@ import mx.com.mindbits.argos.inventory.dao.CategoryDAO;
 import mx.com.mindbits.argos.inventory.dao.ItemClassificationDAO;
 import mx.com.mindbits.argos.inventory.dao.ItemDAO;
 import mx.com.mindbits.argos.inventory.dao.ItemLocationDAO;
+import mx.com.mindbits.argos.inventory.dao.ItemPictureDAO;
+import mx.com.mindbits.argos.inventory.dao.ProductionDAO;
 import mx.com.mindbits.argos.inventory.dao.UnitOfMeasureDAO;
 import mx.com.mindbits.argos.inventory.entity.Category;
 import mx.com.mindbits.argos.inventory.entity.Item;
 import mx.com.mindbits.argos.inventory.entity.ItemClassification;
 import mx.com.mindbits.argos.inventory.entity.ItemLocation;
+import mx.com.mindbits.argos.inventory.entity.ItemPicture;
+import mx.com.mindbits.argos.inventory.entity.Production;
 import mx.com.mindbits.argos.inventory.entity.UnitOfMeasure;
 import mx.com.mindbits.argos.inventory.vo.CategoryVO;
 import mx.com.mindbits.argos.inventory.vo.ItemClassificationVO;
 import mx.com.mindbits.argos.inventory.vo.ItemLocationVO;
+import mx.com.mindbits.argos.inventory.vo.ItemPictureVO;
 import mx.com.mindbits.argos.inventory.vo.ItemVO;
+import mx.com.mindbits.argos.inventory.vo.ProductionVO;
 import mx.com.mindbits.argos.inventory.vo.UnitOfMeasureVO;
 
 import org.dozer.Mapper;
@@ -39,7 +45,13 @@ public class CatalogManagerImpl implements CatalogManager {
 	private CategoryDAO categoryDAO;
 	
 	@Autowired
-	private ItemLocationDAO locationDAO;
+	private ProductionDAO productionDAO;
+	
+	@Autowired
+	private ItemLocationDAO itemLocationDAO;
+	
+	@Autowired
+	private ItemPictureDAO itemPictureDAO;
 	
 	@Autowired
 	private ItemClassificationDAO itemClassificationDAO;
@@ -91,7 +103,8 @@ public class CatalogManagerImpl implements CatalogManager {
 	}
 	
 	@Override
-	public ItemVO createItem(ItemVO itemToSave, ItemClassificationVO itemClassification, ItemLocationVO itemLocation) throws Exception {
+	public ItemVO createItem(ItemVO itemToSave, ItemClassificationVO itemClassification, 
+			ItemLocationVO itemLocation, List<ItemPictureVO> itemPictures) throws Exception {
 		Item item = mapper.map(itemToSave, Item.class);
 		item.setId(null);
 		item = itemDAO.saveItem(item);
@@ -103,7 +116,17 @@ public class CatalogManagerImpl implements CatalogManager {
 			
 			ItemLocation newItemLocation = mapper.map(itemLocation, ItemLocation.class);
 			newItemLocation.setItem(item);
-			newItemLocation = locationDAO.saveLocation(newItemLocation);
+			newItemLocation = itemLocationDAO.saveLocation(newItemLocation);
+			
+			for (ItemPictureVO itemPicture : itemPictures) {
+				ItemPicture newItemPicture = mapper.map(itemPicture, ItemPicture.class);
+				newItemPicture.setItem(item);
+				newItemPicture = itemPictureDAO.saveItemPicture(newItemPicture);
+				
+				if(newItemPicture == null || newItemPicture.getId() == null) {
+					throw new Exception("No es posible guardar el artículo");
+				}
+			}
 			
 			if(newItemClassification == null || newItemClassification.getId() == null || 
 					newItemLocation == null || newItemLocation.getId() == null) {
@@ -218,8 +241,8 @@ public class CatalogManagerImpl implements CatalogManager {
 	}
 
 	@Override
-	public List<ItemLocationVO> getItemLocations(ItemVO item) {
-		List<ItemLocation> locations = locationDAO.getItemLocations(item.getId());
+	public List<ItemLocationVO> getItemLocations(Integer itemId) {
+		List<ItemLocation> locations = itemLocationDAO.getItemLocations(itemId);
 		List<ItemLocationVO> results = new ArrayList<ItemLocationVO>(locations.size());
 		
 		for (ItemLocation itemLocation : locations) {
@@ -233,7 +256,7 @@ public class CatalogManagerImpl implements CatalogManager {
 	@Override
 	public ItemLocationVO saveLocation(ItemLocationVO newLocation) {
 		ItemLocation location = mapper.map(newLocation, ItemLocation.class);
-		location = locationDAO.saveLocation(location);
+		location = itemLocationDAO.saveLocation(location);
 		
 		return mapper.map(location, ItemLocationVO.class);
 	}
@@ -241,14 +264,14 @@ public class CatalogManagerImpl implements CatalogManager {
 	@Override
 	public ItemLocationVO updateLocation(ItemLocationVO locationToUpdate) {
 		ItemLocation location = mapper.map(locationToUpdate, ItemLocation.class);
-		location = locationDAO.updateLocation(location);
+		location = itemLocationDAO.updateLocation(location);
 		
 		return mapper.map(location, ItemLocationVO.class);
 	}
 
 	@Override
 	public void deleteLocation(Integer locationId) {
-		locationDAO.deleteLocation(locationId);
+		itemLocationDAO.deleteLocation(locationId);
 	}
 
 	@Override
@@ -291,6 +314,54 @@ public class CatalogManagerImpl implements CatalogManager {
 	@Override
 	public void deleteUnitOfMeasure(Integer unitToDelete) {		
 		unitOfMeasureDAO.deleteUnitOfMeasure(unitToDelete);
+	}
+	
+	@Override
+	public ProductionVO getProduction(Integer productionId) {
+		Production production = productionDAO.getProduction(productionId);
+		return mapper.map(production, ProductionVO.class);
+	}
+
+	@Override
+	public List<ProductionVO> getAllProductions() {
+		ArrayList<ProductionVO> results;
+		
+		List<Production> productions = productionDAO.getAllProductions();
+		results = new ArrayList<>(productions.size());
+		
+		for (Production production : productions) {
+			ProductionVO result = mapper.map(production, ProductionVO.class);
+			results.add(result);
+		}
+		
+		return results;
+	}
+
+	@Override
+	public ProductionVO saveProduction(ProductionVO newProduction) {
+		Production production = mapper.map(newProduction, Production.class);
+		production = productionDAO.saveProduction(production);
+		
+		return mapper.map(production, ProductionVO.class);
+	}
+
+	@Override
+	public ProductionVO updateProduction(ProductionVO productionToUpdate) {
+		Production production = mapper.map(productionToUpdate, Production.class);
+		production = productionDAO.updateProduction(production);
+		
+		return mapper.map(production, ProductionVO.class);
+	}
+	
+	@Override
+	public void deleteProduction(Integer productionToDelete) {		
+		productionDAO.deleteProduction(productionToDelete);
+	}
+	
+	@Override
+	public ItemClassificationVO getItemClassification(Integer itemId) {
+		ItemClassification itemClassification = itemClassificationDAO.getItemClassification(itemId);
+		return mapper.map(itemClassification, ItemClassificationVO.class);
 	}
 	
 	@Override

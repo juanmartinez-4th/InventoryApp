@@ -1,11 +1,14 @@
 package mx.com.mindbits.argos.inventory.entity;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToOne;
@@ -35,7 +38,7 @@ public class ItemLocation extends BaseEntity<Integer> {
 	
 	private String box;
 	
-	private String project;
+	private Production production;
 
 	@Id
 	@Column(name="LOCATION_ID")
@@ -75,9 +78,10 @@ public class ItemLocation extends BaseEntity<Integer> {
 		return box;
 	}
 	
-	@Column(name = "PROJECT")
-	public String getProject() {
-		return project;
+	@ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST})
+	@JoinColumn(name = "PRODUCTION")
+	public Production getProduction() {
+		return production;
 	}
 
 	/**
@@ -125,8 +129,8 @@ public class ItemLocation extends BaseEntity<Integer> {
 	/**
 	 * @param project the project to set
 	 */
-	public void setProject(String project) {
-		this.project = project;
+	public void setProduction(Production production) {
+		this.production = production;
 	}
 
 	@Override
@@ -138,7 +142,7 @@ public class ItemLocation extends BaseEntity<Integer> {
 				+ ", hall=" + hall
 				+ ", rack=" + rack
 				+ ", box=" + box
-				+ ", project=" + project + "]";
+				+ ", production=" + production + "]";
 	}
 	
 }
