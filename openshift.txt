@@ -1,0 +1,22 @@
+juancarlos.ms2@g
+11235813
+
+
+inventory
+---------------------------------
+
+MySQL 5.5 database added.  Please make note of these credentials:
+
+       Root User: adminigZyRYz
+   Root Password: 2vUpq5wq-HS8
+   Database Name: inventory
+
+Connection URL: mysql://$OPENSHIFT_MYSQL_DB_HOST:$OPENSHIFT_MYSQL_DB_PORT/
+
+You can manage your new MySQL database by also embedding phpmyadmin.
+The phpmyadmin username and password will be the same as the MySQL credentials above.
+
+Please make note of these MySQL credentials again:
+  Root User: adminigZyRYz
+  Root Password: 2vUpq5wq-HS8
+URL: https://inventory-argosinventory.rhcloud.com/phpmyadmin/
