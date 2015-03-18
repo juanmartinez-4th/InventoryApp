@@ -11,10 +11,24 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedNativeQueries;
+import javax.persistence.NamedNativeQuery;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
 @Entity
 @Table(name="ITEM")
+@NamedQueries({
+	@NamedQuery(name="findItemByDescription", 
+				query="from Item where lower(CODE) like :itemDescription OR "
+						+ "lower(DESCRIPTION) like :itemDescription OR "
+						+ "lower(DETAIL) like :itemDescription")
+})
+@NamedNativeQueries({
+	@NamedNativeQuery(name = "getNextId", 
+				query = "select max(ITEM_ID) + 1 as id from Item")
+})
 public class Item extends BaseEntity<Integer> {
 	private static final long serialVersionUID = 6637860018554874375L;
 	
@@ -33,6 +47,8 @@ public class Item extends BaseEntity<Integer> {
 	private BigDecimal rentPrice;
 	
 	private Integer existence;
+	
+	private String defaultPicture;
 
 	@Id
 	@Column(name="ITEM_ID")
@@ -82,6 +98,11 @@ public class Item extends BaseEntity<Integer> {
 		return existence;
 	}
 
+	@Column(name = "DEFAULT_PICTURE")
+	public String getDefaultPicture() {
+		return defaultPicture;
+	}
+	
 	public void setCode(String code) {
 		this.code = code;
 	}
@@ -112,6 +133,10 @@ public class Item extends BaseEntity<Integer> {
 	
 	public void setExistence(Integer existence) {
 		this.existence = existence;
+	}
+	
+	public void setDefaultPicture(String defaultPicture) {
+		this.defaultPicture = defaultPicture;
 	}
 	
 }

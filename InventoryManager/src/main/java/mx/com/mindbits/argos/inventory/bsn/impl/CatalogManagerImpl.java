@@ -1,5 +1,6 @@
 package mx.com.mindbits.argos.inventory.bsn.impl;
 
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -80,6 +81,20 @@ public class CatalogManagerImpl implements CatalogManager {
 		return results;
 	}
 
+	public List<ItemVO> getItemsByDescription(String itemDescription) {
+		ArrayList<ItemVO> results;
+		
+		List<Item> items = itemDAO.findByDescription(itemDescription);
+		results = new ArrayList<>(items.size());
+		
+		for (Item item : items) {
+			ItemVO result = mapper.map(item, ItemVO.class);
+			results.add(result);
+		}
+		
+		return results;
+	}
+	
 	@Override
 	public List<ItemVO> getItemsByCategory(Integer categoryId) {
 		ArrayList<ItemVO> results;
@@ -370,6 +385,24 @@ public class CatalogManagerImpl implements CatalogManager {
 		classification = itemClassificationDAO.saveClassification(classification);
 		
 		return mapper.map(classification, ItemClassificationVO.class);
+	}
+
+	@Override
+	public List<ItemPictureVO> getItemPictures(Integer itemId) {
+		List<ItemPicture> pictures = itemPictureDAO.getItemPictures(itemId);
+		List<ItemPictureVO> results = new ArrayList<ItemPictureVO>(pictures.size());
+		
+		for (ItemPicture itemPicture : pictures) {
+			ItemPictureVO picture = mapper.map(itemPicture, ItemPictureVO.class);
+			results.add(picture);
+		}
+		
+		return results;
+	}
+	
+	@Override
+	public BigInteger getNextItemId() {
+		return itemDAO.getNextId();
 	}
 	
 }

@@ -3,6 +3,8 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ page session="true" %>
 
+<input type="hidden" id="nextItemId" value="${nextItemId}">
+
 <form:form modelAttribute="itemCaptureForm" id="itemCaptureForm" action="insertItem" enctype="multipart/form-data" method="POST">
 <main>
     <article class="container">
@@ -37,11 +39,11 @@
             </div>
         </div>
         
-<!--        SECCION 1 -->
+        <!-- SECCION 1 -->
         <section class="row">
             <div class="col-sm-6">
                 
-<!--                CAMPO 01 / CÓDIGO auto generado   -->
+                <!-- CAMPO 01 / CÓDIGO auto generado   -->
                 <label for="txt_codigo">Código</label>   
                 <div class="row">        
                     <div class="col-xs-8">
@@ -64,25 +66,20 @@
 <!--                CAMPO 02 / Categoría   -->
                 <label for="txt_categoria">Categoría</label>   
                 <div class="row">        
-                    <div class="col-xs-8">
-                        <div class="input-group" >
-                            <div id="txt_categoria" class="form-control"
-                                    data-toggle="popover" data-placement="top" title="Indique la categoría del artículo">
-                                <form:input path="category.id" type="hidden" id="itemCategory" value="0" />
-                                <input type="hidden" id="itemCategoryName" value="" />
-                                <ol class="breadcrumb" id="breadcrumbCategory">
-                                    <li class="active">Categoría</li>
-                                </ol>
-                            </div>
-                            <span class="input-group-btn">
-                                <button class="btn_chico btn btn-default" type="button"><span class="glyphicon glyphicon-info-sign"></span></button>
-                            </span>
+                    <div class="col-xs-10">
+                        <div id="txt_categoria" class="form-control height_auto" 
+                                data-toggle="popover" data-placement="top" title="Indique la categoría del artículo">
+                            <form:input path="category.id" type="hidden" id="itemCategory" value="0" />
+                            <input type="hidden" id="itemCategoryName" value="" />
+                            <ol class="breadcrumb" id="breadcrumbCategory">
+                                <li class="active">Categoría</li>
+                            </ol>
                         </div><!-- /input-group -->
                     </div>
         
-                    <div class="col-xs-4">
+                    <div class="col-xs-2">
                         <button type="button" class="btn_chico btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-expanded="false" style="width:100%;">
-                            Categorías <span class="caret"></span>
+                            <span class="caret"></span>
                         </button>
                         <ul class="dropdown-menu" role="menu" id="categoriesMenu">
                         </ul>
@@ -167,7 +164,7 @@
                 <div class="row">        
                     <div class="col-xs-8">
                         <div class="input-group" >
-                            <form:input path="location.quantity" type="number" pattern="[0-9]+([\.][0-9]+)?" class="form-control" id="txt_existencia" placeholder="" 
+                            <form:input path="location.quantity" pattern="[0-9]+([\.][0-9]+)?" class="form-control" id="txt_existencia" placeholder="" 
                                 data-toggle="popover" data-placement="top" title="Indique la cantidad a ingresar al inventario"/>
                             <span class="input-group-btn">
                                 <button id="btnUnitOfM" class="btn_chico btn btn-default" type="button"><span class="glyphicon glyphicon-info-sign"></span></button>
@@ -276,6 +273,7 @@
 </form:form>
 
 <!-- -------------- SCRIPTS ---------------- -->
+<script src="<c:url value='/resources/js/argos_custom__frontend_1.js'/>"></script>
 <script src="<c:url value='/resources/js/utils.js'/>"></script>
 <script src="<c:url value='/resources/js/items.js'/>"></script>
 <!-- -------------- SCRIPTS ---------------- -->

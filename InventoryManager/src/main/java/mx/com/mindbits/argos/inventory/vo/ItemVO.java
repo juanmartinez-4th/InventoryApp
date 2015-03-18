@@ -25,6 +25,8 @@ public class ItemVO implements Serializable {
 	
 	private Integer existence;
 	
+	private String defaultPicture;
+	
 	/**
 	 * @return the id
 	 */
@@ -149,6 +151,20 @@ public class ItemVO implements Serializable {
 	 */
 	public void setExistence(Integer existence) {
 		this.existence = existence;
+	}
+
+	/**
+	 * @return the defaultPicture
+	 */
+	public String getDefaultPicture() {
+		return defaultPicture;
+	}
+
+	/**
+	 * @param defaultPicture the defaultPicture to set
+	 */
+	public void setDefaultPicture(String defaultPicture) {
+		this.defaultPicture = defaultPicture;
 	}
 
 	@Override

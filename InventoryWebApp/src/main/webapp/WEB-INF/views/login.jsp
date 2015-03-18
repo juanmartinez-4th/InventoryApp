@@ -16,7 +16,7 @@
     <link rel="stylesheet" type="text/css" href="<c:url value='/resources/css/argos_styles.css'/>">
     
     <!-- Cargar fuente de google fonts -->
-    <link href='http://fonts.googleapis.com/css?family=Roboto:400italic,100,100italic,400' rel='stylesheet' type='text/css'>
+    <link href="http://fonts.googleapis.com/css?family=Roboto:400italic,100,100italic,400" rel="stylesheet" type="text/css">
     
     <!-- Cargar FONT AWESOME para importar librería de íconos -->
     <link rel="stylesheet" href="<c:url value='/resources/fonts/util/font-awesome-4.3.0/css/font-awesome.min.css'/>">
@@ -30,7 +30,7 @@
             <!-- <h1>Empresa</h1> -->
             <figure id="logo_empresa" class="col-sm-6">
                 <img src="http://placehold.it/203x36&text=Logotipo" alt="Logotipo de Empresa" class="img-responsive pull_left_md">
-                <!-- <img src="<c:url value='/images/logotipo_argos.png'/>" alt="Logotipo de Empresa" class="img-responsive"> -->
+                <!-- <img src="<c:url value='/resources/images/logotipo_argos.png'/>" alt="Logotipo de Empresa" class="img-responsive"> -->
             </figure>
             
             <div id="Subtitulo" class="col-sm-6">

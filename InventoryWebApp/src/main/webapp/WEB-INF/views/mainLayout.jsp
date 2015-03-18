@@ -17,7 +17,7 @@
 	<link rel="stylesheet" type="text/css" href="<c:url value='/resources/css/argos_styles.css'/>">
 	
 	<!-- Cargar fuente de google fonts -->
-	<link href='http://fonts.googleapis.com/css?family=Roboto:400italic,100,100italic,400' rel='stylesheet' type='text/css'>
+	<link href="http://fonts.googleapis.com/css?family=Roboto:400italic,100,100italic,400" rel="stylesheet" type="text/css">
 	
 	<!-- Cargar FONT AWESOME para importar librería de íconos -->
     <link rel="stylesheet" href="<c:url value='/resources/fonts/util/font-awesome-4.3.0/css/font-awesome.min.css'/>">

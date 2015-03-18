@@ -6,11 +6,19 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
 @Table(name="ITEM_PICTURE")
+@NamedQueries({
+	@NamedQuery(
+			name="getItemPictures", 
+			query="from ItemPicture where ITEM_ID = :itemId"
+	)
+})
 public class ItemPicture extends BaseEntity<Integer> {	
 	
 	private static final long serialVersionUID = 1114926115986640405L;

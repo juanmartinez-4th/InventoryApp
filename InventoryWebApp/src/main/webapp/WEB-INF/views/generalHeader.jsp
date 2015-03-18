@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="utf-8" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 
 <header>
     <div class="container">
@@ -17,7 +18,8 @@
 </header>
 
 <!-- BARRA de navegación-->
-<nav id="nav_principal"  class="navbar navbar-default navbar-static-top">
+<!-- <nav class="navbar navbar-default navbar-static-top"> -->
+<nav id="nav_nivel_1"  class="navbar navbar-default navbar-static-top">
     <div class="container">
         <div class="navbar-header">
             <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
@@ -27,7 +29,8 @@
             </button>
         </div>
 
-        <div class="navbar-collapse collapse img_centered">
+        <!-- <div class="navbar-collapse collapse img_centered"> -->
+        <div class="navbar-collapse collapse">
             <ul class="nav navbar-nav">
                 <li><a href="<c:url value='/listItems'/>">
                     <span class="glyphicon glyphicon-home"></span> Almacén</a></li>
@@ -38,8 +41,8 @@
 	                       Administración <span class="caret"></span></a>
 	                    <ul class="dropdown-menu" role="menu">
 	                        <li><a href="#">Administración de usuarios</a></li>
-                            <li><a href="#">Seguridad</a></li>
-                            <li><a href="#">Parámetros</a></li>
+                            <!-- <li><a href="#">Seguridad</a></li>
+                            <li><a href="#">Parámetros</a></li> -->
                             <li><a href="<c:url value='/adminCategories'/>">Catálogos</a></li>
 	                    </ul>
 	                </li>
@@ -54,12 +57,24 @@
                     </ul>
                 </li>
                 <li class="col-sm-4 pull-right">
-                    <div id="barra_buscar" class="input-group">
-                      <input type="text" class="form-control" placeholder="Buscar...">
-                      <span class="input-group-btn">
-                        <button class="btn_chico btn btn-primary" type="button"><figure class="glyphicon glyphicon-search"></figure></button>
-                      </span>
-                    </div>
+	                <c:if test="${empty resultsFilter}">
+	                    <div id="barra_buscar" class="input-group">
+	                        <input type="text" class="form-control" placeholder="Buscar...">
+	                        <span class="input-group-btn">
+	                            <button class="btn_chico btn btn-primary" type="button"><figure class="glyphicon glyphicon-search"></figure></button>
+	                        </span>
+	                    </div>
+	                </c:if>
+	                <c:if test="${not empty resultsFilter}">
+	                    <form:form modelAttribute="resultsFilter" id="resultsFilter" action="${resultsFilter.filterName}" method="GET">
+	                        <div id="barra_buscar" class="input-group" >
+	                            <form:input path="filter1" id="txt_filter" type="text" class="form-control" placeholder="Buscar..." />
+	                            <span class="input-group-btn">
+	                                <button class="btn_chico btn btn-primary" type="submit"><figure class="glyphicon glyphicon-search"></figure></button>
+	                            </span>
+	                        </div>
+	                    </form:form>
+	                </c:if>
                 </li>
             </ul>
         </div>

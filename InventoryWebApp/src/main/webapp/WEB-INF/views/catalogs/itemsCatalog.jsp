@@ -12,7 +12,7 @@
 <section id="barra_acciones" class="container">
     <div class="row">
         <div class="col-sm-2">
-            <button type="button" class="btn_chico btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-expanded="false" style="width:100%;">
+            <button type="button" class="btn_chico btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
                 Categorías <span class="caret"></span>
             </button>
             <ul class="dropdown-menu" role="menu" id="categoriesMenu">
@@ -86,7 +86,12 @@
 	                <div class="col-md-2 col-sm-3 col-xs-4 grid_item">
 	                    <figure>
 	                        <a href="<c:url value='/showItem?itemId=${currenItem.id}' />">
-	                           <img src="http://placehold.it/152x152&text=Foto de Producto" alt="Foto de Producto" class="img-responsive">
+	                           <c:if test="${empty currenItem.defaultPicture}">
+	                               <img src="http://placehold.it/152x152&text=Foto de Producto" alt="Foto de Producto" height="152" width="152" class="img-responsive">
+	                           </c:if>
+	                           <c:if test="${not empty currenItem.defaultPicture}">
+                                   <img src="/uploads/${currenItem.code}/${currenItem.defaultPicture}" alt="Foto de Producto" height="152" width="152" class="img-responsive">
+                               </c:if>
 	                        </a>
 	                    </figure>
 	                    <h4><a href="<c:url value='/showItem?itemId=${currenItem.id}' />">${currenItem.description}</a></h4>

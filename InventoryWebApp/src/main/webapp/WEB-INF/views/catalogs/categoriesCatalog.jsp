@@ -5,7 +5,7 @@
 
 <section id="barra_acciones" class="container">
     <div class="row">        
-        <section id="nav_nivel_2">
+        <section id="nav_nivel_2" class="col-sm-9">
             <ul class="nav navbar-nav">
                 <li><a href="#" class="active">Categorías</a></li>
 				<li><a href="<c:url value='/adminUnitsOfMeasure'/>">Unidades de medida</a></li>

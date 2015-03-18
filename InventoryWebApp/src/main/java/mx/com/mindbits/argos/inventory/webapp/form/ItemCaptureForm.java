@@ -21,6 +21,8 @@ public class ItemCaptureForm implements Serializable {
 	
 	private List<MultipartFile> pictureFiles;
 	
+	private List<String> itemPictures;
+	
 	private Boolean redirectNew;
 
 	/**
@@ -91,6 +93,20 @@ public class ItemCaptureForm implements Serializable {
 	 */
 	public void setRedirectNew(Boolean redirectNew) {
 		this.redirectNew = redirectNew;
+	}
+
+	/**
+	 * @return the itemPictures
+	 */
+	public List<String> getItemPictures() {
+		return itemPictures;
+	}
+
+	/**
+	 * @param itemPictures the itemPictures to set
+	 */
+	public void setItemPictures(List<String> itemPictures) {
+		this.itemPictures = itemPictures;
 	}
 
 }

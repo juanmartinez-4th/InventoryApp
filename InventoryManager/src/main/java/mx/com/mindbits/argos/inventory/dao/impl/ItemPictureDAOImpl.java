@@ -6,6 +6,7 @@ import mx.com.mindbits.argos.inventory.dao.HibernateBaseDAO;
 import mx.com.mindbits.argos.inventory.dao.ItemPictureDAO;
 import mx.com.mindbits.argos.inventory.entity.ItemPicture;
 
+import org.hibernate.Query;
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -19,8 +20,12 @@ public class ItemPictureDAOImpl extends HibernateBaseDAO<Integer, ItemPicture> i
 	}
 	
 	@Override
-	public List<ItemPicture> getAllItemPictures() {
-		return list();
+	@SuppressWarnings("unchecked")
+	public List<ItemPicture> getItemPictures(Integer itemId) {
+		Query query = sessionFactory.getCurrentSession().getNamedQuery("getItemPictures");
+		query.setInteger("itemId", itemId);
+		
+		return (List<ItemPicture>) query.list();
 	}
 	
 	@Override

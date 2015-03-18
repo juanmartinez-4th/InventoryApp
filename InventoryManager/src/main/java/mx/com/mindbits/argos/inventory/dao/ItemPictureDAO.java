@@ -9,7 +9,7 @@ public interface ItemPictureDAO extends BaseDAO<Integer, ItemPicture> {
 	
 	ItemPicture getItemPicture(Integer itemPictureId);
 	
-	List<ItemPicture> getAllItemPictures();
+	List<ItemPicture> getItemPictures(Integer itemId);
 	
 	ItemPicture saveItemPicture(ItemPicture newLocation);
 	

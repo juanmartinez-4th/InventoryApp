@@ -1,5 +1,6 @@
 package mx.com.mindbits.argos.inventory.bsn;
 
+import java.math.BigInteger;
 import java.util.List;
 
 import mx.com.mindbits.argos.inventory.vo.CategoryVO;
@@ -29,6 +30,8 @@ public interface CatalogManager {
 	ItemVO getItem(Integer itemId);
 	
 	List<ItemVO> getAllItems();
+	
+	List<ItemVO> getItemsByDescription(String itemDescription);
 	
 	List<ItemVO> getItemsByCategory(Integer categoryId);
 	
@@ -67,4 +70,9 @@ public interface CatalogManager {
 	ItemLocationVO updateLocation(ItemLocationVO locationToUpdate);
 
 	void deleteLocation(Integer locationId);
+	
+	List<ItemPictureVO> getItemPictures(Integer itemId);
+	
+	BigInteger getNextItemId();
+	
 }

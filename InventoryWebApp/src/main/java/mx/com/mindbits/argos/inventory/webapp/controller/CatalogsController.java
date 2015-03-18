@@ -2,6 +2,7 @@ package mx.com.mindbits.argos.inventory.webapp.controller;
 
 import java.io.File;
 import java.io.IOException;
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,8 +19,11 @@ import mx.com.mindbits.argos.inventory.vo.ItemVO;
 import mx.com.mindbits.argos.inventory.vo.ProductionVO;
 import mx.com.mindbits.argos.inventory.vo.UnitOfMeasureVO;
 import mx.com.mindbits.argos.inventory.webapp.form.ItemCaptureForm;
+import mx.com.mindbits.argos.inventory.webapp.form.ResultsFilter;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.authentication.RememberMeAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -58,11 +62,28 @@ public class CatalogsController {
 	private static final String UNITS_CATALOG_VIEW = "unitsCatalog";
 	private static final String UNITS_CATALOG_VIEW_TITLE = "Unidades de medida";
 	
-	/// TODO: Consider keeping catalogs in cache 
+	/// TODO: Consider keeping catalogs in cache
+	
+	@Value("${app.inventory.images}")
+	private String itemPicturesFolder;
 
 	@RequestMapping(value = "/listItems", method = RequestMethod.GET)
-	public String listItems(Model model, HttpServletRequest request) {
-		List<ItemVO> items = inventoryManager.getAllItems();
+	public String listItems(Model model, 
+			@ModelAttribute(value="resultsFilter") ResultsFilter resultsFilter, 
+			HttpServletRequest request) {
+		List<ItemVO> items;
+		
+		if(resultsFilter != null && resultsFilter.getFilter1() != null 
+				&& !"".equals(resultsFilter.getFilter1().trim())) {
+			String itemDescription = resultsFilter.getFilter1().trim().toLowerCase();
+			items = inventoryManager.getItemsByDescription(itemDescription);
+		}else {
+			items = inventoryManager.getAllItems();
+		}
+		
+		ResultsFilter filter = new ResultsFilter();
+		filter.setFilterName("listItems");;
+		model.addAttribute("resultsFilter", filter);
 		model.addAttribute("itemsList", items);
 		
 		Message alertMessage = getAlertMessage(request);
@@ -93,10 +114,19 @@ public class CatalogsController {
 		ItemCaptureForm itemForm = new ItemCaptureForm();
 		List<ItemLocationVO> itemLocation = inventoryManager.getItemLocations(itemId);
 		ItemClassificationVO itemClassification = inventoryManager.getItemClassification(itemId);
+		List<ItemPictureVO> itemPictures = inventoryManager.getItemPictures(itemId);
+		List<String> itemPictureLocations = new ArrayList<String>(itemPictures.size());
 		
 		itemForm.setCategory(itemClassification.getCategory());
 		itemForm.setItem(itemLocation.get(0).getItem());
 		itemForm.setLocation(itemLocation.get(0));
+		
+		for (ItemPictureVO itemPictureVO : itemPictures) {
+			String pictLocation = itemForm.getItem().getCode() + "/";
+			pictLocation += itemPictureVO.getFileName();
+			itemPictureLocations.add(pictLocation);
+		}
+		itemForm.setItemPictures(itemPictureLocations);
 		
 		model.addAttribute("selectedItem", itemForm);
 		model.addAttribute("pageTitle", ITEM_DETAIL_VIEW_TITLE);
@@ -109,11 +139,13 @@ public class CatalogsController {
 		List<CategoryVO> categories = inventoryManager.getAllCategories();
 		List<UnitOfMeasureVO> unitsOfMeasure = inventoryManager.getAllUnitsOfMeasure();
 		List<ProductionVO> productions = inventoryManager.getAllProductions();
+		BigInteger nextId = inventoryManager.getNextItemId();
 		
 		model.addAttribute("itemCaptureForm", new ItemCaptureForm());
 		model.addAttribute("categoriesList", categories);
 		model.addAttribute("unitsList", unitsOfMeasure);
 		model.addAttribute("productionsList", productions);
+		model.addAttribute("nextItemId", StringUtils.leftPad(nextId != null ? nextId.toString() : "", 9, "0"));
 		
 		Message alertMessage = getAlertMessage(request);
 		if(alertMessage != null) {
@@ -140,6 +172,7 @@ public class CatalogsController {
 		
 		try {
 			List<String> pictureFiles = savePictures(item.getCode(), itemCaptureForm.getPictureFiles());
+			item.setDefaultPicture(pictureFiles.get(0));
 			itemPictures = new ArrayList<ItemPictureVO>(pictureFiles.size());
 			for (String fileName : pictureFiles) {
 				ItemPictureVO itemPicture = new ItemPictureVO();
@@ -456,17 +489,17 @@ public class CatalogsController {
 	
 	private List<String> savePictures(String itemCode, List<MultipartFile> pictureFiles) 
 			throws IllegalStateException, IOException {
-		String saveDirectory = "c:/items/pictures/";
         List<String> fileNames = new ArrayList<String>(1);
+        String savePath = itemPicturesFolder;
  
         int pictId = 0;
         
         if (null != pictureFiles && pictureFiles.size() > 0) {
-        	File file = new File(saveDirectory + itemCode);
+        	File file = new File(savePath + itemCode);
     		
     		if(!file.exists()) {
     			file.mkdir();
-    			saveDirectory = saveDirectory + itemCode + "/";
+    			savePath = savePath + itemCode + "/";
     		}
         	
             for (MultipartFile multipartFile : pictureFiles) {
@@ -475,7 +508,7 @@ public class CatalogsController {
             		extension = extension.substring(extension.lastIndexOf("."));
 	                String fileName = itemCode + "_p" + pictId + extension;
 	                // Handle file content - multipartFile.getInputStream()
-	                multipartFile.transferTo(new File(saveDirectory + fileName));
+	                multipartFile.transferTo(new File(savePath + fileName));
 	                fileNames.add(fileName);
             	}
             	pictId++;

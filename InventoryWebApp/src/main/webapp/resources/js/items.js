@@ -6,7 +6,7 @@ $(function() {
 		while(itemDesc.length < 3) {
 			itemDesc += 'X';
 		}
-		var itemCode = (cat != '' ? cat.substring(0, 3).toUpperCase() : 'XXX') + '0000000001' + itemDesc.substring(0, 3).toUpperCase();
+		var itemCode = (cat != '' ? cat.substring(0, 3).toUpperCase() : 'XXX') + $('#nextItemId').val() + itemDesc.substring(0, 3).toUpperCase();
 		$('#txt_codigo').val(itemCode);
 	});
 	setCategoryMenu();
@@ -49,7 +49,7 @@ function setCategory(selectedCategory) {
 						while(codeSufix.length < 3) {
 							codeSufix += 'X';
 						}
-						var itemCode = response[i].name.substring(0, 3).toUpperCase() + '0000000001' + codeSufix.substring(0, 3).toUpperCase();
+						var itemCode = response[i].name.substring(0, 3).toUpperCase() + $('#nextItemId').val() + codeSufix.substring(0, 3).toUpperCase();
 						$('#txt_codigo').val(itemCode);
 					}else {
 						html += '<li>' + response[i].name + '</li>';
