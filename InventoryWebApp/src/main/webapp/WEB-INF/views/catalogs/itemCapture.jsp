@@ -12,7 +12,7 @@
         <form:input path="redirectNew" type="hidden" id="redirectNew" value="false" />
         
         <div class="row">
-            <div class="col-sm-12 pull-left">
+            <div id="divMessages" class="col-sm-12 pull-left">
                 <!-- Mensajes -->
                 <c:if test="${not empty alertMsg}">
                     <c:choose>
@@ -56,7 +56,7 @@
                     </div>
 
                     <div class="col-xs-4">
-                        <button type="button" class="btn_chico btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-expanded="false" style="width:100%;">
+                        <button onclick="javascript:showLabelsModal();" type="button" class="btn_chico btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-expanded="false" style="width:100%;">
                             <span class="glyphicon glyphicon-barcode"></span>
                             Etiquetas
                         </button>
@@ -108,7 +108,7 @@
                                 onchange="javascripts:setSelectedFile('0')"/>
                         </div>
                         <a href="javascript:selectFile('0')">
-                            <img src="<c:url value='/resources/images/demo/placeholder_118px_articulo.png'/>" alt="" class="img-responsive">
+                            <img src="<c:url value='/resources/images/placeholder_118px_articulo.png'/>" alt="" class="img-responsive">
                         </a>
                         <div id="selectedFileName0"></div>
                     </figure>
@@ -118,7 +118,7 @@
                                 onchange="javascripts:setSelectedFile('1')"/>
                         </div>
                         <a href="javascript:selectFile('1')">
-                            <img src="<c:url value='/resources/images/demo/placeholder_118px_articulo.png'/>" alt="" class="img-responsive">
+                            <img src="<c:url value='/resources/images/placeholder_118px_articulo.png'/>" alt="" class="img-responsive">
                         </a>
                         <div id="selectedFileName1"></div>
                     </figure>
@@ -128,7 +128,7 @@
                                 onchange="javascripts:setSelectedFile('2')"/>
                         </div>
                         <a href="javascript:selectFile('2')">
-                            <img src="<c:url value='/resources/images/demo/placeholder_118px_articulo.png'/>" alt="" class="img-responsive">
+                            <img src="<c:url value='/resources/images/placeholder_118px_articulo.png'/>" alt="" class="img-responsive">
                         </a>
                         <div id="selectedFileName2"></div>
                     </figure>
@@ -271,6 +271,51 @@
 </footer>
 
 </form:form>
+
+<!-- MODAL [imprimir etiquetas] -->
+<div class="modal fade" id="modal_print_labels" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">Imprimir etiquetas</h4>
+            </div>
+            
+            <!-- CONTENIDO del modal -->
+            <div class="modal-body">
+                <label for="txt_label_code">Código del artículo</label>
+                <div class="input-group" >
+                    <input id="txt_label_code" type="text" class="form-control" readonly>
+                    <span class="input-group-btn">
+                        <button id="name-help" class="btn_chico btn btn-default" type="button"><span class="glyphicon glyphicon-barcode"></span></button>
+                    </span>
+                </div><!-- /input-group -->
+                
+                <label for="txt_label_copies">Número de copias</label>
+                <div class="input-group" >
+                    <input id="txt_label_copies" type="text" class="form-control numeric_field" 
+                        placeholder="" data-toggle="popover" data-placement="top" title="Indique el número de etiquetas a imprimir" 
+                        maxlength="2"/>
+                    <span class="input-group-btn">
+                        <button id="name-help" class="btn_chico btn btn-default" type="button"><span class="glyphicon glyphicon-info-sign"></span></button>
+                    </span>
+                </div><!-- /input-group -->
+            </div>
+            
+            <div class="modal-footer">
+                <button id="btnPrintLabels" class="btn btn-success pull-right">
+                    <span class="glyphicon glyphicon-print"></span>
+                    Imprimir
+                </button>
+
+                <button type="button" class="btn btn-primary btn_dark"  data-dismiss="modal">
+                    <span class="glyphicon glyphicon-remove"></span>
+                    Cancelar
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
 
 <!-- -------------- SCRIPTS ---------------- -->
 <script src="<c:url value='/resources/js/argos_custom__frontend_1.js'/>"></script>

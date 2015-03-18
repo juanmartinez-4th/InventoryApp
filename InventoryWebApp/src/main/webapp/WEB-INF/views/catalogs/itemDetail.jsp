@@ -14,9 +14,9 @@
                 <input type="text" value="${selectedItem.item.code}" readonly class="resalta_rojo">
             </div>
 
-            <div class="col-sm-4 pull-right col-xs-6">
+            <div class="pull-right">
                 <label>Existencia: </label>
-                <input type="text" value="${selectedItem.item.existence}&nbsp;${selectedItem.item.unitOfMeasure.name}" readonly  class="resalta_rojo">
+                <input type="text" value="${selectedItem.item.existence}&nbsp;${selectedItem.item.unitOfMeasure.name}" readonly id="existencia_value" class="resalta_rojo">
             </div>
         </section>
 

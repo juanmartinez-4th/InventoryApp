@@ -11,8 +11,8 @@
 
 <section id="barra_acciones" class="container">
     <div class="row">
-        <div class="col-sm-2">
-            <button type="button" class="btn_chico btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+        <div class="botones_izquierda col-xs-3 col-sm-2">
+            <button type="button" class="btn_chico width_100 btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
                 Categorías <span class="caret"></span>
             </button>
             <ul class="dropdown-menu" role="menu" id="categoriesMenu">
@@ -20,7 +20,7 @@
             </ul>
         </div>
 
-        <div class="col-sm-4">
+        <div class="col-xs-7 col-sm-4">
             <div class="form-control" style="border:none; box-shadow:none;">
                 <ol class="breadcrumb" id="breadcrumbCategory">
                     <li><a href="#">Categoría seleccionada</a></li>
@@ -28,16 +28,14 @@
             </div>
         </div>
 
-        <div class="col-sm-6 pull-right">
-            <div class="col-sm-4">
-            </div>
-            <div class="col-sm-4">
+        <div class="botones_derecha col-xs-12 col-sm-6 pull-right">
+            <div class="col-xs-4 col-sm-offset-4 col-xs-offset-2">
                 <button type="button" class="btn_chico width_100 btn btn-primary">
                     <span class="glyphicon glyphicon-barcode"></span>
                     Etiquetas
                 </button>
             </div>
-            <div class="col-sm-4">
+            <div class="col-xs-4">
                 <a class="btn_chico width_100 btn btn-success" href="<c:url value='/captureItem'/>">
 	                <span class="glyphicon glyphicon-plus"></span>
 	                Nuevo artículo
