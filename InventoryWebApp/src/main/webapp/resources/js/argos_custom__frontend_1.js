@@ -31,6 +31,8 @@ $(".efecto_zoom_screen_small").elevateZoom({
 
 // ESCUCHA: Si cambia el tamaño de pantalla para volver a calcular el plugin
 $(window).resize(function(){
+    $( ".zoomContainer" ).remove();
+
     $(".efecto_zoom_screen_big").elevateZoom({
         zoomWindowPosition: 11,
         zoomWindowHeight: 350,

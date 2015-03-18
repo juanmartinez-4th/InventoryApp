@@ -10,7 +10,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import mx.com.mindbits.argos.common.Message;
+import mx.com.mindbits.argos.inventory.bsn.BarcodeGenerator;
 import mx.com.mindbits.argos.inventory.bsn.CatalogManager;
+import mx.com.mindbits.argos.inventory.bsn.impl.PdfBarcodeGenerator;
 import mx.com.mindbits.argos.inventory.vo.CategoryVO;
 import mx.com.mindbits.argos.inventory.vo.ItemClassificationVO;
 import mx.com.mindbits.argos.inventory.vo.ItemLocationVO;
@@ -25,6 +27,10 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.RememberMeAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -37,6 +43,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import com.itextpdf.text.pdf.codec.Base64;
 
 @Controller
 public class CatalogsController {
@@ -66,6 +74,9 @@ public class CatalogsController {
 	
 	@Value("${app.inventory.images}")
 	private String itemPicturesFolder;
+	
+	@Value("${app.inventory.tags.columns}")
+	private int tagColumns;
 
 	@RequestMapping(value = "/listItems", method = RequestMethod.GET)
 	public String listItems(Model model, 
@@ -516,6 +527,27 @@ public class CatalogsController {
         }
         
         return fileNames;
+	}
+	
+	@RequestMapping(value = "/getItemTag", method = RequestMethod.POST)
+	@ResponseBody
+	public ResponseEntity<String> getItemTag(@ModelAttribute(value="code") String code,
+			@ModelAttribute(value="copies") Integer copies) {
+		String filename = "tags_" + code + ".pdf";
+		BarcodeGenerator barcodeGenerator = new PdfBarcodeGenerator(tagColumns);
+		byte[] pdfByteArray = barcodeGenerator.generateCode128(code, copies);
+		
+		HttpHeaders headers = new HttpHeaders();
+	    headers.setContentType(MediaType.parseMediaType("application/pdf"));
+	    headers.setContentDispositionFormData(filename, filename);
+	    headers.setCacheControl("must-revalidate, post-check=0, pre-check=0");
+	    
+	    String responseStr = Base64.encodeBytes(pdfByteArray);
+	    
+//	    ResponseEntity<byte[]> response = new ResponseEntity<byte[]>(pdfByteArray, headers, HttpStatus.OK);
+	    ResponseEntity<String> response = new ResponseEntity<String>(responseStr, headers, HttpStatus.OK);
+	    
+	    return response;
 	}
 	
 }

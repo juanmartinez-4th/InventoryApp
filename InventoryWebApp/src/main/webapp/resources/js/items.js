@@ -10,6 +10,10 @@ $(function() {
 		$('#txt_codigo').val(itemCode);
 	});
 	setCategoryMenu();
+	$('#btnPrintLabels').on('click', printLabels);
+	$('#modal_print_labels').on('shown.bs.modal', function() {
+		$('#txt_label_copies').focus();
+	});
 });
 
 function saveItem(captureNew) {
@@ -137,4 +141,48 @@ function setSelectedFile(fileIndex) {
     var fileName = file.split('\\');
     $('#selectedFileName' + fileIndex).html(fileName[fileName.length-1]);
     event.preventDefault();
+}
+
+function showLabelsModal() {
+	if($('#txt_descripcion').val() == '' || $('#itemCategoryName').val() == '') {
+		var html = '<div class="alert alert-danger flash" role="alert">' + 
+	        '<button type="button" class="close" data-dismiss="alert" aria-label="Cerrar">' + 
+	            '<span aria-hidden="true">&times;</span>' + 
+	        '</button>' + 
+	        '<span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>' + 
+	        '<span class="sr-only">Error: </span> Antes de imprimir etiquetas capture toda la información del artículo' + 
+	    '</div>';
+		
+		$('#divMessages').html(html);
+	}else {
+		$('#txt_label_code').val($('#txt_codigo').val());
+		$('#modal_print_labels').modal({backdrop: 'static'/*, keyboard: false*/})
+	}
+}
+
+var printLabels = function () {
+	var code = $('#txt_label_code').val();
+	var copies = $('#txt_label_copies').val();
+	
+	if(copies == '') {
+		$('#txt_label_copies').tooltip('show');
+		$('#txt_label_copies').focus();
+		return false;
+	}else {$.ajax({
+			type : 'POST',
+			url : ctx + '/getItemTag',
+			data : 'code=' + code + "&copies=" + copies,
+			beforeSend: maskPage(),
+			success : function(response) {
+				window.open('data:application/pdf;base64, ' + response, '_blank', 'menubar=no,status=no,scrollbars=yes,width=500,height=600');
+				$('#modal_print_labels').modal('hide');
+			},
+			error: function(e) {
+				$('#modal_print_labels').modal('hide');
+			},
+			complete: maskPage()
+		});
+	}
+	
+	event.preventDefault();
 }

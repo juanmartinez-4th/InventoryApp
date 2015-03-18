@@ -3,9 +3,9 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ page session="true" %>
 
-<section id="barra_acciones" class="container">
+<section id="barra_acciones" class="container captura_items">
     <div class="row">
-        <section id="nav_nivel_2">
+        <section id="nav_nivel_2_b"  class="col-sm-9">
             <ul class="nav navbar-nav">
                 <li><a href="<c:url value='/adminCategories'/>">Categorías</a></li>
                 <li><a href="#" class="active">Unidades de medida</a></li>
@@ -13,7 +13,7 @@
             </ul>
         </section>
         
-        <div class="col-sm-3 pull-right">
+        <div class="col-sm-3 pull-right btn_nuevo_item">
             <!-- Button para MODAL [+ nueva unidad de medida] -->
             <button onclick="javascript:showUnitModal(0, '', '')" type="button" class="btn_chico btn btn-success pull-right side_paddings" data-toggle="modal">
                 <span class="glyphicon glyphicon-plus"></span>
