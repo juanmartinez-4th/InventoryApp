@@ -80,8 +80,8 @@
             <!-- CÓDIGO DE BARRAS y precios -->
             <div class="col-sm-4">
                 <figure id="codigo_barras" class="width_100">
-                    <!-- <img src="http://placehold.it/203x36&text=Logotipo" alt="Logotipo de Empresa" class="img-responsive pull_left_md"> -->
-                    <img src="<c:url value='/resources/images/codigo_barras_ejemplo.png'/>" alt="Código de barras del producto" class="img-responsive img_centered">
+                    <%-- <img src="<c:url value='/resources/images/codigo_barras_ejemplo.png'/>" alt="Código de barras del producto" class="img-responsive img_centered"> --%>
+                    <img src="data:image/png;base64,${selectedItem.itemBarcode}" alt="Código de barras del producto" class="img-responsive img_centered">
                 </figure>
                 <div class="row">
                     <div class="col-xs-6"><label for="txt_costo" class="width_100 text-right">Costo:</label></div>
@@ -137,6 +137,6 @@
 
 <!-- -------------- SCRIPTS ---------------- -->
 <script src="<c:url value='/resources/js/util/jquery.elevateZoom-3.0.8.min.js'/>"></script>
-<script src="<c:url value='/resources/js/argos_custom__frontend_1.js'/>"></script>
+<script src="<c:url value='/resources/js/utils.js'/>"></script>
 <script src="<c:url value='/resources/js/item-detail.js'/>"></script>
 <!-- -------------- SCRIPTS ---------------- -->

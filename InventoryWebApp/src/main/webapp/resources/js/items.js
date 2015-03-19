@@ -164,7 +164,7 @@ var printLabels = function () {
 	var code = $('#txt_label_code').val();
 	var copies = $('#txt_label_copies').val();
 	
-	if(copies == '') {
+	if(copies == '' || copies == '0' || copies == '00') {
 		$('#txt_label_copies').tooltip('show');
 		$('#txt_label_copies').focus();
 		return false;

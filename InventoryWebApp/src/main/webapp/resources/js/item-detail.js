@@ -1,6 +1,16 @@
-function showPicture(imgSource) {
-	$('#efecto_zoom_01').attr('src', imgSource);
-	$("#efecto_zoom_01").data('zoom-image', imgSource).elevateZoom({
+$(function() {
+	updateZoomPlugin(null);
+});
+
+function updateZoomPlugin(imageSource) {
+	if(imageSource != null) {
+		$('#efecto_zoom_01').attr('src', imageSource);
+		$("#efecto_zoom_01").data('zoom-image', imageSource);
+		$('#efecto_zoom_02').attr('src', imageSource);
+		$("#efecto_zoom_02").data('zoom-image', imageSource);
+	}
+	
+	$("#efecto_zoom_01").elevateZoom({
 		zoomWindowPosition: 11,
         zoomWindowHeight: 350,
         zoomWindowWidth:350,
@@ -10,10 +20,20 @@ function showPicture(imgSource) {
         scrollZoom : true,
         borderSize: 10
 	});
-	$('#efecto_zoom_02').attr('src', imgSource);
-	$("#efecto_zoom_02").data('zoom-image', imgSource).elevateZoom({
+	
+	$("#efecto_zoom_02").elevateZoom({
 		zoomType: "inner",
         cursor: "crosshair"
 	});
+}
+
+function showPicture(imgSource) {
+	updateZoomPlugin(imgSource);
 	event.preventDefault();
 }
+
+// ESCUCHA: Si cambia el tamaño de pantalla para volver a calcular el plugin
+$(window).resize(function(){
+    $(".zoomContainer").remove();
+    updateZoomPlugin(null);
+}).resize();//trigger the resize event on page load.

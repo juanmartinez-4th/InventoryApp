@@ -24,6 +24,8 @@ public class ItemCaptureForm implements Serializable {
 	private List<String> itemPictures;
 	
 	private Boolean redirectNew;
+	
+	private String itemBarcode;
 
 	/**
 	 * @return the item
@@ -107,6 +109,20 @@ public class ItemCaptureForm implements Serializable {
 	 */
 	public void setItemPictures(List<String> itemPictures) {
 		this.itemPictures = itemPictures;
+	}
+
+	/**
+	 * @return the itemBarcode
+	 */
+	public String getItemBarcode() {
+		return itemBarcode;
+	}
+
+	/**
+	 * @param itemBarcode the itemBarcode to set
+	 */
+	public void setItemBarcode(String itemBarcode) {
+		this.itemBarcode = itemBarcode;
 	}
 
 }

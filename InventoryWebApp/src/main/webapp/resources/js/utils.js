@@ -1,7 +1,7 @@
 var isPageMasked = false, mask = $('#mask');
 
-var logoutSubmit = function() {
-    document.getElementById("logoutForm").submit();
+var logout = function() {
+    $(".logout_form").submit();
 }
 
 var maskPage = function() {
@@ -15,23 +15,35 @@ var maskPage = function() {
 };
 
 window.setTimeout(function() {
-	$(".flash").fadeTo(500, 0).slideUp(500, function(){
+	$(".flash").fadeTo(500, 0).slideUp(500, function() {
 		$(this).remove();
     });
 }, 5000);
 
-$(".numeric_field").on('keydown', function(e) {
-	// Allow: backspace, delete, tab, escape, enter and .
-    if ($.inArray(e.keyCode, [46, 8, 9, 27, 13, 110, 190]) !== -1 ||
-         // Allow: Ctrl+A
-        (e.keyCode == 65 && e.ctrlKey === true) || 
-         // Allow: home, end, left, right, down, up
-        (e.keyCode >= 35 && e.keyCode <= 40)) {
-             // let it happen, don't do anything
-             return;
-    }
-    // Ensure that it is a number and stop the keypress
-    if ((e.shiftKey || (e.keyCode < 48 || e.keyCode > 57)) && (e.keyCode < 96 || e.keyCode > 105)) {
-        e.preventDefault();
-    }
+$(".numeric_field").on('keypress', function(e) {
+	var s = String.fromCharCode(e.charCode);
+    return e.charCode === 0 || /\d/.test(s);
+});
+
+$(".decimal_field").on('keypress', function(e) {
+	var s = String.fromCharCode(e.charCode);
+    var containsDecimalPoint = /\./.test($(".decimal_field").val());
+    return e.charCode === 0 || /\d/.test(s) || 
+        /\./.test(s) && !containsDecimalPoint;
+});
+
+//PROBLEMA: Fixed FOOTER tapa contenido del MAIN content
+//FIX: LEER la altura del footer y pasársela al MARGIN-BOTTOM del contenido en MAIN
+$(document).ready (function(){
+	if($("footer") != null) {
+	    var newHeight = $("footer").css( "height" );
+	    $("main").css("margin-bottom", newHeight);
+	}
+});
+
+$(window).resize (function(){
+	if($("footer") != null) {
+	    var newHeight = $("footer").css( "height" );
+	    $("main").css("margin-bottom", newHeight);
+	}
 });

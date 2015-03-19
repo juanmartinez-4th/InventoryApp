@@ -53,7 +53,7 @@
 	                    ${pageContext.request.userPrincipal.name}<span class="caret"></span>
 	                </a>
                     <ul class="dropdown-menu" role="menu">
-                        <li><a href="javascript:logoutSubmit()">Cerrar sesión</a></li>
+                        <li><a href="javascript:logout()">Cerrar sesión</a></li>
                     </ul>
                 </li>
                 <li class="col-sm-4 pull-right">
@@ -82,6 +82,6 @@
 </nav>
 
 <c:url value="/j_spring_security_logout" var="logoutUrl" />
-<form action="${logoutUrl}" method="post" id="logoutForm">
+<form action="${logoutUrl}" method="post" id="logoutForm" class="logout_form">
     <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 </form>

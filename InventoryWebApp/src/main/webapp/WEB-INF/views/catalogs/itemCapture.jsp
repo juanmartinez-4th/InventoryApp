@@ -90,7 +90,8 @@
                 <label for="txt_descripcion">Descripción</label>
                 <div class="input-group" >
                     <form:input path="item.description" id="txt_descripcion" type="text" class="form-control" placeholder="" 
-                        data-toggle="popover" data-placement="top" title="Capture la descripción del artículo"/>
+                        data-toggle="popover" data-placement="top" title="Capture la descripción del artículo"
+                        maxlength="30"/>
                     <span class="input-group-btn">
                         <button class="btn_chico btn btn-default" type="button"><span class="glyphicon glyphicon-info-sign"></span></button>
                     </span>
@@ -144,17 +145,17 @@
                 <div class="row">
                     <div class="col-xs-4">
                         <label for="txt_costo">Costo</label>
-                        <form:input path="item.cost" type="text" class="form-control" id="txt_costo" placeholder="" />
+                        <form:input path="item.cost" type="text" class="form-control decimal_field" id="txt_costo" placeholder="" />
                     </div>
                     
                     <div class="col-xs-4">
                         <label for="txt_precio_venta">Precio de venta</label>
-                        <form:input path="item.salePrice" type="text" class="form-control" id="txt_precio_venta" placeholder="" />
+                        <form:input path="item.salePrice" type="text" class="form-control decimal_field" id="txt_precio_venta" placeholder="" />
                     </div>
                     
                     <div class="col-xs-4">
                         <label for="txt_precio_renta">Precio de renta</label>
-                        <form:input path="item.rentPrice" type="text" class="form-control" id="txt_precio_renta" placeholder="" />
+                        <form:input path="item.rentPrice" type="text" class="form-control decimal_field" id="txt_precio_renta" placeholder="" />
                     </div>
                 </div>
             
@@ -164,7 +165,7 @@
                 <div class="row">        
                     <div class="col-xs-8">
                         <div class="input-group" >
-                            <form:input path="location.quantity" pattern="[0-9]+([\.][0-9]+)?" class="form-control" id="txt_existencia" placeholder="" 
+                            <form:input path="location.quantity" class="form-control decimal_field" id="txt_existencia" placeholder="" 
                                 data-toggle="popover" data-placement="top" title="Indique la cantidad a ingresar al inventario"/>
                             <span class="input-group-btn">
                                 <button id="btnUnitOfM" class="btn_chico btn btn-default" type="button"><span class="glyphicon glyphicon-info-sign"></span></button>
@@ -219,22 +220,22 @@
                 <div class="row">
                     <div class="col-xs-2">
                         <label for="txt_seccion">Sección</label>
-                        <form:input path="location.section" type="text" class="form-control" id="txt_seccion" placeholder="" maxlength="10"/>
+                        <form:input path="location.section" type="text" class="form-control" id="txt_seccion" placeholder="" maxlength="5"/>
                     </div>
                     
                     <div class="col-xs-2">
                         <label for="txt_pasillo">Pasillo</label>
-                        <form:input path="location.hall" type="text" class="form-control" id="txt_pasillo" placeholder="" maxlength="10"/>
+                        <form:input path="location.hall" type="text" class="form-control" id="txt_pasillo" placeholder="" maxlength="5"/>
                     </div>
                     
                     <div class="col-xs-2">
                         <label for="txt_anaquel">Anaquel</label>
-                        <form:input path="location.rack" type="text" class="form-control" id="txt_anaquel" placeholder="" maxlength="10"/>
+                        <form:input path="location.rack" type="text" class="form-control" id="txt_anaquel" placeholder="" maxlength="5"/>
                     </div>
                     
                     <div class="col-xs-2">
                         <label for="txt_casilla">Casilla</label>
-                        <form:input path="location.box" type="text" class="form-control" id="txt_casilla" placeholder="" maxlength="10"/>
+                        <form:input path="location.box" type="text" class="form-control" id="txt_casilla" placeholder="" maxlength="5"/>
                     </div>
                 </div>
             </div>
@@ -318,7 +319,6 @@
 </div>
 
 <!-- -------------- SCRIPTS ---------------- -->
-<script src="<c:url value='/resources/js/argos_custom__frontend_1.js'/>"></script>
 <script src="<c:url value='/resources/js/utils.js'/>"></script>
 <script src="<c:url value='/resources/js/items.js'/>"></script>
 <!-- -------------- SCRIPTS ---------------- -->

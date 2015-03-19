@@ -12,6 +12,7 @@ import javax.servlet.http.HttpSession;
 import mx.com.mindbits.argos.common.Message;
 import mx.com.mindbits.argos.inventory.bsn.BarcodeGenerator;
 import mx.com.mindbits.argos.inventory.bsn.CatalogManager;
+import mx.com.mindbits.argos.inventory.bsn.impl.ImageBarcodeGenerator;
 import mx.com.mindbits.argos.inventory.bsn.impl.PdfBarcodeGenerator;
 import mx.com.mindbits.argos.inventory.vo.CategoryVO;
 import mx.com.mindbits.argos.inventory.vo.ItemClassificationVO;
@@ -131,6 +132,12 @@ public class CatalogsController {
 		itemForm.setCategory(itemClassification.getCategory());
 		itemForm.setItem(itemLocation.get(0).getItem());
 		itemForm.setLocation(itemLocation.get(0));
+		
+		BarcodeGenerator barcodeGenerator = new ImageBarcodeGenerator();
+		byte[] pdfByteArray = barcodeGenerator.generateCode128(itemForm.getItem().getCode(), 1);
+		
+	    String barcodeStr = Base64.encodeBytes(pdfByteArray);
+	    itemForm.setItemBarcode(barcodeStr);
 		
 		for (ItemPictureVO itemPictureVO : itemPictures) {
 			String pictLocation = itemForm.getItem().getCode() + "/";
