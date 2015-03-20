@@ -48,4 +48,18 @@
         <class-b>mx.com.mindbits.argos.inventory.vo.UnitOfMeasureVO</class-b>
     </mapping>
 	
+	<mapping>
+        <class-a>mx.com.mindbits.argos.inventory.entity.User</class-a>
+        <class-b>mx.com.mindbits.argos.inventory.vo.UserVO</class-b>
+        <field>
+            <a>id</a>
+            <b>userName</b>
+        </field>
+    </mapping>
+	
+	<mapping>
+        <class-a>mx.com.mindbits.argos.inventory.entity.Authority</class-a>
+        <class-b>mx.com.mindbits.argos.inventory.vo.AuthorityVO</class-b>
+    </mapping>
+	
 </mappings> 
