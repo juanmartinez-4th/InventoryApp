@@ -4,20 +4,12 @@
 <%@ page session="true" %>
 
 <section id="barra_acciones" class="container captura_items">
-    <div class="row">        
-        <section id="nav_nivel_2_b" class="col-sm-9">
-            <ul class="nav navbar-nav">
-                <li><a href="#" class="active">Categorías</a></li>
-				<li><a href="<c:url value='/adminUnitsOfMeasure'/>">Unidades de medida</a></li>
-				<li><a href="<c:url value='/adminProductions'/>">Producciones</a></li>
-            </ul>
-        </section>
-        
+    <div class="row">
         <div class="col-sm-3 pull-right btn_nuevo_item">
-            <!-- Button para MODAL [+ nueva categoría] -->
-            <button onclick="javascript:showCategoryModal(0, '', '', 0)" type="button" class="btn_chico btn btn-success pull-right side_paddings" data-toggle="modal">
+            <!-- Button para MODAL [+ nuevo usuario] -->
+            <button onclick="javascript:showUserModal('', '', '', '')" type="button" class="btn_chico btn btn-success pull-right side_paddings" data-toggle="modal">
                 <span class="glyphicon glyphicon-plus"></span>
-                Nueva Categoría
+                Nuevo usuario
             </button>
         </div>
     </div>
@@ -57,53 +49,43 @@
                 <thead>
                     <tr>
                         <th>Nombre</th>
-                        <th>Descripción</th>
-                        <th>Catálogo de origen</th>
+                        <th>Perfiles</th>
+                        <th>Estado</th>
                         <th class="text-center">Editar</th> 
                         <th class="text-center">Eliminar</th>
                     </tr>
                 </thead>
                 <tbody>
                 <c:choose>
-                    <c:when test="${not empty categoriesList}">
-                        <c:forEach items="${categoriesList}" var="currCategory">
+                    <c:when test="${not empty usersList}">
+                        <c:forEach items="${usersList}" var="currUser">
 	                    <tr>
-	                        <td>${currCategory.name}</td>
-	                        <td>${currCategory.description}</td>
+	                        <td>${currUser.userName}</td>
 	                        <td>
-	                            <ol class="breadcrumb">
-	                                <c:set var="currentSubcategory" value="${currCategory.parentCategory}" />
-	                                <c:forEach begin="0" end="10">
-                                        <c:if test="${not empty currentSubcategory}">
-                                            <c:set var="parentCat" value="${currentSubcategory.parentCategory}" />
-                                            <c:choose>
-                                                <c:when test="${not empty parentCat}">
-                                                    <li>${currentSubcategory.name}</li>
-                                                    <c:set var="currentSubcategory" value="${currentSubcategory.parentCategory}" />
-                                                </c:when>
-                                                <c:otherwise>
-                                                    <li class="active">${currentSubcategory.name}</li>
-                                                    <c:set var="currentSubcategory" value="" />
-                                                </c:otherwise>
-                                            </c:choose>
-                                        </c:if>
-	                                </c:forEach>
-	                            </ol>
-	                        </td>
+	                            <c:if test="${not empty currUser.authorities}">
+	                                ${currUser.authorities[0].authority}
+	                            </c:if>
+                            </td>
+	                        <td>
+	                            <c:if test="${currUser.enabled eq true}">Habilitado</c:if>
+	                            <c:if test="${currUser.enabled eq false}">Deshabilitado</c:if>
+                            </td>
 	                        <td class="text-center">
-	                            <a onclick="javascript:showCategoryModal(${currCategory.id}, '${currCategory.name}', '${currCategory.description}', ${not empty currCategory.parentCategory ? currCategory.parentCategory.id : 0})"
+	                            <a onclick="javascript:showUserModal('${currUser.userName}', '${currUser.password}', '${currUser.authorities[0].authority}', '${currUser.enabled}')"
 	                                data-toggle="modal" 
-	                                id="edit_${currCategory.id}" 
+	                                id="edit_${currUser.userName}" 
 	                                class="btn btn-primary btn_dark btn_tabla" 
 	                                href="#"><i class="fa fa-pencil fa-lg"></i></a>
 	                        </td>
 	                        <td class="text-center">
-	                            <a onclick="javascript:confirmDelete(${currCategory.id}, '${currCategory.name}')"
-                                    data-toggle="modal" 
-                                    id="delete_${currCategory.id}" 
-                                    class="btn btn-danger btn_chico btn_tabla" 
-                                    style="background-color:red;" 
-                                    href="#"><i class="fa fa-trash fa-lg"></i></a>
+	                            <c:if test="${pageContext.request.userPrincipal.name != currUser.userName}">
+		                            <a onclick="javascript:confirmDelete('${currUser.userName}')"
+	                                    data-toggle="modal" 
+	                                    id="delete_${currUser.userName}" 
+	                                    class="btn btn-danger btn_chico btn_tabla" 
+	                                    style="background-color:red;" 
+	                                    href="#"><i class="fa fa-trash fa-lg"></i></a>
+	                            </c:if>
 	                        </td>
 	                    </tr>
 	                    </c:forEach>
@@ -122,51 +104,47 @@
 </main>
 
 
-<!-- MODAL [+ nueva categoría] -->
-<div class="modal fade" id="modal_nueva_categoria" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<!-- MODAL [+ nuevo usuario] -->
+<div class="modal fade" id="modal_nuevo_usuario" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
-        <input type="hidden" id="categoryAction" value="new" />
-        <form:form modelAttribute="category" id="category" method="POST">
-            <form:input path="id" type="hidden" id="categoryId" value="0" />
+        <input type="hidden" id="userAction" value="new" />
+        <form:form modelAttribute="user" id="userForm" method="POST">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 id="catModalTitle" class="modal-title">Nueva categoría</h4>
+                <h4 id="catModalTitle" class="modal-title">Agregar usuario</h4>
             </div>
             
             <!-- CONTENIDO del modal -->
             <div class="modal-body">            
-                <!-- CAMPO 01 / Nombre de categoría   -->
-                <label for="txt_categoria_nombre">Nombre</label>
+                <!-- CAMPO 01 / Nombre del usuario   -->
+                <label for="txt_nombre_usuario">Nombre</label>
                 <div class="input-group" >
-                    <form:input path="name" id="txt_categoria_nombre" type="text" class="form-control" 
-                        placeholder="" data-toggle="popover" data-placement="top" title="Indique el nombre de la categoría" 
-                        maxlength="35"/>
+                    <form:input path="userName" id="txt_nombre_usuario" type="text" class="form-control no_spaces_field" 
+                        placeholder="" data-toggle="popover" data-placement="top" title="Indique el nombre de usuario" 
+                        maxlength="15"/>
                     <span class="input-group-btn">
                         <button id="name-help" class="btn_chico btn btn-default" type="button"><span class="glyphicon glyphicon-info-sign"></span></button>
                     </span>
                 </div><!-- /input-group -->
                 
                 <!-- CAMPO 02 / Descripción   -->
-                <label for="txt_descripcion">Descripción</label>
+                <label for="txt_descripcion">Contraseña</label>
                 <div class="input-group" >
-                    <form:input path="description" id="txt_descripcion" type="text" class="form-control" placeholder="" maxlength="60"/>
+                    <form:input path="password" id="txt_password" type="password"  class="form-control" placeholder="" 
+                    data-toggle="popover" data-placement="top" title="Indique la contraseña del usuario"
+                    maxlength="60"/>
                     <span class="input-group-btn">
                         <button class="btn_chico btn btn-default" type="button"><span class="glyphicon glyphicon-info-sign"></span></button>
                     </span>
                 </div><!-- /input-group -->
                
-                <!-- CAMPO 03 / Jerarquía de categorías   -->
-                <label for="txt_categoria">Catálogo de origen</label>   
-                <div class="row">        
+                <!-- CAMPO 03 / Perfil del usuario   -->
+                <label for="txt_profile">Perfil</label>
+                <div class="row">
                     <div class="col-xs-8">
                         <div class="input-group" >
-                            <div id="txt_categoria" class="form-control">
-                                <form:input path="parentCategory.id" type="hidden" id="parentCategory" value="0" />
-                                <ol class="breadcrumb" id="breadcrumbParentcat">
-                                    <li>Categoría padre</li>
-                                </ol>
-                            </div>
+                            <form:input path="authorities[0].authority" id="txt_profile" type="text" class="form-control" value="" data-toggle="popover" data-placement="top" title="Indique el perfil del usuario" />
                             <span class="input-group-btn">
                                 <button class="btn_chico btn btn-default" type="button"><span class="glyphicon glyphicon-info-sign"></span></button>
                             </span>
@@ -175,16 +153,43 @@
 
                     <div class="col-xs-4">
                         <button type="button" class="btn_chico btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-expanded="false" style="width:100%;">
-                            Categorías <span class="caret"></span>
+                            <span class="caret"></span>
                         </button>
-                        <ul class="dropdown-menu" role="menu" id="categoriesMenu">
-                            <li onclick="javascript:setParentCategory(0)"><a href="#">Ninguna</a></li>                            
+                        <ul class="dropdown-menu" role="menu">
+                            <c:if test="${not empty authoritiesCatalog}"></c:if>
+                            <c:forEach items="${authoritiesCatalog}" var="currAuthorityItem">
+                                <li onclick="javascript:setSelectedAuthority('${currAuthorityItem}')"><a href="#">${currAuthorityItem}</a></li>
+                            </c:forEach>                            
+                        </ul>
+                    </div>
+                </div>
+               
+                <!-- CAMPO 04 / Estado del usuario   -->
+                <label for="txt_enabled">Estado</label>   
+                <div class="row">        
+                    <div class="col-xs-8">
+                        <div class="input-group" >
+                            <form:input path="enabled" type="hidden" id="userEnabled" value="true" />
+                            <input id="txt_enabled" type="text" class="form-control" readonly value="Habilitado" >
+                            <span class="input-group-btn">
+                                <button class="btn_chico btn btn-default" type="button"><span class="glyphicon glyphicon-info-sign"></span></button>
+                            </span>
+                        </div><!-- /input-group -->
+                    </div>
+
+                    <div class="col-xs-4">
+                        <button type="button" class="btn_chico btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-expanded="false" style="width:100%;">
+                            <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu" role="menu">
+                            <li onclick="javascript:setEnabledUser('true')"><a href="#">Habilitado</a></li>
+                            <li onclick="javascript:setEnabledUser('false')"><a href="#">Deshabilitado</a></li>                            
                         </ul>
                     </div>
                 </div>
             </div>
             <div class="modal-footer">
-                <button id="btnSaveCategory" class="btn btn-success pull-right">
+                <button id="btnSaveUser" class="btn btn-success pull-right">
                     <span class="glyphicon glyphicon-ok"></span>
                     Guardar
                 </button>
@@ -200,26 +205,25 @@
 </div>
 
 
-<!-- MODAL [eliminar categoría] -->
+<!-- MODAL [eliminar usuario] -->
 <div class="modal fade" id="modal_confirm_delete" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
-            <input type="hidden" id="categoryToDelete" value="0" />
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" id="myModalLabel">Eliminar categoría</h4>
+                <h4 class="modal-title" id="myModalLabel">Eliminar usuario</h4>
             </div>
             
             <!-- CONTENIDO del modal -->
             <div class="modal-body">
                 <div class="alert alert-warning" role="alert">
                     <span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span>
-                    <span class="sr-only">Error: </span> ¿Realmente desea eliminar la categoría &nbsp;
-                    <label id="categoryNameToDelete"></label>?
+                    <span class="sr-only">Error: </span> ¿Realmente desea eliminar el usuario&nbsp;
+                    <label id="userToDelete"></label>?
                 </div>
             </div>
             <div class="modal-footer">
-                <button id="btnDeleteCategory" class="btn btn-success pull-right">
+                <button id="btnDeleteUser" class="btn btn-success pull-right">
                     <span class="glyphicon glyphicon-ok"></span>
                     Eliminar
                 </button>
@@ -236,5 +240,5 @@
 
 <!-- -------------- SCRIPTS ---------------- -->
 <script src="<c:url value='/resources/js/utils.js'/>"></script>
-<script src="<c:url value='/resources/js/categories.js'/>"></script>
+<script src="<c:url value='/resources/js/users.js'/>"></script>
 <!-- -------------- SCRIPTS ---------------- -->

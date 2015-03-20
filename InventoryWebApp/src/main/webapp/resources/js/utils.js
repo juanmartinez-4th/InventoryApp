@@ -32,6 +32,11 @@ $(".decimal_field").on('keypress', function(e) {
         /\./.test(s) && !containsDecimalPoint;
 });
 
+$(".no_spaces_field").on('keypress', function(e) {
+	var s = String.fromCharCode(e.charCode);
+    return /[a-zA-Z0-9-_]/.test(s);
+});
+
 //PROBLEMA: Fixed FOOTER tapa contenido del MAIN content
 //FIX: LEER la altura del footer y pasársela al MARGIN-BOTTOM del contenido en MAIN
 $(document).ready (function(){

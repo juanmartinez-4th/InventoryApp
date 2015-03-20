@@ -73,14 +73,14 @@
 	                        <td class="text-center">
                                 <a onclick="javascript:showUnitModal(${currUnit.id}, '${currUnit.name}', '${currUnit.description}')"
                                     data-toggle="modal" 
-                                    id="edit_${currUnit.id} }" 
+                                    id="edit_${currUnit.id}" 
                                     class="btn btn-primary btn_dark btn_tabla" 
                                     href="#"><i class="fa fa-pencil fa-lg"></i></a>
                             </td>
                             <td class="text-center">
                                 <a onclick="javascript:confirmDelete(${currUnit.id}, '${currUnit.name}')"
                                     data-toggle="modal" 
-                                    id="delete_${currUnit.id} }" 
+                                    id="delete_${currUnit.id}" 
                                     class="btn btn-danger btn_chico btn_tabla" 
                                     style="background-color:red;" 
                                     href="#"><i class="fa fa-trash fa-lg"></i></a>

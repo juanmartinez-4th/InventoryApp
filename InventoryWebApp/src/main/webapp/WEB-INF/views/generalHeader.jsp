@@ -40,7 +40,7 @@
 	                       aria-expanded="false"><span class="glyphicon glyphicon-wrench"></span>
 	                       Administración <span class="caret"></span></a>
 	                    <ul class="dropdown-menu" role="menu">
-	                        <li><a href="#">Administración de usuarios</a></li>
+	                        <li><a href="<c:url value='/adminUsers'/>">Administración de usuarios</a></li>
                             <!-- <li><a href="#">Seguridad</a></li>
                             <li><a href="#">Parámetros</a></li> -->
                             <li><a href="<c:url value='/adminCategories'/>">Catálogos</a></li>

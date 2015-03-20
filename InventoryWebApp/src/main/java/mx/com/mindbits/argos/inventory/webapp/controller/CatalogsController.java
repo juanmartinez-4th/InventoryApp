@@ -1,5 +1,7 @@
 package mx.com.mindbits.argos.inventory.webapp.controller;
 
+import static mx.com.mindbits.argos.common.RequestUtils.getAlertMessage;
+
 import java.io.File;
 import java.io.IOException;
 import java.math.BigInteger;
@@ -7,7 +9,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 
 import mx.com.mindbits.argos.common.Message;
 import mx.com.mindbits.argos.inventory.bsn.BarcodeGenerator;
@@ -32,9 +33,6 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.RememberMeAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -462,47 +460,6 @@ public class CatalogsController {
 			}
 		}
 		return response;
-	}
-
-	private boolean isRememberMeAuthenticated() {
-		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-		if (authentication == null) {
-			return false;
-		}
- 
-		return RememberMeAuthenticationToken.class.isAssignableFrom(authentication.getClass());
-	}
-	
-	private void setRememberMeTargetUrlToSession(HttpServletRequest request, String url){
-		HttpSession session = request.getSession(false);
-		
-		if(session != null) {
-			session.setAttribute("targetUrl", url);
-		}
-	}
-	
-	private Message getAlertMessage(HttpServletRequest request) {
-		Message message = null;
-		boolean error = "1".equals((String) request.getParameter("error"));
-		boolean success = "1".equals((String) request.getParameter("success"));
-		String msg = (String) request.getParameter("msg");
-		
-		if(error || success) {
-			if(msg == null || "".equals(msg)) {
-				if(error) {
-					msg = "No fue posible completar la operación";
-				}else if(success){
-					msg = "Operación exitosa";
-				}
-			}
-			if(error) {
-				message = Message.failMessage(msg);
-			}else if(success){
-				message = Message.successMessage(msg, null);
-			}
-		}
-		
-		return message;
 	}
 	
 	private List<String> savePictures(String itemCode, List<MultipartFile> pictureFiles) 

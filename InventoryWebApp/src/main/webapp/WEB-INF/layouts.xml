@@ -43,5 +43,11 @@
         <put-attribute name="body" value="/WEB-INF/views/catalogs/unitsOfMeasureCatalog.jsp" />
         <put-attribute name="footer" value="" />
     </definition>
-    	
+
+    <definition name="adminUsers" template="/WEB-INF/views/mainLayout.jsp">
+        <put-attribute name="header" value="/WEB-INF/views/generalHeader.jsp" />
+        <put-attribute name="body" value="/WEB-INF/views/catalogs/usersCatalog.jsp" />
+        <put-attribute name="footer" value="" />
+    </definition>
+    
 </tiles-definitions>

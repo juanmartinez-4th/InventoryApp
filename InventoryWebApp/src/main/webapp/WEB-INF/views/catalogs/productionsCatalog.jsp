@@ -75,14 +75,14 @@
 	                        <td class="text-center">
                                 <a onclick="javascript:showProductionModal(${currProduction.id}, '${currProduction.code}', '${currProduction.name}', '${currProduction.description}')"
                                     data-toggle="modal" 
-                                    id="edit_${currProduction.id} }" 
+                                    id="edit_${currProduction.id}" 
                                     class="btn btn-primary btn_dark btn_tabla" 
                                     href="#"><i class="fa fa-pencil fa-lg"></i></a>
                             </td>
                             <td class="text-center">
                                 <a onclick="javascript:confirmDelete(${currProduction.id}, '${currProduction.name}')"
                                     data-toggle="modal" 
-                                    id="delete_${currProduction.id} }" 
+                                    id="delete_${currProduction.id}" 
                                     class="btn btn-danger btn_chico btn_tabla" 
                                     style="background-color:red;" 
                                     href="#"><i class="fa fa-trash fa-lg"></i></a>
