@@ -11,7 +11,7 @@
         <section class="row subraya_gris">
             <div class="col-sm-4 col-xs-6">
                 <label>Código: </label>
-                <input type="text" value="${selectedItem.item.code}" readonly class="resalta_rojo">
+                <input id="itemCode" type="text" value="${selectedItem.item.code}" readonly class="resalta_rojo">
             </div>
 
             <div class="pull-right">
@@ -81,7 +81,9 @@
             <div class="col-sm-4">
                 <figure id="codigo_barras" class="width_100">
                     <%-- <img src="<c:url value='/resources/images/codigo_barras_ejemplo.png'/>" alt="Código de barras del producto" class="img-responsive img_centered"> --%>
-                    <img src="data:image/png;base64,${selectedItem.itemBarcode}" alt="Código de barras del producto" class="img-responsive img_centered">
+                    <a onclick="javascript:showLabelsModal();" href="#">
+                        <img src="data:image/png;base64,${selectedItem.itemBarcode}" alt="Código de barras del producto" class="img-responsive img_centered">
+                    </a>
                 </figure>
                 <div class="row">
                     <div class="col-xs-6"><label for="txt_costo" class="width_100 text-right">Costo:</label></div>
@@ -133,6 +135,52 @@
         </a>
     </article>
 </footer>
+
+
+<!-- MODAL [imprimir etiquetas] -->
+<div class="modal fade" id="modal_print_labels" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">Imprimir etiquetas</h4>
+            </div>
+            
+            <!-- CONTENIDO del modal -->
+            <div class="modal-body">
+                <label for="txt_label_code">Código del artículo</label>
+                <div class="input-group" >
+                    <input id="txt_label_code" type="text" class="form-control" readonly>
+                    <span class="input-group-btn">
+                        <button id="name-help" class="btn_chico btn btn-default" type="button"><span class="glyphicon glyphicon-barcode"></span></button>
+                    </span>
+                </div><!-- /input-group -->
+                
+                <label for="txt_label_copies">Número de copias</label>
+                <div class="input-group" >
+                    <input id="txt_label_copies" type="text" class="form-control numeric_field" 
+                        placeholder="" data-toggle="popover" data-placement="top" title="Indique el número de etiquetas a imprimir" 
+                        maxlength="2"/>
+                    <span class="input-group-btn">
+                        <button id="name-help" class="btn_chico btn btn-default" type="button"><span class="glyphicon glyphicon-info-sign"></span></button>
+                    </span>
+                </div><!-- /input-group -->
+            </div>
+            
+            <div class="modal-footer">
+                <button id="btnPrintLabels" class="btn btn-success pull-right">
+                    <span class="glyphicon glyphicon-print"></span>
+                    Imprimir
+                </button>
+
+                <button type="button" class="btn btn-primary btn_dark"  data-dismiss="modal">
+                    <span class="glyphicon glyphicon-remove"></span>
+                    Cancelar
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
 
 
 <!-- -------------- SCRIPTS ---------------- -->

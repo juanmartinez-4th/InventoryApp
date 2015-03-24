@@ -1,5 +1,9 @@
 $(function() {
 	updateZoomPlugin(null);
+	$('#btnPrintLabels').on('click', printLabels);
+	$('#modal_print_labels').on('shown.bs.modal', function() {
+		$('#txt_label_copies').focus();
+	});
 });
 
 function updateZoomPlugin(imageSource) {
@@ -10,7 +14,7 @@ function updateZoomPlugin(imageSource) {
 		$("#efecto_zoom_02").data('zoom-image', imageSource);
 	}
 	
-	$("#efecto_zoom_01").elevateZoom({
+	$(".efecto_zoom_screen_big").elevateZoom({
 		zoomWindowPosition: 11,
         zoomWindowHeight: 350,
         zoomWindowWidth:350,
@@ -21,7 +25,7 @@ function updateZoomPlugin(imageSource) {
         borderSize: 10
 	});
 	
-	$("#efecto_zoom_02").elevateZoom({
+	$(".efecto_zoom_screen_small").elevateZoom({
 		zoomType: "inner",
         cursor: "crosshair"
 	});
@@ -29,6 +33,38 @@ function updateZoomPlugin(imageSource) {
 
 function showPicture(imgSource) {
 	updateZoomPlugin(imgSource);
+	event.preventDefault();
+}
+
+function showLabelsModal() {
+	$('#txt_label_code').val($('#itemCode').val());
+	$('#modal_print_labels').modal({backdrop: 'static'/*, keyboard: false*/});
+}
+
+var printLabels = function () {
+	var code = $('#txt_label_code').val();
+	var copies = $('#txt_label_copies').val();
+	
+	if(copies == '' || copies == '0' || copies == '00') {
+		$('#txt_label_copies').tooltip('show');
+		$('#txt_label_copies').focus();
+		return false;
+	}else {$.ajax({
+			type : 'POST',
+			url : ctx + '/getItemTag',
+			data : 'code=' + code + "&copies=" + copies,
+			beforeSend: maskPage(),
+			success : function(response) {
+				window.open('data:application/pdf;base64, ' + response, '_blank', 'menubar=no,status=no,scrollbars=yes,width=500,height=600');
+				$('#modal_print_labels').modal('hide');
+			},
+			error: function(e) {
+				$('#modal_print_labels').modal('hide');
+			},
+			complete: maskPage()
+		});
+	}
+	
 	event.preventDefault();
 }
 
