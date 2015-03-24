@@ -66,7 +66,7 @@ public class InventoryDAOTest extends AbstractTransactionalJUnit4SpringContextTe
 		assertNotNull(category);
 		assertTrue(category.getId() > 0);
 	}
-	
+	/*
 	@Test
 	public void testSaveItemClassification() {
 		ItemClassification itemClassification = new ItemClassification();
@@ -78,7 +78,7 @@ public class InventoryDAOTest extends AbstractTransactionalJUnit4SpringContextTe
 		
 		assertNotNull(itemClassification);
 		assertTrue(itemClassification.getId() > 0);
-	}
+	}*/
 
 //	@Test
 //	public void testGetItemClassification() {
@@ -89,6 +89,7 @@ public class InventoryDAOTest extends AbstractTransactionalJUnit4SpringContextTe
 //		assertNotNull(itemClassification.getCategory());
 //	}
 	
+    /*
 	@Test
 	public void testGetAllItems() {
 		List<Item> items = itemDAO.getAllItems();
@@ -96,5 +97,5 @@ public class InventoryDAOTest extends AbstractTransactionalJUnit4SpringContextTe
 		assertNotNull(items);
 		assertTrue(items.size() > 0);		
 	}
-	
+*/	
 }

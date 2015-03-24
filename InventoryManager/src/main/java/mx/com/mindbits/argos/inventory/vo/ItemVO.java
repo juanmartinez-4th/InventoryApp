@@ -16,6 +16,8 @@ public class ItemVO implements Serializable {
 	private String detail;
 	
 	private UnitOfMeasureVO unitOfMeasure;
+	
+	private ItemLocationVO location;
 
 	private BigDecimal cost;
 	
@@ -167,6 +169,20 @@ public class ItemVO implements Serializable {
 		this.defaultPicture = defaultPicture;
 	}
 
+	/**
+	 * @return the location
+	 */
+	public ItemLocationVO getLocation() {
+		return location;
+	}
+
+	/**
+	 * @param location the location to set
+	 */
+	public void setLocation(ItemLocationVO location) {
+		this.location = location;
+	}
+	
 	@Override
 	public String toString() {
 		return getClass().getName() + 

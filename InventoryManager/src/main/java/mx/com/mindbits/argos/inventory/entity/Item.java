@@ -27,7 +27,7 @@ import javax.persistence.Table;
 })
 @NamedNativeQueries({
 	@NamedNativeQuery(name = "getNextId", 
-				query = "select max(ITEM_ID) + 1 as id from Item")
+				query = "select coalesce(max(ITEM_ID), 0) + 1 as id from Item")
 })
 public class Item extends BaseEntity<Integer> {
 	private static final long serialVersionUID = 6637860018554874375L;

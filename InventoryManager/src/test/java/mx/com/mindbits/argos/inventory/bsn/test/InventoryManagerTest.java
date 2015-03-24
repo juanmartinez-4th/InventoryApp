@@ -69,6 +69,7 @@ public class InventoryManagerTest {
 		}
 	}
 	
+    /*
 	@Test
 	public void testGetAllItems() {
 		List<ItemVO> items = catalogManager.getAllItems();
@@ -84,7 +85,7 @@ public class InventoryManagerTest {
 			assertTrue(item.getId() == (i + 1));
 		}
 	}
-	
+	*/
 //	@Test
 //	public void testGetAllCategories() {
 //		List<CategoryVO> categories = catalogManager.getAllCategories();

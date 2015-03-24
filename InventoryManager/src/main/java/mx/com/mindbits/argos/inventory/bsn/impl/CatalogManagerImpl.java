@@ -75,6 +75,19 @@ public class CatalogManagerImpl implements CatalogManager {
 		
 		for (Item item : items) {
 			ItemVO result = mapper.map(item, ItemVO.class);
+			
+			List<ItemLocation> itemLocations = itemLocationDAO.getItemLocations(result.getId());
+			if(itemLocations != null && !itemLocations.isEmpty()) {
+				ItemLocation location = itemLocations.get(0);
+				ItemLocationVO itemLocation = new ItemLocationVO();
+				itemLocation.setSection(location.getSection());
+				itemLocation.setHall(location.getHall());
+				itemLocation.setRack(location.getRack());
+				itemLocation.setBox(location.getBox());
+				
+				result.setLocation(itemLocation);
+			}
+			
 			results.add(result);
 		}
 		
@@ -89,6 +102,19 @@ public class CatalogManagerImpl implements CatalogManager {
 		
 		for (Item item : items) {
 			ItemVO result = mapper.map(item, ItemVO.class);
+			
+			List<ItemLocation> itemLocations = itemLocationDAO.getItemLocations(result.getId());
+			if(itemLocations != null && !itemLocations.isEmpty()) {
+				ItemLocation location = itemLocations.get(0);
+				ItemLocationVO itemLocation = new ItemLocationVO();
+				itemLocation.setSection(location.getSection());
+				itemLocation.setHall(location.getHall());
+				itemLocation.setRack(location.getRack());
+				itemLocation.setBox(location.getBox());
+				
+				result.setLocation(itemLocation);
+			}
+			
 			results.add(result);
 		}
 		
@@ -166,6 +192,26 @@ public class CatalogManagerImpl implements CatalogManager {
 		return mapper.map(category, CategoryVO.class);
 	}
 
+	public List<CategoryVO> getCategoryDescendants(Integer parentCategory) {
+		List<Category> categories;
+		
+		if(parentCategory == null) {
+			categories = categoryDAO.getMainCategories();
+		}else {
+			categories = categoryDAO.getCategoryDescendants(parentCategory);
+		}
+		
+		List<CategoryVO> results = new ArrayList<CategoryVO>(categories.size());
+		
+		for (Category category : categories) {
+			CategoryVO result = mapper.map(category, CategoryVO.class);
+			results.add(result);
+		}
+		
+		return results;
+	}
+			
+	
 	@Override
 	public List<CategoryVO> getCategoryHierachy(Integer categoryId) {
 		CategoryVO category = getCategory(categoryId);

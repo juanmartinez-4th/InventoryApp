@@ -34,10 +34,16 @@ public class PdfBarcodeGenerator implements BarcodeGenerator {
 			Document document = new Document(PageSize.LETTER);
 			PdfWriter pdfWriter = PdfWriter.getInstance(document, baos);
 			PdfPTable pdfTable = new PdfPTable(fileColumns);
+			
 			document.open();
 			
 			for(int i = 0; i < copies; i++) {
 				pdfTable.addCell(createBarcode(data, pdfWriter));
+			}
+			
+			int emptyCells = copies % fileColumns;
+			for (int i = 0; i < emptyCells; i++) {
+				pdfTable.addCell(new PdfPCell());
 			}
 			
 			document.add(pdfTable);
