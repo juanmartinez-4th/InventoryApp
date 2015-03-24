@@ -29,12 +29,19 @@
         </div>
 
         <div class="botones_derecha col-xs-12 col-sm-6 pull-right">
-            <div class="col-xs-4 col-sm-offset-4 col-xs-offset-2">
+            <div id="botones_vista" class="col-xs-4 col-xs-offset-4">
+                <p class="inline_block">Vista</p>
+                <div class="btn-group" role="group">
+                    <a href="<c:url value='/listItems'/>" class="btn_chico btn btn-primary"><span class="glyphicon glyphicon-th-list"></span></a>
+                    <button type="button" class="btn_chico btn btn-primary btn_dark"><span class="glyphicon glyphicon-th"></span></button>
+                </div>
+            </div>
+            <!-- <div class="col-xs-4">
                 <button type="button" class="btn_chico width_100 btn btn-primary">
                     <span class="glyphicon glyphicon-barcode"></span>
                     Etiquetas
                 </button>
-            </div>
+            </div> -->
             <div class="col-xs-4">
                 <a class="btn_chico width_100 btn btn-success" href="<c:url value='/captureItem'/>">
 	                <span class="glyphicon glyphicon-plus"></span>
@@ -79,22 +86,22 @@
         <section class="row">
         <c:choose>
             <c:when test="${not empty itemsList}">
-                <c:forEach items="${itemsList}" var="currenItem">
+                <c:forEach items="${itemsList}" var="currentItem">
 	                <!-- LISTADO DE ITEMS -->
 	                <div class="col-md-2 col-sm-3 col-xs-4 grid_item">
 	                    <figure>
-	                        <a href="<c:url value='/showItem?itemId=${currenItem.id}' />">
-	                           <c:if test="${empty currenItem.defaultPicture}">
+	                        <a href="<c:url value='/showItem?itemId=${currentItem.id}' />">
+	                           <c:if test="${empty currentItem.defaultPicture}">
 	                               <img src="http://placehold.it/152x152&text=Foto de Producto" alt="Foto de Producto" height="152" width="152" class="img-responsive">
 	                           </c:if>
-	                           <c:if test="${not empty currenItem.defaultPicture}">
-                                   <img src="/uploads/${currenItem.code}/${currenItem.defaultPicture}" alt="Foto de Producto" height="152" width="152" class="img-responsive">
+	                           <c:if test="${not empty currentItem.defaultPicture}">
+                                   <img src="/uploads/${currentItem.code}/${currentItem.defaultPicture}" alt="Foto de Producto" height="152" width="152" class="img-responsive">
                                </c:if>
 	                        </a>
 	                    </figure>
-	                    <h4><a href="<c:url value='/showItem?itemId=${currenItem.id}' />">${currenItem.description}</a></h4>
-	                    <p><a href="<c:url value='/showItem?itemId=${currenItem.id}' />">${currenItem.code}</a></p>
-	                    <p>Existencia:&nbsp;${currenItem.existence}&nbsp;${currenItem.unitOfMeasure.name}</p>
+	                    <h4><a href="<c:url value='/showItem?itemId=${currentItem.id}' />">${currentItem.description}</a></h4>
+	                    <p><a href="<c:url value='/showItem?itemId=${currentItem.id}' />">${currentItem.code}</a></p>
+	                    <p>Existencia:&nbsp;${currentItem.existence}&nbsp;${currentItem.unitOfMeasure.name}</p>
 	                </div>
 	            </c:forEach>
             </c:when>

@@ -48,7 +48,7 @@
                 <div class="row">        
                     <div class="col-xs-8">
                         <div class="input-group" >
-                          <form:input path="item.code" id="txt_codigo" type="text" class="form-control" placeholder="MOB0000000001SIL" />
+                          <form:input path="item.code" id="txt_codigo" type="text" class="form-control" placeholder="XXX0000000001XXX" />
                           <span class="input-group-btn">
                             <button class="btn_chico btn btn-default" type="button"><span class="glyphicon glyphicon-info-sign"></span></button>
                           </span>
@@ -64,7 +64,7 @@
                 </div>
                 
 <!--                CAMPO 02 / Categoría   -->
-                <label for="txt_categoria">Categoría</label>   
+                <label for="txt_categoria">* Categoría</label>   
                 <div class="row">        
                     <div class="col-xs-10">
                         <div id="txt_categoria" class="form-control height_auto" 
@@ -87,7 +87,7 @@
                 </div>
                 
 <!--                CAMPO 03 / Descripción   -->
-                <label for="txt_descripcion">Descripción</label>
+                <label for="txt_descripcion">* Descripción</label>
                 <div class="input-group" >
                     <form:input path="item.description" id="txt_descripcion" type="text" class="form-control" placeholder="" 
                         data-toggle="popover" data-placement="top" title="Capture la descripción del artículo"
@@ -101,7 +101,7 @@
 
 <!--            CAMPO 04 / Imágenes   -->            
             <div class="col-sm-6" id="captura_imagenes">
-                <label for="txt_codigo">Imágenes</label>
+                <label for="txt_codigo">* Imágenes</label>
                 <div class="row">
                     <figure class="col-xs-4">
                         <div style='height: 0px;width: 0px; overflow:hidden;'>
@@ -161,7 +161,7 @@
             
             
 <!--                CAMPO 06 / Existencia -->
-                <label for="txt_existencia">Existencia</label>   
+                <label for="txt_existencia">* Existencia</label>   
                 <div class="row">        
                     <div class="col-xs-8">
                         <div class="input-group" >
@@ -216,7 +216,7 @@
                     </div>
                 </div>
 <!--                CAMPO 07 / Localización -->
-                <label for="txt_localización">Localización</label>   
+                <label for="txt_localización">* Localización</label>   
                 <div class="row">
                     <div class="col-xs-2">
                         <label for="txt_seccion">Sección</label>

@@ -40,10 +40,17 @@
   padding-left: 6px;
   padding-right: 6px;
 }
+.container-fluid > .navbar-collapse,
+.container-fluid > .navbar-header,
+.container > .navbar-collapse,
+.container > .navbar-header {
+  margin-right: -6px;
+  margin-left: -6px;
+}
 .navbar-default .navbar-toggle {
   border: none;
   margin: 0;
-  padding: 7px 15px 7px 10px;
+  padding: 7px 10px;
 }
 .navbar-default .navbar-toggle:hover,
 .navbar-default .navbar-toggle:focus {
@@ -124,12 +131,12 @@ textarea:read-only {
 .btn_dark {
   background: #888888;
   color: white;
-  border-color: #555555;
+  border-color: #666666;
 }
 .btn_dark:hover,
 .btn_dark:focus {
-  background: #555555;
-  border-color: #555555;
+  background: #666666;
+  border-color: #666666;
 }
 .side_margins {
   margin-left: 6px !important;
@@ -468,13 +475,26 @@ table th {
   font-weight: bolder;
 }
 table td {
-  color: #555555;
+  color: #888888;
+  font-weight: lighter;
 }
 table .btn_tabla {
   padding: 3px 18px;
 }
 table label {
   margin-top: 0;
+}
+table input[type="text"],
+table input[type="password"] {
+  color: black;
+  border: 1px solid #bbbbbb;
+  border-radius: 5px;
+  padding-left: 5px;
+  max-width: 95px;
+  text-align: center;
+}
+table input[type="checkbox"] {
+  font-size: 16px;
 }
 @media screen and (max-width: 767px) {
   table th {
@@ -487,6 +507,18 @@ table label {
     padding: 3px 9px;
     font-size: 1em;
   }
+}
+.ic_table_imagen {
+  width: 29px;
+  height: 26px;
+  background-image: url(../images/demo/ic_tabla_imagen.png);
+  margin: 0 auto;
+  text-decoration: none;
+  text-align: right;
+  padding-top: 11px;
+  padding-right: 3px;
+  color: white;
+  font-size: 12px;
 }
 .check_custom_table {
   padding: 2px 5px;
@@ -586,6 +618,22 @@ td.btn-group .btn {
 .zoomWindow {
   border-color: rgba(0, 0, 0, 0.6) !important;
   border-radius: 5px;
+}
+#botones_vista {
+  text-align: right;
+}
+#botones_vista p {
+  color: #bbbbbb;
+  font-size: 13px;
+}
+table .tooltip.bottom .tooltip-arrow {
+  border-bottom-color: rgba(0, 0, 0, 0.8);
+}
+table .tooltip-inner {
+  background-color: rgba(0, 0, 0, 0.8);
+}
+#tooltip_contenido_visible img {
+  margin: 2em;
 }
 #mask {
   position:fixed;

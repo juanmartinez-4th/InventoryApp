@@ -3,6 +3,13 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ page session="true" %>
 
+<c:if test="${not empty parentCategory}">
+    <input id="parentCategory" type="hidden" value="${parentCategory}">
+</c:if>
+<c:if test="${empty parentCategory}">
+    <input id="parentCategory" type="hidden" value="0">
+</c:if>
+
 <section id="barra_acciones" class="container captura_items">
     <div class="row">        
         <section id="nav_nivel_2_b" class="col-sm-9">
@@ -12,10 +19,19 @@
 				<li><a href="<c:url value='/adminProductions'/>">Producciones</a></li>
             </ul>
         </section>
-        
+    </div>
+    
+    <div class="row">
+        <div class="col-xs-7 col-sm-4">
+            <div class="form-control" style="border:none; box-shadow:none;">
+                <ol class="breadcrumb" id="breadcrumbCategory">
+                    <li><a href="#">Categorías principales</a></li>
+                </ol>
+            </div>
+        </div>
         <div class="col-sm-3 pull-right btn_nuevo_item">
             <!-- Button para MODAL [+ nueva categoría] -->
-            <button onclick="javascript:showCategoryModal(0, '', '', 0)" type="button" class="btn_chico btn btn-success pull-right side_paddings" data-toggle="modal">
+            <button id="btnAddNewCategory" onclick="javascript:showCategoryModal(0, '', '')" type="button" class="btn_chico btn btn-success pull-right side_paddings" data-toggle="modal">
                 <span class="glyphicon glyphicon-plus"></span>
                 Nueva Categoría
             </button>
@@ -68,30 +84,15 @@
                     <c:when test="${not empty categoriesList}">
                         <c:forEach items="${categoriesList}" var="currCategory">
 	                    <tr>
-	                        <td>${currCategory.name}</td>
+	                        <td><a href="<c:url value='/adminCategories?parentCategory=${currCategory.id}'/>">${currCategory.name}</a></td>
 	                        <td>${currCategory.description}</td>
 	                        <td>
-	                            <ol class="breadcrumb">
-	                                <c:set var="currentSubcategory" value="${currCategory.parentCategory}" />
-	                                <c:forEach begin="0" end="10">
-                                        <c:if test="${not empty currentSubcategory}">
-                                            <c:set var="parentCat" value="${currentSubcategory.parentCategory}" />
-                                            <c:choose>
-                                                <c:when test="${not empty parentCat}">
-                                                    <li>${currentSubcategory.name}</li>
-                                                    <c:set var="currentSubcategory" value="${currentSubcategory.parentCategory}" />
-                                                </c:when>
-                                                <c:otherwise>
-                                                    <li class="active">${currentSubcategory.name}</li>
-                                                    <c:set var="currentSubcategory" value="" />
-                                                </c:otherwise>
-                                            </c:choose>
-                                        </c:if>
-	                                </c:forEach>
-	                            </ol>
+                                <c:if test="${not empty currCategory.parentCategory}">
+                                    ${currCategory.parentCategory.name}
+                                </c:if>
 	                        </td>
 	                        <td class="text-center">
-	                            <a onclick="javascript:showCategoryModal(${currCategory.id}, '${currCategory.name}', '${currCategory.description}', ${not empty currCategory.parentCategory ? currCategory.parentCategory.id : 0})"
+	                            <a onclick="javascript:showCategoryModal(${currCategory.id}, '${currCategory.name}', '${currCategory.description}')"
 	                                data-toggle="modal" 
 	                                id="edit_${currCategory.id}" 
 	                                class="btn btn-primary btn_dark btn_tabla" 
@@ -135,9 +136,25 @@
             </div>
             
             <!-- CONTENIDO del modal -->
-            <div class="modal-body">            
-                <!-- CAMPO 01 / Nombre de categoría   -->
-                <label for="txt_categoria_nombre">Nombre</label>
+            <div class="modal-body">
+                <!-- CAMPO 01 / Jerarquía de categorías   -->
+                <div id="divParentCategory" class="row">
+                <label for="txt_categoria">Catálogo de origen</label>
+                <div class="input-group" >
+                    <div id="txt_categoria" class="form-control">
+                        <form:input path="parentCategory.id" type="hidden" id="formParentCategory" value="0" />
+                        <ol class="breadcrumb" id="breadcrumbParentcat">
+                            <li>Categoría padre</li>
+                        </ol>
+                    </div>
+                    <span class="input-group-btn">
+                        <button class="btn_chico btn btn-default" type="button"><span class="glyphicon glyphicon-info-sign"></span></button>
+                    </span>
+                </div><!-- /input-group -->
+                </div>
+                
+                <!-- CAMPO 02 / Nombre de categoría   -->
+                <label for="txt_categoria_nombre">* Nombre</label>
                 <div class="input-group" >
                     <form:input path="name" id="txt_categoria_nombre" type="text" class="form-control" 
                         placeholder="" data-toggle="popover" data-placement="top" title="Indique el nombre de la categoría" 
@@ -147,7 +164,7 @@
                     </span>
                 </div><!-- /input-group -->
                 
-                <!-- CAMPO 02 / Descripción   -->
+                <!-- CAMPO 03 / Descripción   -->
                 <label for="txt_descripcion">Descripción</label>
                 <div class="input-group" >
                     <form:input path="description" id="txt_descripcion" type="text" class="form-control" placeholder="" maxlength="60"/>
@@ -155,33 +172,6 @@
                         <button class="btn_chico btn btn-default" type="button"><span class="glyphicon glyphicon-info-sign"></span></button>
                     </span>
                 </div><!-- /input-group -->
-               
-                <!-- CAMPO 03 / Jerarquía de categorías   -->
-                <label for="txt_categoria">Catálogo de origen</label>   
-                <div class="row">        
-                    <div class="col-xs-8">
-                        <div class="input-group" >
-                            <div id="txt_categoria" class="form-control">
-                                <form:input path="parentCategory.id" type="hidden" id="parentCategory" value="0" />
-                                <ol class="breadcrumb" id="breadcrumbParentcat">
-                                    <li>Categoría padre</li>
-                                </ol>
-                            </div>
-                            <span class="input-group-btn">
-                                <button class="btn_chico btn btn-default" type="button"><span class="glyphicon glyphicon-info-sign"></span></button>
-                            </span>
-                        </div><!-- /input-group -->
-                    </div>
-
-                    <div class="col-xs-4">
-                        <button type="button" class="btn_chico btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-expanded="false" style="width:100%;">
-                            Categorías <span class="caret"></span>
-                        </button>
-                        <ul class="dropdown-menu" role="menu" id="categoriesMenu">
-                            <li onclick="javascript:setParentCategory(0)"><a href="#">Ninguna</a></li>                            
-                        </ul>
-                    </div>
-                </div>
             </div>
             <div class="modal-footer">
                 <button id="btnSaveCategory" class="btn btn-success pull-right">

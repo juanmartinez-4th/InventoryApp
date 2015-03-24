@@ -26,6 +26,7 @@ import mx.com.mindbits.argos.inventory.webapp.form.ItemCaptureForm;
 import mx.com.mindbits.argos.inventory.webapp.form.ResultsFilter;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -47,11 +48,14 @@ import com.itextpdf.text.pdf.codec.Base64;
 
 @Controller
 public class CatalogsController {
+	
+	private static final Logger LOGGER = Logger.getLogger(CatalogsController.class);
 
 	@Autowired
 	private CatalogManager inventoryManager;
 	
-	private static final String ITEMS_CATALOG_VIEW = "itemsCatalog";
+	private static final String ITEMS_CATALOG_LIST_VIEW = "itemsCatalogList";
+	private static final String ITEMS_CATALOG_GRID_VIEW = "itemsCatalogGrid";
 	private static final String ITEMS_CATALOG_VIEW_TITLE = "Artículos";
 	
 	private static final String ITEM_CAPTURE_VIEW = "itemCapture";
@@ -82,6 +86,7 @@ public class CatalogsController {
 			@ModelAttribute(value="resultsFilter") ResultsFilter resultsFilter, 
 			HttpServletRequest request) {
 		List<ItemVO> items;
+		boolean showGridView = false;
 		
 		if(resultsFilter != null && resultsFilter.getFilter1() != null 
 				&& !"".equals(resultsFilter.getFilter1().trim())) {
@@ -92,7 +97,7 @@ public class CatalogsController {
 		}
 		
 		ResultsFilter filter = new ResultsFilter();
-		filter.setFilterName("listItems");;
+		filter.setFilterName("listItems");
 		model.addAttribute("resultsFilter", filter);
 		model.addAttribute("itemsList", items);
 		
@@ -101,9 +106,13 @@ public class CatalogsController {
 			model.addAttribute("alertMsg", alertMessage);
 		}
 		
+		if(request.getParameter("showGrid") != null) {
+			showGridView = true;
+		}
+		
 		model.addAttribute("pageTitle", ITEMS_CATALOG_VIEW_TITLE);
 		
-		return ITEMS_CATALOG_VIEW;
+		return showGridView ? ITEMS_CATALOG_GRID_VIEW : ITEMS_CATALOG_LIST_VIEW;
 	}
 	
 	@RequestMapping(value = "/getItemsBycategory", method = RequestMethod.GET)
@@ -116,7 +125,7 @@ public class CatalogsController {
 		model.addAttribute("selectedCategory", categoryId);
 		model.addAttribute("pageTitle", ITEMS_CATALOG_VIEW_TITLE);
 		
-		return ITEMS_CATALOG_VIEW;
+		return ITEMS_CATALOG_GRID_VIEW;
 	}
 
 	@RequestMapping(value = "/showItem", method = RequestMethod.GET)
@@ -196,6 +205,11 @@ public class CatalogsController {
 				
 				itemPictures.add(itemPicture);
 			}
+			
+			if(itemLocation.getProduction().getId() == 0) {
+				itemLocation.setProduction(null);
+			}
+			
 			item = inventoryManager.createItem(item, itemClassification, itemLocation, itemPictures);
 			
 			if(item != null && item.getId() != null) {	
@@ -204,6 +218,7 @@ public class CatalogsController {
 				response = Message.failMessage("No fue posible crear el nuevo artículo, intente más tarde");
 			}
 		}catch(Exception e) {
+			LOGGER.error("Error saving item: " + e.getMessage(), e);
 			response = Message.failMessage("No fue posible crear el nuevo artículo, intente más tarde");
 		}
 		
@@ -224,20 +239,17 @@ public class CatalogsController {
 		model.addAttribute("itemsList", results);
 		model.addAttribute("pageTitle", ITEMS_CATALOG_VIEW_TITLE);
 		
-		return ITEMS_CATALOG_VIEW;
+		return ITEMS_CATALOG_GRID_VIEW;
 	}
 	
 	@RequestMapping(value = "/adminCategories", method = RequestMethod.GET)
 	public String listCategories(Model model, HttpServletRequest request) {
-//		if (isRememberMeAuthenticated()) {
-//			// require password for adminstration
-//			setRememberMeTargetUrlToSession(request, "/adminCategories");
-//			model.addAttribute("loginUpdate", true);
-//			
-//			return "appLogin";
-//		}
-		
-		List<CategoryVO> results = inventoryManager.getAllCategories();
+		Integer parentCategory = null;
+		if(request.getParameter("parentCategory") != null) {
+			parentCategory = Integer.valueOf(request.getParameter("parentCategory"));
+			model.addAttribute("parentCategory", parentCategory);
+		}
+		List<CategoryVO> results = inventoryManager.getCategoryDescendants(parentCategory);
 		model.addAttribute("categoriesList", results);
 		model.addAttribute("category", new CategoryVO());
 		
@@ -306,6 +318,7 @@ public class CatalogsController {
 				response = Message.failMessage("Imposible realizar la operación, "
 						+ "algunos elementos ya se encuentran asignados a esta categoría.");
 			}else {
+				LOGGER.error("Error saving category: " + e.getMessage(), e);
 				response = Message.failMessage("No fue posible realizar la operación, intente más tarde.");
 			}
 		}
@@ -456,6 +469,7 @@ public class CatalogsController {
 				response = Message.failMessage("Imposible realizar la operación, "
 						+ "algunos elementos ya se encuentran asignados a esta producción.");
 			}else {
+				LOGGER.error("Error saving production: " + e.getMessage(), e);
 				response = Message.failMessage("No fue posible realizar la operación, intente más tarde.");
 			}
 		}
@@ -474,11 +488,12 @@ public class CatalogsController {
     		
     		if(!file.exists()) {
     			file.mkdir();
-    			savePath = savePath + itemCode + "/";
     		}
+    		
+    		savePath = savePath + itemCode + "/";
         	
             for (MultipartFile multipartFile : pictureFiles) {
-            	if(multipartFile.getSize() > 0) {            		
+            	if(multipartFile != null && multipartFile.getSize() > 0) {            		
             		String extension = multipartFile.getOriginalFilename();
             		extension = extension.substring(extension.lastIndexOf("."));
 	                String fileName = itemCode + "_p" + pictId + extension;

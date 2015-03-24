@@ -26,6 +26,15 @@ function saveItem(captureNew) {
 	}else if($('#txt_existencia').val().trim() == '' || $('#itemUnit').val() == 0) {
 		$('#txt_existencia').tooltip('show');
 		event.preventDefault();
+	}else if($('#txt_seccion').val().trim() == '' || $('#txt_pasillo').val().trim() == '' 
+			|| $('#txt_anaquel').val().trim() == '' || $('#txt_casilla').val().trim() == '') {
+		var message = 'Por favor indique la localización del artículo';
+		displayAlertMessage(message);
+		event.preventDefault();
+	}else if($('#inputFile0').val() == '' && $('#inputFile1').val() == '' && $('#inputFile2').val() == '') {
+		var message = 'Por favor agregue al menos una imagen que identifique al artículo';
+		displayAlertMessage(message);
+		event.preventDefault();
 	}else {
 		$('#redirectNew').val(captureNew);
 		$('#itemCaptureForm').submit();
@@ -145,15 +154,8 @@ function setSelectedFile(fileIndex) {
 
 function showLabelsModal() {
 	if($('#txt_descripcion').val() == '' || $('#itemCategoryName').val() == '') {
-		var html = '<div class="alert alert-danger flash" role="alert">' + 
-	        '<button type="button" class="close" data-dismiss="alert" aria-label="Cerrar">' + 
-	            '<span aria-hidden="true">&times;</span>' + 
-	        '</button>' + 
-	        '<span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>' + 
-	        '<span class="sr-only">Error: </span> Antes de imprimir etiquetas capture toda la información del artículo' + 
-	    '</div>';
-		
-		$('#divMessages').html(html);
+		var message = 'Antes de imprimir etiquetas capture toda la información del artículo';
+		displayAlertMessage(message)
 	}else {
 		$('#txt_label_code').val($('#txt_codigo').val());
 		$('#modal_print_labels').modal({backdrop: 'static'/*, keyboard: false*/})
@@ -185,4 +187,15 @@ var printLabels = function () {
 	}
 	
 	event.preventDefault();
+}
+
+function displayAlertMessage(message) {
+	var html = '<div class="alert alert-danger flash" role="alert">' + 
+        '<button type="button" class="close" data-dismiss="alert" aria-label="Cerrar">' + 
+            '<span aria-hidden="true">&times;</span>' + 
+        '</button>' + 
+        '<span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>' + 
+        '<span class="sr-only">Error: </span> ' + message + '</div>';
+	
+	$('#divMessages').html(html);
 }
