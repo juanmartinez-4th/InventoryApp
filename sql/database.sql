@@ -8,19 +8,19 @@ SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='TRADITIONAL,ALLOW_INVALID_DATES';
 -- Schema mydb
 -- -----------------------------------------------------
 -- -----------------------------------------------------
--- Schema argos
+-- Schema inventory
 -- -----------------------------------------------------
 
 -- -----------------------------------------------------
--- Schema argos
+-- Schema inventory
 -- -----------------------------------------------------
-CREATE SCHEMA IF NOT EXISTS `argos` DEFAULT CHARACTER SET utf8 ;
-USE `argos` ;
+CREATE SCHEMA IF NOT EXISTS `inventory` DEFAULT CHARACTER SET utf8 ;
+USE `inventory` ;
 
 -- -----------------------------------------------------
--- Table `argos`.`users`
+-- Table `inventory`.`users`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `argos`.`users` (
+CREATE TABLE IF NOT EXISTS `inventory`.`users` (
   `username` VARCHAR(45) NOT NULL,
   `password` VARCHAR(60) NOT NULL,
   `enabled` TINYINT(1) NOT NULL,
@@ -30,9 +30,9 @@ DEFAULT CHARACTER SET = utf8;
 
 
 -- -----------------------------------------------------
--- Table `argos`.`authorities`
+-- Table `inventory`.`authorities`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `argos`.`authorities` (
+CREATE TABLE IF NOT EXISTS `inventory`.`authorities` (
   `username` VARCHAR(50) NOT NULL,
   `authority` VARCHAR(50) NOT NULL,
   `authority_id` INT(11) NOT NULL AUTO_INCREMENT,
@@ -41,7 +41,7 @@ CREATE TABLE IF NOT EXISTS `argos`.`authorities` (
   INDEX `FK_AUTHORITIES_USERS_idx` (`username` ASC),
   CONSTRAINT `FK_AUTHORITIES_USERS`
     FOREIGN KEY (`username`)
-    REFERENCES `argos`.`users` (`username`)
+    REFERENCES `inventory`.`users` (`username`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB
@@ -50,9 +50,9 @@ DEFAULT CHARACTER SET = utf8;
 
 
 -- -----------------------------------------------------
--- Table `argos`.`category`
+-- Table `inventory`.`category`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `argos`.`category` (
+CREATE TABLE IF NOT EXISTS `inventory`.`category` (
   `category_id` INT(11) NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(35) NOT NULL,
   `description` VARCHAR(60) NULL DEFAULT NULL,
@@ -61,7 +61,7 @@ CREATE TABLE IF NOT EXISTS `argos`.`category` (
   INDEX `FK_CATEGORY_PARENT_idx` (`parent_category` ASC),
   CONSTRAINT `FK_CATEGORY_PARENT`
     FOREIGN KEY (`parent_category`)
-    REFERENCES `argos`.`category` (`category_id`)
+    REFERENCES `inventory`.`category` (`category_id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB
@@ -70,9 +70,9 @@ DEFAULT CHARACTER SET = utf8;
 
 
 -- -----------------------------------------------------
--- Table `argos`.`unit_of_measure`
+-- Table `inventory`.`unit_of_measure`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `argos`.`unit_of_measure` (
+CREATE TABLE IF NOT EXISTS `inventory`.`unit_of_measure` (
   `unit_id` INT(11) NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(25) NOT NULL,
   `description` VARCHAR(60) NULL DEFAULT NULL,
@@ -83,9 +83,9 @@ DEFAULT CHARACTER SET = utf8;
 
 
 -- -----------------------------------------------------
--- Table `argos`.`item`
+-- Table `inventory`.`item`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `argos`.`item` (
+CREATE TABLE IF NOT EXISTS `inventory`.`item` (
   `item_id` INT(11) NOT NULL AUTO_INCREMENT,
   `code` VARCHAR(30) NOT NULL,
   `description` VARCHAR(255) NOT NULL,
@@ -101,7 +101,7 @@ CREATE TABLE IF NOT EXISTS `argos`.`item` (
   INDEX `FK_ITEM_UNIT_OF_MEASURE_idx` (`unit_of_measure` ASC),
   CONSTRAINT `FK_ITEM_UNIT_OF_MEASURE`
     FOREIGN KEY (`unit_of_measure`)
-    REFERENCES `argos`.`unit_of_measure` (`unit_id`)
+    REFERENCES `inventory`.`unit_of_measure` (`unit_id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB
@@ -110,9 +110,9 @@ DEFAULT CHARACTER SET = utf8;
 
 
 -- -----------------------------------------------------
--- Table `argos`.`transaction_type`
+-- Table `inventory`.`transaction_type`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `argos`.`transaction_type` (
+CREATE TABLE IF NOT EXISTS `inventory`.`transaction_type` (
   `transaction_type_id` INT(11) NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(50) NOT NULL,
   `description` VARCHAR(255) NULL DEFAULT NULL,
@@ -122,9 +122,9 @@ DEFAULT CHARACTER SET = utf8;
 
 
 -- -----------------------------------------------------
--- Table `argos`.`inventory_transactions`
+-- Table `inventory`.`inventory_transactions`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `argos`.`inventory_transactions` (
+CREATE TABLE IF NOT EXISTS `inventory`.`inventory_transactions` (
   `id` INT(11) NOT NULL AUTO_INCREMENT,
   `transaction_item` INT(11) NOT NULL,
   `transaction_type` INT(11) NOT NULL,
@@ -136,12 +136,12 @@ CREATE TABLE IF NOT EXISTS `argos`.`inventory_transactions` (
   INDEX `FK_TRANSACTION_TYPE_idx` (`transaction_type` ASC),
   CONSTRAINT `FK_TRANSACTION_ITEM`
     FOREIGN KEY (`transaction_item`)
-    REFERENCES `argos`.`item` (`item_id`)
+    REFERENCES `inventory`.`item` (`item_id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `FK_TRANSACTION_TYPE`
     FOREIGN KEY (`transaction_type`)
-    REFERENCES `argos`.`transaction_type` (`transaction_type_id`)
+    REFERENCES `inventory`.`transaction_type` (`transaction_type_id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB
@@ -149,9 +149,9 @@ DEFAULT CHARACTER SET = utf8;
 
 
 -- -----------------------------------------------------
--- Table `argos`.`item_classification`
+-- Table `inventory`.`item_classification`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `argos`.`item_classification` (
+CREATE TABLE IF NOT EXISTS `inventory`.`item_classification` (
   `classification_id` INT(11) NOT NULL AUTO_INCREMENT,
   `item_id` INT(11) NOT NULL,
   `category_id` INT(11) NOT NULL,
@@ -160,12 +160,12 @@ CREATE TABLE IF NOT EXISTS `argos`.`item_classification` (
   INDEX `FK_CLASSIFICATION_CATEGORY_idx` (`category_id` ASC),
   CONSTRAINT `FK_CLASSIFICATION_CATEGORY`
     FOREIGN KEY (`category_id`)
-    REFERENCES `argos`.`category` (`category_id`)
+    REFERENCES `inventory`.`category` (`category_id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `FK_CLASSIFIED_ITEM`
     FOREIGN KEY (`item_id`)
-    REFERENCES `argos`.`item` (`item_id`)
+    REFERENCES `inventory`.`item` (`item_id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB
@@ -174,9 +174,9 @@ DEFAULT CHARACTER SET = utf8;
 
 
 -- -----------------------------------------------------
--- Table `argos`.`production`
+-- Table `inventory`.`production`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `argos`.`production` (
+CREATE TABLE IF NOT EXISTS `inventory`.`production` (
   `production_id` INT(11) NOT NULL AUTO_INCREMENT,
   `code` VARCHAR(20) NOT NULL,
   `name` VARCHAR(50) NOT NULL,
@@ -189,9 +189,9 @@ DEFAULT CHARACTER SET = utf8;
 
 
 -- -----------------------------------------------------
--- Table `argos`.`item_location`
+-- Table `inventory`.`item_location`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `argos`.`item_location` (
+CREATE TABLE IF NOT EXISTS `inventory`.`item_location` (
   `location_id` INT(11) NOT NULL AUTO_INCREMENT,
   `item_id` INT(11) NOT NULL,
   `quantity` INT(11) NOT NULL,
@@ -205,12 +205,12 @@ CREATE TABLE IF NOT EXISTS `argos`.`item_location` (
   INDEX `FP_LOCATION_PRODUCTION_idx` (`production` ASC),
   CONSTRAINT `FK_LOCATION_ITEM`
     FOREIGN KEY (`item_id`)
-    REFERENCES `argos`.`item` (`item_id`)
+    REFERENCES `inventory`.`item` (`item_id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `FP_LOCATION_PRODUCTION`
     FOREIGN KEY (`production`)
-    REFERENCES `argos`.`production` (`production_id`)
+    REFERENCES `inventory`.`production` (`production_id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB
@@ -219,9 +219,9 @@ DEFAULT CHARACTER SET = utf8;
 
 
 -- -----------------------------------------------------
--- Table `argos`.`item_picture`
+-- Table `inventory`.`item_picture`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `argos`.`item_picture` (
+CREATE TABLE IF NOT EXISTS `inventory`.`item_picture` (
   `picture_id` INT(11) NOT NULL AUTO_INCREMENT,
   `item_id` INT(11) NOT NULL,
   `file_name` VARCHAR(255) NOT NULL,
@@ -229,7 +229,7 @@ CREATE TABLE IF NOT EXISTS `argos`.`item_picture` (
   INDEX `FK_PICTURE_ITEM_idx` (`item_id` ASC),
   CONSTRAINT `FK_PICTURE_ITEM`
     FOREIGN KEY (`item_id`)
-    REFERENCES `argos`.`item` (`item_id`)
+    REFERENCES `inventory`.`item` (`item_id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB
@@ -238,9 +238,9 @@ DEFAULT CHARACTER SET = utf8;
 
 
 -- -----------------------------------------------------
--- Table `argos`.`persistent_logins`
+-- Table `inventory`.`persistent_logins`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `argos`.`persistent_logins` (
+CREATE TABLE IF NOT EXISTS `inventory`.`persistent_logins` (
   `username` VARCHAR(64) NOT NULL,
   `series` VARCHAR(64) NOT NULL,
   `token` VARCHAR(64) NOT NULL,
@@ -251,9 +251,9 @@ DEFAULT CHARACTER SET = utf8;
 
 
 -- -----------------------------------------------------
--- Table `argos`.`status`
+-- Table `inventory`.`status`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `argos`.`status` (
+CREATE TABLE IF NOT EXISTS `inventory`.`status` (
   `id` INT(11) NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(25) NOT NULL,
   `description` VARCHAR(255) NULL DEFAULT NULL,
@@ -261,17 +261,17 @@ CREATE TABLE IF NOT EXISTS `argos`.`status` (
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8;
 
-USE `argos`;
+USE `inventory`;
 
 DELIMITER $$
-USE `argos`$$
+USE `inventory`$$
 CREATE
 DEFINER=`root`@`localhost`
-TRIGGER `argos`.`item_location_AFTER_INSERT`
-AFTER INSERT ON `argos`.`item_location`
+TRIGGER `inventory`.`item_location_AFTER_INSERT`
+AFTER INSERT ON `inventory`.`item_location`
 FOR EACH ROW
 begin
-    update argos.item set existence = (select sum(quantity) from argos.item_location where item_id = new.item_id) where item_id = new.item_id;
+    update inventory.item set existence = (select sum(quantity) from inventory.item_location where item_id = new.item_id) where item_id = new.item_id;
 end$$
 
 

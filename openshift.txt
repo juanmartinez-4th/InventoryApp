@@ -1,22 +1,49 @@
+https://openshift.redhat.com/app/console
 juancarlos.ms2@g
 11235813
 
+http://inventory-argosapps.rhcloud.com
 
-inventory
 ---------------------------------
+inventory application
+---------------------------------
+git repository ssh://551302385973ca9a52000022@inventory-argosapps.rhcloud.com/~/git/inventory.git/
+ssh 551302385973ca9a52000022@inventory-argosapps.rhcloud.com
 
-MySQL 5.5 database added.  Please make note of these credentials:
+MySQL credentials:
 
-       Root User: adminigZyRYz
-   Root Password: 2vUpq5wq-HS8
+   Root User: adminfH165ta
+   Root Password: UF7aUs97F-_M
    Database Name: inventory
 
 Connection URL: mysql://$OPENSHIFT_MYSQL_DB_HOST:$OPENSHIFT_MYSQL_DB_PORT/
 
-You can manage your new MySQL database by also embedding phpmyadmin.
-The phpmyadmin username and password will be the same as the MySQL credentials above.
+Configure environment (All commands are executed throuwh MINGW32):
+1. Clone git repository and cd into it
+2. Delete src folder and pom.xml file
+3. Add the next Context element inside the Host one in .openshift/config/server.xml file:
+   <Context docBase="/var/lib/openshift/551302385973ca9a52000022/app-root/data/picts/" path="/uploads" reloadable="true" crossContext="true" />
+4. Add javassist* to the tomcat.util.scan.DefaultJarScanner.jarsToSkip element in the catalina.properties file
+5. scp database.sql 551302385973ca9a52000022@inventory-argosapps.rhcloud.com:/var/lib/openshift/551302385973ca9a52000022/app-root/data
+6. scp dml_insert_users.sql 551302385973ca9a52000022@inventory-argosapps.rhcloud.com:/var/lib/openshift/551302385973ca9a52000022/app-root/data
+7. scp dml_insert_authorities.sql 551302385973ca9a52000022@inventory-argosapps.rhcloud.com:/var/lib/openshift/551302385973ca9a52000022/app-root/data
+8. ssh 551302385973ca9a52000022@inventory-argosapps.rhcloud.com
+  a. cd into app-root/data and execute in mysql:
+     mysql> source database.sql;
+     mysql> source dml_insert_users.sql;
+     mysql> source dml_insert_authorities.sql;
+  b. export OPENSHIFT_MYSQL_LOWER_CASE_TABLE_NAMES=1 && ctl_all restart (or through CMD execute rhc env set OPENSHIFT_MYSQL_LOWER_CASE_TABLE_NAMES=1 -a inventory && rhc cartridge restart -c mysql-5.5 -a inventory)
+  c. cd into app-root/data and mkdir picts
+  d. exit
 
-Please make note of these MySQL credentials again:
-  Root User: adminigZyRYz
-  Root Password: 2vUpq5wq-HS8
-URL: https://inventory-argosinventory.rhcloud.com/phpmyadmin/
+
+Steps to deploy WAR:
+1. Put the war file inside webapps folder (a context with the name of the war is created, if deploy to root is desired name the war to deploy as ROOT.war)
+2. commit and push changes to repository (the application is automatically deploye)
+
+---------------------------------
+
+
+Documentation
+https://help.openshift.com/hc/en-us/articles/202399740-How-to-deploy-pre-compiled-java-applications-WAR-and-EAR-files-onto-your-OpenShift-gear-using-the-java-cartridges
+
