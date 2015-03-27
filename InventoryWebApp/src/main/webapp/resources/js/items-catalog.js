@@ -1,6 +1,10 @@
 $(function() {
 	$('#breadcrumbCategory').on('load', setSelectedCategory($('#itemCategory').val()));
 	$('#categoriesMenu').on('load', setCategoryMenu());
+	$('#categories-menu').smartmenus({
+		subMenusSubOffsetX: 1,
+		subMenusSubOffsetY: -8
+	});
 });
 
 function setSelectedCategory(selectedCategory) {
@@ -45,9 +49,7 @@ function buildSubmenu(category) {
 	var itemUrl = ctx + '/getItemsBycategory?categoryId=' + category.id;
 	itemUrl += $('#showGridView').length ? '&showGrid=true' : '';
 	
-	var html = '<li class="dropdown-submenu">' + 
-			'<a href="' + itemUrl + '" class="dropdown-toggle">' + category.name + '</a>' +
-			'<ul class="dropdown-menu">';
+	var html = '<li><a href="' + itemUrl + '">' + category.name + '</a><ul>';
 	var descendants = category.descendantCategories;
 	
 	for (var i = 0; i < descendants.length; i++) {
@@ -86,6 +88,7 @@ function setCategoryMenu() {
 			}
 			
 			$('#categoriesMenu').html(html);
+			$('#categories-menu').smartmenus('refresh');
 		},
 		error: function(e) {
 			var itemUrl = ctx + '/listItems';

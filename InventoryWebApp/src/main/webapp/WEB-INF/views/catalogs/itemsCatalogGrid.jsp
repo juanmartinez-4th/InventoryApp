@@ -14,12 +14,12 @@
 <section id="barra_acciones" class="container">
     <div class="row">
         <div class="botones_izquierda col-xs-3 col-sm-2">
-            <button type="button" class="btn_chico width_100 btn btn-primary dropdown-toggle" aria-expanded="false"
-                    data-toggle="dropdown" title="Seleccione una categoría para filtrar los resultados" data-placement="right" >
-                Categorías <span class="caret"></span>
-            </button>
-            <ul class="dropdown-menu" role="menu" id="categoriesMenu">
-                <li><a href="<c:url value='/listItems?showGrid=true'/>">Todo</a></li>
+            <ul id="categories-menu" class="sm sm-clean">
+                <li><a href="#">Categorías</a>
+                    <ul id="categoriesMenu">
+                        <li><a href="<c:url value='/listItems?showGrid=true'/>">Todo</a></li>
+                    </ul>
+                </li>
             </ul>
         </div>
 

@@ -50,7 +50,7 @@
                 <li class="dropdown pull-right" role="presentation">
                     <a  class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-expanded="false">
 	                    <span class="glyphicon glyphicon-user"></span>
-	                    ${pageContext.request.userPrincipal.name}<span class="caret"></span>
+	                    ${pageContext.request.userPrincipal.name} <span class="caret"></span>
 	                </a>
                     <ul class="dropdown-menu" role="menu">
                         <li><a href="javascript:logout()">Cerrar sesión</a></li>

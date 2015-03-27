@@ -67,17 +67,18 @@
                             <form:input path="category.id" type="hidden" id="itemCategory" value="0" />
                             <input type="hidden" id="itemCategoryName" value="" />
                             <ol class="breadcrumb" id="breadcrumbCategory">
-                                <li class="active">Categoría</li>
+                                <li class="active">Seleccione una categoría</li>
                             </ol>
                         </div><!-- /input-group -->
                     </div>
         
                     <div class="col-xs-2">
-                        <button type="button" class="btn_chico btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-expanded="false" style="width:100%;">
-                            <span class="caret"></span>
-                        </button>
-                        <ul class="dropdown-menu" role="menu" id="categoriesMenu">
-                        </ul>
+	                    <ul id="categories-menu" class="sm sm-clean">
+			                <li><a href="#"></a>
+			                    <ul id="categoriesMenu">
+			                    </ul>
+			                </li>
+			            </ul>
                     </div>
                 </div>
                 

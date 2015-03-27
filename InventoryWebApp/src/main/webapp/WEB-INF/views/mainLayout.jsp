@@ -14,6 +14,8 @@
 	
 	<!-- Cargar archivos CSS -->
 	<link rel="stylesheet" type="text/css" href="<c:url value='/resources/css/util/bootstrap.min.css'/>">
+	<link rel="stylesheet" type="text/css" href="<c:url value='/resources/css/util/smart-menus/sm-core-css.css'/>">
+    <link rel="stylesheet" type="text/css" href="<c:url value='/resources/css/util/smart-menus/sm-clean/sm-clean.css'/>">
 	<link rel="stylesheet" type="text/css" href="<c:url value='/resources/css/argos_styles.css'/>">
 	
 	<!-- Cargar fuente de google fonts -->
@@ -24,6 +26,7 @@
     
     <!-- -------------- SCRIPTS ---------------- -->
     <script src="<c:url value='/resources/js/util/jquery-2.1.3.min.js' />"></script>
+    <script src="<c:url value='/resources/js/util/jquery.smartmenus.js' />"></script>
     <script src="<c:url value='/resources/js/util/bootstrap.min.js' />"></script>
     <script>var ctx = "${pageContext.request.contextPath}"</script>
     <!-- -------------- SCRIPTS ---------------- -->
