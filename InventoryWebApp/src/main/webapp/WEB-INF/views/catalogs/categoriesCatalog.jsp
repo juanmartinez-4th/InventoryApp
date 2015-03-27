@@ -3,6 +3,10 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ page session="true" %>
 
+<c:if test="${not empty listByName}">
+    <input id="listByName" type="hidden" value="true">
+</c:if>
+
 <c:if test="${not empty parentCategory}">
     <input id="parentCategory" type="hidden" value="${parentCategory}">
 </c:if>
@@ -25,13 +29,14 @@
         <div class="col-xs-7 col-sm-4">
             <div class="form-control" style="border:none; box-shadow:none;">
                 <ol class="breadcrumb" id="breadcrumbCategory">
-                    <li><a href="#">Categorías principales</a></li>
                 </ol>
             </div>
         </div>
         <div class="col-sm-3 pull-right btn_nuevo_item">
             <!-- Button para MODAL [+ nueva categoría] -->
-            <button id="btnAddNewCategory" onclick="javascript:showCategoryModal(0, '', '')" type="button" class="btn_chico btn btn-success pull-right side_paddings" data-toggle="modal">
+            <button id="btnAddNewCategory" onclick="javascript:showCategoryModal(0, '', '', ${not empty parentCategory ? parentCategory : 0})" 
+                    type="button" class="btn_chico btn btn-success pull-right side_paddings" 
+                    data-toggle="tooltip" title="Agregar una nueva categoría" data-placement="left">
                 <span class="glyphicon glyphicon-plus"></span>
                 Nueva Categoría
             </button>
@@ -75,6 +80,9 @@
                         <th>Nombre</th>
                         <th>Descripción</th>
                         <th>Catálogo de origen</th>
+                        <c:if test="${not empty listByName}">
+                            <th>Agregar</th>
+                        </c:if>
                         <th class="text-center">Editar</th> 
                         <th class="text-center">Eliminar</th>
                     </tr>
@@ -91,16 +99,24 @@
                                     ${currCategory.parentCategory.name}
                                 </c:if>
 	                        </td>
+	                        <c:if test="${not empty listByName}">
+		                        <td>
+		                            <a onclick="javascript:showCategoryModal(0, '', '', ${currCategory.id})" id="add_subcat_${currCategory.id}" 
+	                                    data-toggle="tooltip" title="Agregar nueva subcategoría" data-placement="left" 
+	                                    class="btn btn-primary btn_dark btn_tabla" style="background-color:green;" 
+	                                    href="#"><i class="fa fa-plus fa-lg"></i></a>
+		                        </td>
+	                        </c:if>
 	                        <td class="text-center">
-	                            <a onclick="javascript:showCategoryModal(${currCategory.id}, '${currCategory.name}', '${currCategory.description}')"
-	                                data-toggle="modal" 
+	                            <a onclick="javascript:showCategoryModal(${currCategory.id}, '${currCategory.name}', '${currCategory.description}', ${not empty currCategory.parentCategory ? currCategory.parentCategory.id : 0})"
+	                                data-toggle="tooltip" title="Modificar categoría" data-placement="left" 
 	                                id="edit_${currCategory.id}" 
 	                                class="btn btn-primary btn_dark btn_tabla" 
 	                                href="#"><i class="fa fa-pencil fa-lg"></i></a>
 	                        </td>
 	                        <td class="text-center">
 	                            <a onclick="javascript:confirmDelete(${currCategory.id}, '${currCategory.name}')"
-                                    data-toggle="modal" 
+                                    data-toggle="tooltip" title="Eliminar categoría" data-placement="left" 
                                     id="delete_${currCategory.id}" 
                                     class="btn btn-danger btn_chico btn_tabla" 
                                     style="background-color:red;" 
@@ -139,39 +155,45 @@
             <div class="modal-body">
                 <!-- CAMPO 01 / Jerarquía de categorías   -->
                 <div id="divParentCategory" class="row">
-                <label for="txt_categoria">Catálogo de origen</label>
-                <div class="input-group" >
-                    <div id="txt_categoria" class="form-control">
-                        <form:input path="parentCategory.id" type="hidden" id="formParentCategory" value="0" />
-                        <ol class="breadcrumb" id="breadcrumbParentcat">
-                            <li>Categoría padre</li>
-                        </ol>
-                    </div>
-                    <span class="input-group-btn">
-                        <button class="btn_chico btn btn-default" type="button"><span class="glyphicon glyphicon-info-sign"></span></button>
-                    </span>
-                </div><!-- /input-group -->
+	                <label for="txt_categoria">Catálogo de origen</label>
+	                <!-- <div class="input-group" > -->
+	                    <div id="txt_categoria" class="form-control">
+	                        <form:input path="parentCategory.id" type="hidden" id="formParentCategory" value="0" />
+	                        <ol class="breadcrumb" id="breadcrumbParentcat">
+	                            <li>Categoría padre</li>
+	                        </ol>
+	                    </div>
+	                    <!-- <span class="input-group-btn">
+	                        <button class="btn_chico btn btn-default" type="button"><span class="glyphicon glyphicon-info-sign"></span></button>
+	                    </span> -->
+	                <!-- </div>/input-group -->
                 </div>
                 
                 <!-- CAMPO 02 / Nombre de categoría   -->
-                <label for="txt_categoria_nombre">* Nombre</label>
-                <div class="input-group" >
-                    <form:input path="name" id="txt_categoria_nombre" type="text" class="form-control" 
-                        placeholder="" data-toggle="popover" data-placement="top" title="Indique el nombre de la categoría" 
-                        maxlength="35"/>
-                    <span class="input-group-btn">
-                        <button id="name-help" class="btn_chico btn btn-default" type="button"><span class="glyphicon glyphicon-info-sign"></span></button>
-                    </span>
-                </div><!-- /input-group -->
+                <div class="row">
+	                <label for="txt_categoria_nombre">* Nombre</label>
+	                <!-- <div class="input-group" > -->
+	                    <form:input path="name" id="txt_categoria_nombre" type="text" class="form-control" 
+	                        placeholder="" data-toggle="tooltip" data-placement="top" title="Indique el nombre de la categoría" 
+	                        maxlength="35"/>
+	                    <!-- <span class="input-group-btn">
+	                        <button id="name-help" class="btn_chico btn btn-default" type="button"><span class="glyphicon glyphicon-info-sign"></span></button>
+	                    </span> -->
+	                <!-- </div>/input-group -->
+	            </div>
                 
                 <!-- CAMPO 03 / Descripción   -->
-                <label for="txt_descripcion">Descripción</label>
-                <div class="input-group" >
-                    <form:input path="description" id="txt_descripcion" type="text" class="form-control" placeholder="" maxlength="60"/>
-                    <span class="input-group-btn">
-                        <button class="btn_chico btn btn-default" type="button"><span class="glyphicon glyphicon-info-sign"></span></button>
-                    </span>
-                </div><!-- /input-group -->
+                <div class="row">
+	                <label for="txt_descripcion">Descripción</label>
+	                <!-- <div class="input-group" > -->
+	                    <form:input path="description" id="txt_descripcion" type="text" class="form-control" 
+	                    placeholder="" data-toggle="tooltip" data-placement="top" title="Una pequeña descripción de esta categoría. Este campo es opcional" 
+	                    maxlength="60"/>
+	                    <!-- <span class="input-group-btn">
+	                        <button class="btn_chico btn btn-default" type="button"><span class="glyphicon glyphicon-info-sign"></span></button>
+	                    </span> -->
+	                <!-- </div>/input-group -->
+	            </div>
             </div>
             <div class="modal-footer">
                 <button id="btnSaveCategory" class="btn btn-success pull-right">

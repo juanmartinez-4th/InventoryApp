@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import mx.com.mindbits.argos.common.Message;
 import mx.com.mindbits.argos.inventory.vo.UserVO;
+import mx.com.mindbits.argos.inventory.webapp.form.ResultsFilter;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
@@ -83,9 +84,25 @@ public class SecurityController {
 	}
 	
 	@RequestMapping(value = "/adminUsers", method = RequestMethod.GET)
-	public String adminUsers(Model model, HttpServletRequest request) {
-		List<UserVO> results = securityManager.getAllUsers();
+	public String adminUsers(Model model, 
+			@ModelAttribute(value="resultsFilter") ResultsFilter resultsFilter, 
+			HttpServletRequest request) {
+		List<UserVO> results;
+		
+		if(resultsFilter != null && resultsFilter.getFilter1() != null 
+				&& !"".equals(resultsFilter.getFilter1().trim())) {
+			String userName = resultsFilter.getFilter1().trim().toLowerCase();
+			results = securityManager.getUsersByName(userName);
+		}else {
+			results = securityManager.getAllUsers();
+		}
+		
+		ResultsFilter filter = new ResultsFilter();
+		filter.setFilterName("adminUsers");
+		model.addAttribute("resultsFilter", filter);
+		
 		List<String> authorities = securityManager.getAuthoritiesCatalog();
+		
 		model.addAttribute("usersList", results);
 		model.addAttribute("authoritiesCatalog", authorities);
 		model.addAttribute("user", new UserVO());
@@ -109,6 +126,7 @@ public class SecurityController {
 		
 		user.setUserName(newUser.getUserName());
 		user.setPassword(passwordEncoder.encode(newUser.getPassword()));
+		user.setEnabled(newUser.getEnabled());
 		
 		user = securityManager.addUser(user);
 		

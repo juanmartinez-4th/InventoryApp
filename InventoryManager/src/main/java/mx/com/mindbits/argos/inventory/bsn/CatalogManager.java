@@ -23,6 +23,8 @@ public interface CatalogManager {
 	
 	List<CategoryVO> getCategoryDescendants(Integer parentCategory);
 	
+	List<CategoryVO> getCategoriesByName(String categoryName);
+	
 	CategoryVO saveCategory(CategoryVO newCategory);
 	
 	CategoryVO updateCategory(CategoryVO categoryToUpdate);
@@ -45,6 +47,8 @@ public interface CatalogManager {
 	
 	List<UnitOfMeasureVO> getAllUnitsOfMeasure();
 	
+	List<UnitOfMeasureVO> getUnitsOfMeasureByName(String unitName);
+	
 	UnitOfMeasureVO saveUnitOfMeasure(UnitOfMeasureVO newUnitOfMeasure);
 	
 	UnitOfMeasureVO updateUnitOfMeasure(UnitOfMeasureVO unitToUpdate);
@@ -54,6 +58,8 @@ public interface CatalogManager {
 	ProductionVO getProduction(Integer productionId);
 	
 	List<ProductionVO> getAllProductions();
+	
+	List<ProductionVO> getProductionsByName(String productionName);
 	
 	ProductionVO saveProduction(ProductionVO newProduction);
 	

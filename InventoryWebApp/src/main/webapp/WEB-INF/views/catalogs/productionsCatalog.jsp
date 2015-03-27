@@ -15,7 +15,8 @@
         
         <div class="col-sm-3 pull-right btn_nuevo_item">
             <!-- Button para MODAL [+ nueva producción] -->
-            <button onclick="javascript:showProductionModal(0, '', '', '')" type="button" class="btn_chico btn btn-success pull-right side_paddings" data-toggle="modal">
+            <button onclick="javascript:showProductionModal(0, '', '', '')" type="button" class="btn_chico btn btn-success pull-right side_paddings" 
+                    data-toggle="tooltip" title="Agregar una nueva producción" data-placement="left">
                 <span class="glyphicon glyphicon-plus"></span>
                 Nueva Producción
             </button>
@@ -74,14 +75,14 @@
 	                        <td>${currProduction.description}</td>
 	                        <td class="text-center">
                                 <a onclick="javascript:showProductionModal(${currProduction.id}, '${currProduction.code}', '${currProduction.name}', '${currProduction.description}')"
-                                    data-toggle="modal" 
+                                    data-toggle="tooltip" title="Modificar producción" data-placement="left" 
                                     id="edit_${currProduction.id}" 
                                     class="btn btn-primary btn_dark btn_tabla" 
                                     href="#"><i class="fa fa-pencil fa-lg"></i></a>
                             </td>
                             <td class="text-center">
                                 <a onclick="javascript:confirmDelete(${currProduction.id}, '${currProduction.name}')"
-                                    data-toggle="modal" 
+                                    data-toggle="tooltip" title="Eliminar producción" data-placement="left" 
                                     id="delete_${currProduction.id}" 
                                     class="btn btn-danger btn_chico btn_tabla" 
                                     style="background-color:red;" 
@@ -118,34 +119,21 @@
             <div class="modal-body"><!-- CONTENIDO del modal -->
                 <!-- CAMPO 01 / Código de la producción   -->
                 <label for="txt_produccion_codigo">Código</label>
-                <div class="input-group" >
-                    <form:input path="code" id="txt_produccion_codigo" type="text" class="form-control" 
-                        placeholder="" data-toggle="popover" data-placement="top" title="Indique el código de la producción" 
-                        maxlength="10" />
-                    <span class="input-group-btn">
-                        <button class="btn_chico btn btn-default" type="button"><span class="glyphicon glyphicon-info-sign"></span></button>
-                    </span>
-                </div><!-- /input-group -->
+                <form:input path="code" id="txt_produccion_codigo" type="text" class="form-control" 
+                    placeholder="" data-toggle="tooltip" data-placement="top" title="Indique el código de la producción" 
+                    maxlength="10" />
                 
                 <!-- CAMPO 02 / Nombre de la producción   -->
                 <label for="txt_produccion_nombre">Nombre</label>
-                <div class="input-group" >
-                    <form:input path="name" id="txt_produccion_nombre" type="text" class="form-control" 
-                        placeholder="" data-toggle="popover" data-placement="top" title="Indique el nombre de la producción" 
-                        maxlength="30" />
-                    <span class="input-group-btn">
-                        <button class="btn_chico btn btn-default" type="button"><span class="glyphicon glyphicon-info-sign"></span></button>
-                    </span>
-                </div><!-- /input-group -->
+                <form:input path="name" id="txt_produccion_nombre" type="text" class="form-control" 
+                    placeholder="" data-toggle="tooltip" data-placement="top" title="Indique el nombre de la producción" 
+                    maxlength="30" />
                 
                 <!-- CAMPO 03 / Descripción   -->
                 <label for="txt_descripcion">Descripción</label>
-                <div class="input-group" >
-                    <form:input path="description" id="txt_descripcion" type="text" class="form-control" placeholder="" maxlength="80" />
-                    <span class="input-group-btn">
-                        <button class="btn_chico btn btn-default" type="button"><span class="glyphicon glyphicon-info-sign"></span></button>
-                    </span>
-                </div><!-- /input-group -->
+                <form:input path="description" id="txt_descripcion" type="text" class="form-control"
+                    placeholder="" data-toggle="tooltip" data-placement="top" title="Indique la descripción de la producción. Este campo es opcional." 
+                    maxlength="80" />
             </div>
             <div class="modal-footer">
                 <button id="btnSaveProduction" class="btn btn-success pull-right">

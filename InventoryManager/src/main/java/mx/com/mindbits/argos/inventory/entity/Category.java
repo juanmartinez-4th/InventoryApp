@@ -17,7 +17,10 @@ import javax.persistence.Table;
 	@NamedQuery(name="getCategoryDescendants", 
 				query="from Category where PARENT_CATEGORY = :parentId"), 
 	@NamedQuery(name="getMainCategories", 
-				query="from Category where PARENT_CATEGORY is NULL")
+				query="from Category where PARENT_CATEGORY is NULL"),
+	@NamedQuery(name="findCategoryByName", 
+				query="from Category where lower(NAME) like :categoryName OR "
+						+ "lower(DESCRIPTION) like :categoryName")
 })
 public class Category extends BaseEntity<Integer> {	
 	

@@ -157,14 +157,9 @@
                 </div><!-- /input-group -->
                 
                 <label for="txt_label_copies">Número de copias</label>
-                <div class="input-group" >
-                    <input id="txt_label_copies" type="text" class="form-control numeric_field" 
-                        placeholder="" data-toggle="popover" data-placement="top" title="Indique el número de etiquetas a imprimir" 
-                        maxlength="2"/>
-                    <span class="input-group-btn">
-                        <button id="name-help" class="btn_chico btn btn-default" type="button"><span class="glyphicon glyphicon-info-sign"></span></button>
-                    </span>
-                </div><!-- /input-group -->
+                <input id="txt_label_copies" type="text" class="form-control numeric_field" 
+                    placeholder="" data-toggle="tooltip" data-placement="top" title="Indique el número de etiquetas a imprimir" 
+                    maxlength="2"/>
             </div>
             
             <div class="modal-footer">

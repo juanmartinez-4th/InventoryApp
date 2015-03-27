@@ -5,10 +5,18 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
 @Entity
 @Table(name="PRODUCTION")
+@NamedQueries({
+	@NamedQuery(name="findProductionByName", 
+				query="from Production where lower(CODE) like :productionName OR "
+						+ "lower(NAME) like :productionName OR "
+						+ "lower(DESCRIPTION) like :productionName")
+})
 public class Production extends BaseEntity<Integer> {
 	
 	private static final long serialVersionUID = -3695429293257924495L;

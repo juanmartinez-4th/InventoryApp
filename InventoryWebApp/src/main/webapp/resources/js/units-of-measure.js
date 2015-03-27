@@ -4,6 +4,7 @@ $(function() {
 	$('#modal_nueva_unidadMedida').on('shown.bs.modal', function() {
 		$('#txt_unidadMedida_nombre').focus();
 	});
+	$("[data-toggle=tooltip").tooltip();
 });
 
 var saveUnit = function() {

@@ -68,6 +68,28 @@ public class SecurityManagerImpl implements SecurityManager {
 		
 		return results;
 	}
+	
+	@Override
+	public List<UserVO> getUsersByName(String userName) {
+		List<User> users = userDAO.findByName(userName);
+		List<UserVO> results = new ArrayList<UserVO>(users.size());
+		
+		for (User user : users) {
+			UserVO result = mapper.map(user, UserVO.class);
+			
+			List<Authority> userAuthorities = authoritiesDAO.getUserAuthorities(result.getUserName());
+			List<AuthorityVO> authoritites = new ArrayList<AuthorityVO>(userAuthorities.size());
+			for (Authority authority : userAuthorities) {
+				AuthorityVO authorityVO = mapper.map(authority, AuthorityVO.class);
+				authoritites.add(authorityVO);
+			}
+			
+			result.getAuthorities().addAll(authoritites);
+			results.add(result);
+		}
+		
+		return results;
+	}
 
 	@Override
 	public UserVO addUser(UserVO newUser) {

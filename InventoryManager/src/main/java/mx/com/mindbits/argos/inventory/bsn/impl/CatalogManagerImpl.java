@@ -210,7 +210,21 @@ public class CatalogManagerImpl implements CatalogManager {
 		
 		return results;
 	}
-			
+	
+	@Override
+	public List<CategoryVO> getCategoriesByName(String categoryName) {
+		ArrayList<CategoryVO> results;
+		
+		List<Category> categories = categoryDAO.findByName(categoryName);
+		results = new ArrayList<>(categories.size());
+		
+		for (Category category : categories) {
+			CategoryVO result = mapper.map(category, CategoryVO.class);
+			results.add(result);
+		}
+		
+		return results;
+	}
 	
 	@Override
 	public List<CategoryVO> getCategoryHierachy(Integer categoryId) {
@@ -355,6 +369,21 @@ public class CatalogManagerImpl implements CatalogManager {
 		
 		return results;
 	}
+	
+	@Override
+	public List<UnitOfMeasureVO> getUnitsOfMeasureByName(String unitName) {
+		ArrayList<UnitOfMeasureVO> results;
+		
+		List<UnitOfMeasure> unitsOfMeasure = unitOfMeasureDAO.findByName(unitName);
+		results = new ArrayList<>(unitsOfMeasure.size());
+		
+		for (UnitOfMeasure unitOfMeasure : unitsOfMeasure) {
+			UnitOfMeasureVO result = mapper.map(unitOfMeasure, UnitOfMeasureVO.class);
+			results.add(result);
+		}
+		
+		return results;
+	}
 
 	@Override
 	public UnitOfMeasureVO saveUnitOfMeasure(UnitOfMeasureVO newUnitOfMeasure) {
@@ -388,6 +417,21 @@ public class CatalogManagerImpl implements CatalogManager {
 		ArrayList<ProductionVO> results;
 		
 		List<Production> productions = productionDAO.getAllProductions();
+		results = new ArrayList<>(productions.size());
+		
+		for (Production production : productions) {
+			ProductionVO result = mapper.map(production, ProductionVO.class);
+			results.add(result);
+		}
+		
+		return results;
+	}
+	
+	@Override
+	public List<ProductionVO> getProductionsByName(String productionName) {
+		ArrayList<ProductionVO> results;
+		
+		List<Production> productions = productionDAO.findByName(productionName);
 		results = new ArrayList<>(productions.size());
 		
 		for (Production production : productions) {

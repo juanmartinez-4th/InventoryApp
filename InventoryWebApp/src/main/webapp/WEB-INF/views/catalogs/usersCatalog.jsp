@@ -7,7 +7,8 @@
     <div class="row">
         <div class="col-sm-3 pull-right btn_nuevo_item">
             <!-- Button para MODAL [+ nuevo usuario] -->
-            <button onclick="javascript:showUserModal('', '', '', '')" type="button" class="btn_chico btn btn-success pull-right side_paddings" data-toggle="modal">
+            <button onclick="javascript:showUserModal('', '', '', '')" type="button" class="btn_chico btn btn-success pull-right side_paddings" 
+                    data-toggle="tooltip" title="Agregar un nuevo usuario" data-placement="left">
                 <span class="glyphicon glyphicon-plus"></span>
                 Nuevo usuario
             </button>
@@ -72,15 +73,19 @@
                             </td>
 	                        <td class="text-center">
 	                            <a onclick="javascript:showUserModal('${currUser.userName}', '${currUser.password}', '${currUser.authorities[0].authority}', '${currUser.enabled}')"
-	                                data-toggle="modal" 
+	                                data-toggle="tooltip"
+	                                title="Modificar usuario" 
+	                                data-placement="left"
 	                                id="edit_${currUser.userName}" 
 	                                class="btn btn-primary btn_dark btn_tabla" 
 	                                href="#"><i class="fa fa-pencil fa-lg"></i></a>
 	                        </td>
 	                        <td class="text-center">
 	                            <c:if test="${pageContext.request.userPrincipal.name != currUser.userName}">
-		                            <a onclick="javascript:confirmDelete('${currUser.userName}')"
-	                                    data-toggle="modal" 
+		                            <a onclick="javascript:confirmDelete('${currUser.userName}')" 
+	                                    data-toggle="tooltip" 
+                                        title="Eliminar usuario" 
+	                                    data-placement="left" 
 	                                    id="delete_${currUser.userName}" 
 	                                    class="btn btn-danger btn_chico btn_tabla" 
 	                                    style="background-color:red;" 
@@ -119,41 +124,27 @@
             <div class="modal-body">            
                 <!-- CAMPO 01 / Nombre del usuario   -->
                 <label for="txt_nombre_usuario">Nombre</label>
-                <div class="input-group" >
-                    <form:input path="userName" id="txt_nombre_usuario" type="text" class="form-control no_spaces_field" 
-                        placeholder="" data-toggle="popover" data-placement="top" title="Indique el nombre de usuario" 
-                        maxlength="15"/>
-                    <span class="input-group-btn">
-                        <button id="name-help" class="btn_chico btn btn-default" type="button"><span class="glyphicon glyphicon-info-sign"></span></button>
-                    </span>
-                </div><!-- /input-group -->
+                <form:input path="userName" id="txt_nombre_usuario" type="text" class="form-control no_spaces_field" 
+                    placeholder="" data-toggle="tooltip" data-placement="top" title="Indique el nombre de usuario" 
+                    maxlength="15"/>
                 
                 <!-- CAMPO 02 / Descripción   -->
                 <label for="txt_descripcion">Contraseña</label>
-                <div class="input-group" >
-                    <form:input path="password" id="txt_password" type="password"  class="form-control" placeholder="" 
-                    data-toggle="popover" data-placement="top" title="Indique la contraseña del usuario"
+                <form:input path="password" id="txt_password" type="password"  class="form-control" placeholder="" 
+                    data-toggle="tooltip" data-placement="top" title="Indique la contraseña del usuario"
                     maxlength="60"/>
-                    <span class="input-group-btn">
-                        <button class="btn_chico btn btn-default" type="button"><span class="glyphicon glyphicon-info-sign"></span></button>
-                    </span>
-                </div><!-- /input-group -->
                
                 <!-- CAMPO 03 / Perfil del usuario   -->
                 <label for="txt_profile">Perfil</label>
                 <div class="row">
                     <div class="col-xs-8">
-                        <div class="input-group" >
-                            <form:input path="authorities[0].authority" id="txt_profile" type="text" class="form-control" value="" data-toggle="popover" data-placement="top" title="Indique el perfil del usuario" />
-                            <span class="input-group-btn">
-                                <button class="btn_chico btn btn-default" type="button"><span class="glyphicon glyphicon-info-sign"></span></button>
-                            </span>
-                        </div><!-- /input-group -->
+                        <form:input path="authorities[0].authority" id="txt_profile" type="text" class="form-control" 
+                                value="" data-toggle="tooltip" data-placement="top" title="Indique el perfil del usuario" />
                     </div>
 
                     <div class="col-xs-4">
                         <button type="button" class="btn_chico btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-expanded="false" style="width:100%;">
-                            <span class="caret"></span>
+                            Perfiles <span class="caret"></span>
                         </button>
                         <ul class="dropdown-menu" role="menu">
                             <c:if test="${not empty authoritiesCatalog}"></c:if>
@@ -168,18 +159,14 @@
                 <label for="txt_enabled">Estado</label>   
                 <div class="row">        
                     <div class="col-xs-8">
-                        <div class="input-group" >
-                            <form:input path="enabled" type="hidden" id="userEnabled" value="true" />
-                            <input id="txt_enabled" type="text" class="form-control" readonly value="Habilitado" >
-                            <span class="input-group-btn">
-                                <button class="btn_chico btn btn-default" type="button"><span class="glyphicon glyphicon-info-sign"></span></button>
-                            </span>
-                        </div><!-- /input-group -->
+                        <form:input path="enabled" type="hidden" id="userEnabled" value="true" />
+                        <input id="txt_enabled" type="text" class="form-control" readonly value="Habilitado" 
+                                data-toggle="tooltip" data-placement="top" title="Indique el estado del usuario">
                     </div>
 
                     <div class="col-xs-4">
                         <button type="button" class="btn_chico btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-expanded="false" style="width:100%;">
-                            <span class="caret"></span>
+                            Estado <span class="caret"></span>
                         </button>
                         <ul class="dropdown-menu" role="menu">
                             <li onclick="javascript:setEnabledUser('true')"><a href="#">Habilitado</a></li>

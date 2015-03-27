@@ -3,10 +3,16 @@ package mx.com.mindbits.argos.inventory.entity;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
 @Entity
 @Table(name="USERS")
+@NamedQueries({
+	@NamedQuery(name="findUserByName", 
+				query="from User where lower(USERNAME) like :userName")
+})
 public class User extends BaseEntity<String> {
 
 	private static final long serialVersionUID = 941787578248243075L;

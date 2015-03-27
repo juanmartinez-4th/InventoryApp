@@ -116,16 +116,37 @@ public class CatalogsController {
 	}
 	
 	@RequestMapping(value = "/getItemsBycategory", method = RequestMethod.GET)
-	public String getItemsBycategory(Model model, @RequestParam("categoryId") Integer categoryId) {
-		List<ItemVO> items = inventoryManager.getItemsByCategory(categoryId);
+	public String getItemsBycategory(Model model, 
+			@RequestParam("categoryId") Integer categoryId,
+			@ModelAttribute(value="resultsFilter") ResultsFilter resultsFilter,
+			HttpServletRequest request) {
+		boolean showGridView = false;
+		List<ItemVO> items;
+		
+		if(resultsFilter != null && resultsFilter.getFilter1() != null 
+				&& !"".equals(resultsFilter.getFilter1().trim())) {
+			String itemDescription = resultsFilter.getFilter1().trim().toLowerCase();
+			items = inventoryManager.getItemsByDescription(itemDescription);
+		}else {
+			items = inventoryManager.getItemsByCategory(categoryId);
+		}
+		
+		ResultsFilter filter = new ResultsFilter();
+		filter.setFilterName("listItems");
+		model.addAttribute("resultsFilter", filter);
 		model.addAttribute("itemsList", items);
 		
 		List<CategoryVO> categories = inventoryManager.getAllCategories();
 		model.addAttribute("categoriesList", categories);
 		model.addAttribute("selectedCategory", categoryId);
+		
+		if(request.getParameter("showGrid") != null) {
+			showGridView = true;
+		}
+		
 		model.addAttribute("pageTitle", ITEMS_CATALOG_VIEW_TITLE);
 		
-		return ITEMS_CATALOG_GRID_VIEW;
+		return showGridView ? ITEMS_CATALOG_GRID_VIEW : ITEMS_CATALOG_LIST_VIEW;
 	}
 
 	@RequestMapping(value = "/showItem", method = RequestMethod.GET)
@@ -243,13 +264,29 @@ public class CatalogsController {
 	}
 	
 	@RequestMapping(value = "/adminCategories", method = RequestMethod.GET)
-	public String listCategories(Model model, HttpServletRequest request) {
+	public String listCategories(Model model,
+			@ModelAttribute(value="resultsFilter") ResultsFilter resultsFilter,
+			HttpServletRequest request) {
 		Integer parentCategory = null;
-		if(request.getParameter("parentCategory") != null) {
-			parentCategory = Integer.valueOf(request.getParameter("parentCategory"));
-			model.addAttribute("parentCategory", parentCategory);
+		List<CategoryVO> results;
+		
+		if(resultsFilter != null && resultsFilter.getFilter1() != null 
+				&& !"".equals(resultsFilter.getFilter1().trim())) {
+			String categoryName = resultsFilter.getFilter1().trim().toLowerCase();
+			results = inventoryManager.getCategoriesByName(categoryName);
+			model.addAttribute("listByName", "true");
+		}else {
+			if(request.getParameter("parentCategory") != null) {
+				parentCategory = Integer.valueOf(request.getParameter("parentCategory"));
+				model.addAttribute("parentCategory", parentCategory);
+			}
+			results = inventoryManager.getCategoryDescendants(parentCategory);
 		}
-		List<CategoryVO> results = inventoryManager.getCategoryDescendants(parentCategory);
+		
+		ResultsFilter filter = new ResultsFilter();
+		filter.setFilterName("adminCategories");
+		model.addAttribute("resultsFilter", filter);
+		
 		model.addAttribute("categoriesList", results);
 		model.addAttribute("category", new CategoryVO());
 		
@@ -338,8 +375,23 @@ public class CatalogsController {
 	}
 	
 	@RequestMapping(value = "/adminUnitsOfMeasure", method = RequestMethod.GET)
-	public String listUnitsOfMeasure(Model model, HttpServletRequest request) {
-		List<UnitOfMeasureVO> results = inventoryManager.getAllUnitsOfMeasure();
+	public String listUnitsOfMeasure(Model model,
+			@ModelAttribute(value="resultsFilter") ResultsFilter resultsFilter,
+			HttpServletRequest request) {
+		
+		List<UnitOfMeasureVO> results;
+		if(resultsFilter != null && resultsFilter.getFilter1() != null 
+				&& !"".equals(resultsFilter.getFilter1().trim())) {
+			String unitName = resultsFilter.getFilter1().trim().toLowerCase();
+			results = inventoryManager.getUnitsOfMeasureByName(unitName);
+		}else {
+			results = inventoryManager.getAllUnitsOfMeasure();
+		}
+		
+		ResultsFilter filter = new ResultsFilter();
+		filter.setFilterName("adminUnitsOfMeasure");
+		model.addAttribute("resultsFilter", filter);
+		
 		model.addAttribute("unitsList", results);
 		model.addAttribute("unitOfMeasure", new UnitOfMeasureVO());
 		
@@ -394,7 +446,7 @@ public class CatalogsController {
 		Message response = Message.successMessage("Unidad de medida eliminada", null);
 		
 		try {
-			inventoryManager.deleteCategory(unitId);
+			inventoryManager.deleteUnitOfMeasure(unitId);
 		}catch(Exception e) {
 			if (e instanceof DataIntegrityViolationException) {
 				response = Message.failMessage("Imposible realizar la operación, "
@@ -407,8 +459,23 @@ public class CatalogsController {
 	}
 	
 	@RequestMapping(value = "/adminProductions", method = RequestMethod.GET)
-	public String listProductions(Model model, HttpServletRequest request) {
-		List<ProductionVO> results = inventoryManager.getAllProductions();
+	public String listProductions(Model model,
+			@ModelAttribute(value="resultsFilter") ResultsFilter resultsFilter,
+			HttpServletRequest request) {
+		List<ProductionVO> results;
+		
+		if(resultsFilter != null && resultsFilter.getFilter1() != null 
+				&& !"".equals(resultsFilter.getFilter1().trim())) {
+			String productionName = resultsFilter.getFilter1().trim().toLowerCase();
+			results = inventoryManager.getProductionsByName(productionName);
+		}else {
+			results = inventoryManager.getAllProductions();
+		}
+		
+		ResultsFilter filter = new ResultsFilter();
+		filter.setFilterName("adminProductions");
+		model.addAttribute("resultsFilter", filter);
+		
 		model.addAttribute("productionsList", results);
 		model.addAttribute("production", new ProductionVO());
 		

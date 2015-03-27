@@ -14,6 +14,7 @@ $(function() {
 	$('#modal_print_labels').on('shown.bs.modal', function() {
 		$('#txt_label_copies').focus();
 	});
+	$("[data-toggle=tooltip").tooltip();
 });
 
 function saveItem(captureNew) {

@@ -15,7 +15,8 @@
         
         <div class="col-sm-3 pull-right btn_nuevo_item">
             <!-- Button para MODAL [+ nueva unidad de medida] -->
-            <button onclick="javascript:showUnitModal(0, '', '')" type="button" class="btn_chico btn btn-success pull-right side_paddings" data-toggle="modal">
+            <button onclick="javascript:showUnitModal(0, '', '')" type="button" class="btn_chico btn btn-success pull-right side_paddings" 
+                    data-toggle="tooltip" title="Agregar una nueva unidad de medida" data-placement="left" >
                 <span class="glyphicon glyphicon-plus"></span>
                 Nueva Unidad de Medida
             </button>
@@ -72,14 +73,14 @@
 	                        <td>${currUnit.description}</td>
 	                        <td class="text-center">
                                 <a onclick="javascript:showUnitModal(${currUnit.id}, '${currUnit.name}', '${currUnit.description}')"
-                                    data-toggle="modal" 
+                                    data-toggle="tooltip" title="Modificar unidad de medida" data-placement="left"  
                                     id="edit_${currUnit.id}" 
                                     class="btn btn-primary btn_dark btn_tabla" 
                                     href="#"><i class="fa fa-pencil fa-lg"></i></a>
                             </td>
                             <td class="text-center">
                                 <a onclick="javascript:confirmDelete(${currUnit.id}, '${currUnit.name}')"
-                                    data-toggle="modal" 
+                                    data-toggle="tooltip" title="Eliminar unidad de medida" data-placement="left"  
                                     id="delete_${currUnit.id}" 
                                     class="btn btn-danger btn_chico btn_tabla" 
                                     style="background-color:red;" 
@@ -115,24 +116,16 @@
             
             <div class="modal-body"><!-- CONTENIDO del modal -->
                 <!-- CAMPO 01 / Nombre de unidad de medida   -->
-                <label for="txt_unidadMedida_nombre">Nombre</label>
-                <div class="input-group" >
-                    <form:input path="name" id="txt_unidadMedida_nombre" type="text" class="form-control" 
-                        placeholder="" data-toggle="popover" data-placement="top" title="Indique el nombre de la unidad de medida" 
-                        maxlength="25" />
-                    <span class="input-group-btn">
-                        <button class="btn_chico btn btn-default" type="button"><span class="glyphicon glyphicon-info-sign"></span></button>
-                    </span>
-                </div><!-- /input-group -->
+                <label for="txt_unidadMedida_nombre">Abreviatura</label>
+                <form:input path="name" id="txt_unidadMedida_nombre" type="text" class="form-control" 
+                    placeholder="" data-toggle="tooltip" data-placement="top" title="Indique la abreviatura de la unidad de medida. Esta es la que se mostrará en la captura de nuevos artículos." 
+                    maxlength="10" />
                 
                 <!-- CAMPO 02 / Descripción   -->
-                <label for="txt_descripcion">Descripción</label>
-                <div class="input-group" >
-                    <form:input path="description" id="txt_descripcion" type="text" class="form-control" placeholder="" maxlength="60" />
-                    <span class="input-group-btn">
-                        <button class="btn_chico btn btn-default" type="button"><span class="glyphicon glyphicon-info-sign"></span></button>
-                    </span>
-                </div><!-- /input-group -->
+                <label for="txt_descripcion">Nombre</label>
+                <form:input path="description" id="txt_descripcion" type="text" class="form-control"
+                    placeholder="" data-toggle="tooltip" data-placement="top" title="Nombre completo de la unidad de medida. Este campo no es requerido." 
+                    maxlength="20" />
             </div>
             <div class="modal-footer">
                 <button id="btnSaveUnit" class="btn btn-success pull-right">

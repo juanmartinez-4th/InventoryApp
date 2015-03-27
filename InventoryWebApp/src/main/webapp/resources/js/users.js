@@ -5,6 +5,7 @@ $(function() {
 	$('#modal_nuevo_usuario').on('shown.bs.modal', function() {
 		$('#txt_nombre_usuario').focus();
 	});
+	$("[data-toggle=tooltip").tooltip();
 });
 
 var saveUser = function() {

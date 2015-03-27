@@ -10,6 +10,8 @@ public interface UserDAO extends BaseDAO<String, User> {
 	
 	List<User> getAllUsers();
 	
+	List<User> findByName(String userName);
+	
 	User saveUser(User user);
 	
 	User updateUser(User userToUpdate);

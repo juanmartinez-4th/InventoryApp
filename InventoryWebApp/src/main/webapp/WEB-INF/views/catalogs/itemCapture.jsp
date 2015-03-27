@@ -47,12 +47,7 @@
                 <label for="txt_codigo">Código</label>   
                 <div class="row">        
                     <div class="col-xs-8">
-                        <div class="input-group" >
-                          <form:input path="item.code" id="txt_codigo" type="text" class="form-control" placeholder="XXX0000000001XXX" />
-                          <span class="input-group-btn">
-                            <button class="btn_chico btn btn-default" type="button"><span class="glyphicon glyphicon-info-sign"></span></button>
-                          </span>
-                        </div><!-- /input-group -->
+                        <form:input path="item.code" id="txt_codigo" type="text" class="form-control" placeholder="XXX0000000001XXX" />
                     </div>
 
                     <div class="col-xs-4">
@@ -68,7 +63,7 @@
                 <div class="row">        
                     <div class="col-xs-10">
                         <div id="txt_categoria" class="form-control height_auto" 
-                                data-toggle="popover" data-placement="top" title="Indique la categoría del artículo">
+                                data-toggle="tooltip" data-placement="top" title="Indique la categoría del artículo">
                             <form:input path="category.id" type="hidden" id="itemCategory" value="0" />
                             <input type="hidden" id="itemCategoryName" value="" />
                             <ol class="breadcrumb" id="breadcrumbCategory">
@@ -88,14 +83,9 @@
                 
 <!--                CAMPO 03 / Descripción   -->
                 <label for="txt_descripcion">* Descripción</label>
-                <div class="input-group" >
-                    <form:input path="item.description" id="txt_descripcion" type="text" class="form-control" placeholder="" 
-                        data-toggle="popover" data-placement="top" title="Capture la descripción del artículo"
-                        maxlength="30"/>
-                    <span class="input-group-btn">
-                        <button class="btn_chico btn btn-default" type="button"><span class="glyphicon glyphicon-info-sign"></span></button>
-                    </span>
-                </div><!-- /input-group -->
+                <form:input path="item.description" id="txt_descripcion" type="text" class="form-control" placeholder="" 
+                    data-toggle="tooltip" data-placement="top" title="Capture la descripción del artículo"
+                    maxlength="30"/>
 
             </div>
 
@@ -166,7 +156,7 @@
                     <div class="col-xs-8">
                         <div class="input-group" >
                             <form:input path="location.quantity" class="form-control decimal_field" id="txt_existencia" placeholder="" 
-                                data-toggle="popover" data-placement="top" title="Indique la cantidad a ingresar al inventario"/>
+                                data-toggle="tooltip" data-placement="top" title="Indique la cantidad a ingresar al inventario y la unidad de medida"/>
                             <span class="input-group-btn">
                                 <button id="btnUnitOfM" class="btn_chico btn btn-default" type="button"><span class="glyphicon glyphicon-info-sign"></span></button>
                             </span>
@@ -193,13 +183,9 @@
                 <label for="txt_localización">Producción</label>   
                 <div class="row">
                     <div class="col-xs-8">
-                        <div class="input-group" >
-                            <form:input path="location.production.id" type="hidden" id="productionId" value="0" />
-                            <input type="text" class="form-control" id="txt_produccion" readonly />
-                            <span class="input-group-btn">
-                                <button class="btn_chico btn btn-default" type="button"><span class="glyphicon glyphicon-info-sign"></span></button>
-                            </span>
-                        </div><!-- /input-group -->
+                        <form:input path="location.production.id" type="hidden" id="productionId" value="0" />
+                        <input type="text" class="form-control" id="txt_produccion" readonly 
+                            data-toggle="tooltip" data-placement="top" title="Indique la producción del artículo" />
                     </div>
 
                     <div class="col-xs-4">
@@ -293,14 +279,9 @@
                 </div><!-- /input-group -->
                 
                 <label for="txt_label_copies">Número de copias</label>
-                <div class="input-group" >
-                    <input id="txt_label_copies" type="text" class="form-control numeric_field" 
-                        placeholder="" data-toggle="popover" data-placement="top" title="Indique el número de etiquetas a imprimir" 
-                        maxlength="2"/>
-                    <span class="input-group-btn">
-                        <button id="name-help" class="btn_chico btn btn-default" type="button"><span class="glyphicon glyphicon-info-sign"></span></button>
-                    </span>
-                </div><!-- /input-group -->
+                <input id="txt_label_copies" type="text" class="form-control numeric_field" 
+                    placeholder="" data-toggle="tooltip" data-placement="top" title="Indique el número de etiquetas a imprimir" 
+                    maxlength="2"/>
             </div>
             
             <div class="modal-footer">

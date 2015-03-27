@@ -6,6 +6,7 @@ import mx.com.mindbits.argos.inventory.dao.HibernateBaseDAO;
 import mx.com.mindbits.argos.inventory.dao.UnitOfMeasureDAO;
 import mx.com.mindbits.argos.inventory.entity.UnitOfMeasure;
 
+import org.hibernate.Query;
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -20,6 +21,15 @@ public class UnitOfMeasureDAOImpl extends HibernateBaseDAO<Integer, UnitOfMeasur
 	@Override
 	public List<UnitOfMeasure> getAllUnitsOfMeasure() {
 		return list();
+	}
+	
+	@Override
+	@SuppressWarnings("unchecked")
+	public List<UnitOfMeasure> findByName(String unitName) {
+		Query query = sessionFactory.getCurrentSession().getNamedQuery("findUnitByName");
+		query.setString("unitName", "%" + unitName + "%");
+		
+		return (List<UnitOfMeasure>)query.list();
 	}
 	
 	@Override

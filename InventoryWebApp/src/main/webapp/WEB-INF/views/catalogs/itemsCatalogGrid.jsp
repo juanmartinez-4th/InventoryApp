@@ -9,14 +9,17 @@
     <input id="itemCategory" type="hidden" value="0">
 </c:if>
 
+<input id="showGridView" type="hidden" value="true">
+
 <section id="barra_acciones" class="container">
     <div class="row">
         <div class="botones_izquierda col-xs-3 col-sm-2">
-            <button type="button" class="btn_chico width_100 btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+            <button type="button" class="btn_chico width_100 btn btn-primary dropdown-toggle" aria-expanded="false"
+                    data-toggle="dropdown" title="Seleccione una categoría para filtrar los resultados" data-placement="right" >
                 Categorías <span class="caret"></span>
             </button>
             <ul class="dropdown-menu" role="menu" id="categoriesMenu">
-                <li><a href="<c:url value='/listItems'/>">Todo</a></li>
+                <li><a href="<c:url value='/listItems?showGrid=true'/>">Todo</a></li>
             </ul>
         </div>
 
@@ -32,8 +35,14 @@
             <div id="botones_vista" class="col-xs-4 col-xs-offset-4">
                 <p class="inline_block">Vista</p>
                 <div class="btn-group" role="group">
-                    <a href="<c:url value='/listItems'/>" class="btn_chico btn btn-primary"><span class="glyphicon glyphicon-th-list"></span></a>
-                    <button type="button" class="btn_chico btn btn-primary btn_dark"><span class="glyphicon glyphicon-th"></span></button>
+                    <a href="<c:url value='/listItems'/>" class="btn_chico btn btn-primary"
+                            data-toggle="tooltip" title="Mostrar resultados en vista de lista" data-placement="top" >
+                        <span class="glyphicon glyphicon-th-list"></span>
+                    </a>
+                    <button type="button" class="btn_chico btn btn-primary btn_dark" 
+                            data-toggle="tooltip" title="Mostrar resultados en vista de mosaico" data-placement="top">
+                        <span class="glyphicon glyphicon-th"></span>
+                    </button>
                 </div>
             </div>
             <!-- <div class="col-xs-4">
@@ -43,7 +52,8 @@
                 </button>
             </div> -->
             <div class="col-xs-4">
-                <a class="btn_chico width_100 btn btn-success" href="<c:url value='/captureItem'/>">
+                <a class="btn_chico width_100 btn btn-success" href="<c:url value='/captureItem'/>"
+                        data-toggle="tooltip" title="Agregar un nuevo artículo" data-placement="left">
 	                <span class="glyphicon glyphicon-plus"></span>
 	                Nuevo artículo
 	            </a>
@@ -92,7 +102,7 @@
 	                    <figure>
 	                        <a href="<c:url value='/showItem?itemId=${currentItem.id}' />">
 	                           <c:if test="${empty currentItem.defaultPicture}">
-	                               <img src="http://placehold.it/152x152&text=Foto de Producto" alt="Foto de Producto" height="152" width="152" class="img-responsive">
+	                               <img src="<c:url value='/resources/images/placeholder_118px_articulo.png' />" alt="Foto de Producto" height="152" width="152" class="img-responsive">
 	                           </c:if>
 	                           <c:if test="${not empty currentItem.defaultPicture}">
                                    <img src="/uploads/${currentItem.code}/${currentItem.defaultPicture}" alt="Foto de Producto" height="152" width="152" class="img-responsive">

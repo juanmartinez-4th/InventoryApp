@@ -42,6 +42,15 @@ public class CategoryDAOImpl extends HibernateBaseDAO<Integer, Category> impleme
 	}
 	
 	@Override
+	@SuppressWarnings("unchecked")
+	public List<Category> findByName(String categoryName) {
+		Query query = sessionFactory.getCurrentSession().getNamedQuery("findCategoryByName");
+		query.setString("categoryName", "%" + categoryName + "%");
+		
+		return (List<Category>)query.list();
+	}
+	
+	@Override
 	public Category saveCategory(Category newCategory) {
 		return save(newCategory);
 	}

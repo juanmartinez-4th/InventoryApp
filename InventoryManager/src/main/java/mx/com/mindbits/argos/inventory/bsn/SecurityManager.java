@@ -16,6 +16,8 @@ public interface SecurityManager {
 	
 	List<UserVO> getAllUsers();
 	
+	List<UserVO> getUsersByName(String userName);
+	
 	List<String> getAuthoritiesCatalog();
 	
 }

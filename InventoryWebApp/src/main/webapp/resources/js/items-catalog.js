@@ -20,9 +20,10 @@ function setSelectedCategory(selectedCategory) {
 					if(i == (response.length - 1)) {
 						html += '<li class="active">' + response[i].name + '</li>';
 					}else {
-						html += '<li><a href="' + 
-									ctx + '/getItemsBycategory?categoryId=' + response[i].id + '">' + 
-									response[i].name + '</a></li>';
+						var itemUrl = ctx + '/getItemsBycategory?categoryId=' + response[i].id;
+						itemUrl += $('#showGridView').length ? '&showGrid=true' : '';
+						
+						html += '<li><a href="' + itemUrl + '">' + response[i].name + '</a></li>';
 					}
 				}
 				
@@ -41,9 +42,11 @@ function setSelectedCategory(selectedCategory) {
 }
 
 function buildSubmenu(category) {
+	var itemUrl = ctx + '/getItemsBycategory?categoryId=' + category.id;
+	itemUrl += $('#showGridView').length ? '&showGrid=true' : '';
+	
 	var html = '<li class="dropdown-submenu">' + 
-			'<a href="' + ctx + '/getItemsBycategory?categoryId=' + category.id + 
-			'" class="dropdown-toggle">' + category.name + '</a>' +
+			'<a href="' + itemUrl + '" class="dropdown-toggle">' + category.name + '</a>' +
 			'<ul class="dropdown-menu">';
 	var descendants = category.descendantCategories;
 	
@@ -51,7 +54,10 @@ function buildSubmenu(category) {
 		if(descendants[i].descendantCategories.length > 0) {
 			html += buildSubmenu(descendants[i]);
 		}else {
-			html += '<li><a href="' + ctx + '/getItemsBycategory?categoryId=' + descendants[i].id + '">' + descendants[i].name + '</a></li>';
+			itemUrl = ctx + '/getItemsBycategory?categoryId=' + descendants[i].id;
+			itemUrl += $('#showGridView').length ? '&showGrid=true' : '';
+			
+			html += '<li><a href="' + itemUrl + '">' + descendants[i].name + '</a></li>';
 		}
 	}
 	
@@ -72,14 +78,19 @@ function setCategoryMenu() {
 				if(response[i].descendantCategories.length > 0) {
 					html += buildSubmenu(response[i]);
 				}else {
-					html += '<li><a href="' + ctx + '/getItemsBycategory?categoryId=' + response[i].id + '">' + response[i].name + '</a></li>';
+					var itemUrl = ctx + '/getItemsBycategory?categoryId=' + response[i].id;
+					itemUrl += $('#showGridView').length ? '&showGrid=true' : '';
+					
+					html += '<li><a href="' + itemUrl + '">' + response[i].name + '</a></li>';
 				}
 			}
 			
 			$('#categoriesMenu').html(html);
 		},
 		error: function(e) {
-			$('#categoriesMenu').html('<li><a href="' + ctx + '/listItems">Todo</a></li>');
+			var itemUrl = ctx + '/listItems';
+			itemUrl += $('#showGridView').length ? '&showGrid=true' : '';
+			$('#categoriesMenu').html('<li><a href="' + itemUrl + '">Todo</a></li>');
 		},
 		complete: maskPage(),
 	});

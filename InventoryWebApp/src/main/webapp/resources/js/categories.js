@@ -1,11 +1,16 @@
 $(function() {
+	if($('#listByName') != null && $('#listByName').val() == 'true') {
+		$('#btnAddNewCategory').hide();
+	}else {
+		$('#breadcrumbCategory').on('load', 
+				setSelectedCategory($('#breadcrumbCategory'), $('#parentCategory').val()));
+	}
 	$('#btnSaveCategory').on('click', saveCategory);
 	$('#btnDeleteCategory').on('click', deleteCategory);
-	$('#breadcrumbCategory').on('load', 
-			setSelectedCategory($('#breadcrumbCategory'), $('#parentCategory').val()));
 	$('#modal_nueva_categoria').on('shown.bs.modal', function() {
 		$('#txt_categoria_nombre').focus();
 	});
+	$("[data-toggle=tooltip").tooltip();
 });
 
 function setSelectedCategory(breadcumb, selectedCategory) {
@@ -155,11 +160,11 @@ var deleteCategory = function() {
 	return false;
 }
 
-function showCategoryModal(id, name, description) {
+function showCategoryModal(id, name, description, parentCategory) {
 	if(id != null && id > 0) {
 		$('#categoryId').val(id);
 		$('#categoryAction').val('update');
-		if($('#parentCategory').val() == 0) {
+		if(parentCategory == 0) {
 			$('#catModalTitle').text('Actualizar categoría');
 			$('#divParentCategory').hide();
 		}else {
@@ -171,7 +176,7 @@ function showCategoryModal(id, name, description) {
 		$('#btnSaveCategory').text('Actualizar');
 	} else {
 		$('#categoryAction').val('new');
-		if($('#parentCategory').val() == 0) {
+		if(parentCategory == 0) {
 			$('#catModalTitle').text('Nueva categoría');
 			$('#divParentCategory').hide();
 		}else {
@@ -182,8 +187,8 @@ function showCategoryModal(id, name, description) {
 		$('#txt_descripcion').val('');
 		$('#btnSaveCategory').text('Guardar');
 	}
-	$('#formParentCategory').val($('#parentCategory').val());
-	setSelectedCategory($('#breadcrumbParentcat'), $('#parentCategory').val());
+	$('#formParentCategory').val(parentCategory);
+	setSelectedCategory($('#breadcrumbParentcat'), parentCategory);
 	$('#modal_nueva_categoria').modal({backdrop: 'static'/*, keyboard: false*/})
 }
 

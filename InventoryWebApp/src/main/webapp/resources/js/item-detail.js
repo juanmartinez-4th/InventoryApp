@@ -4,6 +4,8 @@ $(function() {
 	$('#modal_print_labels').on('shown.bs.modal', function() {
 		$('#txt_label_copies').focus();
 	});
+	$("[data-toggle=tooltip").tooltip();
+	setCategory($('#itemCategory').val());
 });
 
 function updateZoomPlugin(imageSource) {
@@ -66,6 +68,32 @@ var printLabels = function () {
 	}
 	
 	event.preventDefault();
+}
+
+function setCategory(selectedCategory) {
+	$.ajax({
+		type : 'POST',
+		url : ctx + '/getCategoryHierarchy',
+		data : 'categoryId=' + selectedCategory,
+		beforeSend: maskPage(),
+		success : function(response) {
+			var html = '';
+			
+			for (var i = 0; i < response.length; i++) {
+				if(i == (response.length - 1)) {
+					html += '<li class="active resalta_negro">' + response[i].name + '</li>';
+				}else {
+					html += '<li class="resalta_negro">' + response[i].name + '</li>';
+				}
+			}
+			
+			$('#breadcumbCategory').html(html);
+		},
+		error: function(e) {
+			$('#breadcumbCategory').html('');
+		},
+		complete: maskPage()
+	});
 }
 
 // ESCUCHA: Si cambia el tamaño de pantalla para volver a calcular el plugin

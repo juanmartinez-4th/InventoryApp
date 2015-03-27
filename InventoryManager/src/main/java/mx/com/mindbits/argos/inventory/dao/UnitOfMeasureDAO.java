@@ -11,6 +11,8 @@ public interface UnitOfMeasureDAO extends BaseDAO<Integer, UnitOfMeasure> {
 	
 	List<UnitOfMeasure> getAllUnitsOfMeasure();
 	
+	List<UnitOfMeasure> findByName(String unitName);
+	
 	UnitOfMeasure saveUnitOfMeasure(UnitOfMeasure unitOfMeasure);
 	
 	UnitOfMeasure updateUnitOfMeasure(UnitOfMeasure unitToUpdate);

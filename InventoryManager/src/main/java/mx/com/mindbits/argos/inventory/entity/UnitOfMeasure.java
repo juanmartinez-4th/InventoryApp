@@ -5,10 +5,17 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
 @Entity
 @Table(name="UNIT_OF_MEASURE")
+@NamedQueries({
+	@NamedQuery(name="findUnitByName", 
+				query="from UnitOfMeasure where lower(NAME) like :unitName OR "
+						+ "lower(DESCRIPTION) like :unitName")
+})
 public class UnitOfMeasure extends BaseEntity<Integer> {
 	private static final long serialVersionUID = -717754938178615942L;
 

@@ -15,6 +15,8 @@ public interface CategoryDAO extends BaseDAO<Integer, Category> {
 	
 	List<Category> getCategoryDescendants(Integer categoryId);
 	
+	List<Category> findByName(String categoryName);
+	
 	Category saveCategory(Category category);
 	
 	Category updateCategory(Category categoryToUpdate);

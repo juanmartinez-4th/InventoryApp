@@ -6,6 +6,7 @@ import mx.com.mindbits.argos.inventory.dao.HibernateBaseDAO;
 import mx.com.mindbits.argos.inventory.dao.ProductionDAO;
 import mx.com.mindbits.argos.inventory.entity.Production;
 
+import org.hibernate.Query;
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -21,6 +22,15 @@ public class ProductionDAOImpl extends HibernateBaseDAO<Integer, Production> imp
 	@Override
 	public List<Production> getAllProductions() {
 		return list();
+	}
+	
+	@Override
+	@SuppressWarnings("unchecked")
+	public List<Production> findByName(String productionName) {
+		Query query = sessionFactory.getCurrentSession().getNamedQuery("findProductionByName");
+		query.setString("productionName", "%" + productionName + "%");
+		
+		return (List<Production>)query.list();
 	}
 	
 	@Override

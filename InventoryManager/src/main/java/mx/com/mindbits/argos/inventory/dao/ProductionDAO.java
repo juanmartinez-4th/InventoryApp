@@ -11,6 +11,8 @@ public interface ProductionDAO extends BaseDAO<Integer, Production> {
 	
 	List<Production> getAllProductions();
 	
+	List<Production> findByName(String productionName);
+	
 	Production saveProduction(Production production);
 	
 	Production updateProduction(Production productionToUpdate);

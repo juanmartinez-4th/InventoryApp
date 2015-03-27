@@ -4,6 +4,7 @@ $(function() {
 	$('#modal_nueva_produccion').on('shown.bs.modal', function() {
 		$('#txt_produccion_codigo').focus();
 	});
+	$("[data-toggle=tooltip").tooltip();
 });
 
 var saveProduction = function() {	
