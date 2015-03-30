@@ -127,6 +127,7 @@ public class SecurityController {
 		user.setUserName(newUser.getUserName());
 		user.setPassword(passwordEncoder.encode(newUser.getPassword()));
 		user.setEnabled(newUser.getEnabled());
+		user.getAuthorities().addAll(newUser.getAuthorities());
 		
 		user = securityManager.addUser(user);
 		
