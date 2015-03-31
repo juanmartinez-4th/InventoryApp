@@ -11,6 +11,19 @@ $(function() {
 		$('#txt_categoria_nombre').focus();
 	});
 	$("[data-toggle=tooltip").tooltip();
+	var colTargets;
+	
+	if($('#listByName') != null && $('#listByName').val() == 'true') {
+		colTargets = [2, 3, 4, 5];
+	}else {
+		colTargets = [2, 3, 4];
+	}
+	$('#categoriesTable').dataTable({
+		"columnDefs": [ { "targets": colTargets, "orderable": false , "searchable": false} ],
+		"language": {
+            "url": ctx + "/resources/localisation/dataTables.spanish.lang"
+        }
+	});
 });
 
 function setSelectedCategory(breadcumb, selectedCategory) {

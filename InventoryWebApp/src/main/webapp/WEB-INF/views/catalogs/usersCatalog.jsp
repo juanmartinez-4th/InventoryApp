@@ -3,6 +3,10 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ page session="true" %>
 
+<!-- -------------- CSS ---------------- -->
+<link rel="stylesheet" type="text/css" href="<c:url value='/resources/css/util/data-tables/dataTables.bootstrap.css'/>">
+<!-- -------------- CSS ---------------- -->
+
 <section id="barra_acciones" class="container captura_items">
     <div class="row">
         <div class="col-sm-3 pull-right btn_nuevo_item">
@@ -46,7 +50,7 @@
 	        </div>
         </div>
         <section class="table-responsive">
-            <table class="table table-condensed table-hover">
+            <table id="usersTable" class="table table-condensed table-hover">
                 <thead>
                     <tr>
                         <th>Nombre</th>
@@ -98,6 +102,8 @@
                     <c:otherwise>
                         <tr>
                             <td>No se encontraron resultados</td>
+                            <!-- Empty cells required by data-tables -->
+                            <td></td><td></td><td></td><td></td>
                         </tr>
                     </c:otherwise>
                 </c:choose>
@@ -123,19 +129,19 @@
             <!-- CONTENIDO del modal -->
             <div class="modal-body">            
                 <!-- CAMPO 01 / Nombre del usuario   -->
-                <label for="txt_nombre_usuario">Nombre</label>
+                <label for="txt_nombre_usuario" class="text-danger">* Nombre</label>
                 <form:input path="userName" id="txt_nombre_usuario" type="text" class="form-control no_spaces_field" 
                     placeholder="" data-toggle="tooltip" data-placement="top" title="Indique el nombre de usuario" 
                     maxlength="15"/>
                 
                 <!-- CAMPO 02 / Descripción   -->
-                <label for="txt_descripcion">Contraseña</label>
+                <label for="txt_descripcion" class="text-danger">* Contraseña</label>
                 <form:input path="password" id="txt_password" type="password"  class="form-control" placeholder="" 
                     data-toggle="tooltip" data-placement="top" title="Indique la contraseña del usuario"
                     maxlength="60"/>
                
                 <!-- CAMPO 03 / Perfil del usuario   -->
-                <label for="txt_profile">Perfil</label>
+                <label for="txt_profile" class="text-danger">* Perfil</label>
                 <div class="row">
                     <div class="col-xs-8">
                         <form:input path="authorities[0].authority" id="txt_profile" type="text" class="form-control" 
@@ -226,6 +232,8 @@
 
 
 <!-- -------------- SCRIPTS ---------------- -->
+<script src="<c:url value='/resources/js/util/jquery.dataTables.js' />"></script>
+<script src="<c:url value='/resources/js/util/dataTables.bootstrap.js' />"></script>
 <script src="<c:url value='/resources/js/utils.js'/>"></script>
 <script src="<c:url value='/resources/js/users.js'/>"></script>
 <!-- -------------- SCRIPTS ---------------- -->

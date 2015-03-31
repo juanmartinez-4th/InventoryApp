@@ -3,6 +3,10 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ page session="true" %>
 
+<!-- -------------- CSS ---------------- -->
+<link rel="stylesheet" type="text/css" href="<c:url value='/resources/css/util/data-tables/dataTables.bootstrap.css'/>">
+<!-- -------------- CSS ---------------- -->
+
 <c:if test="${not empty listByName}">
     <input id="listByName" type="hidden" value="true">
 </c:if>
@@ -74,7 +78,7 @@
 	        </div>
         </div>
         <section class="table-responsive">
-            <table class="table table-condensed table-hover">
+            <table id="categoriesTable" class="table table-condensed table-hover">
                 <thead>
                     <tr>
                         <th>Nombre</th>
@@ -128,6 +132,8 @@
                     <c:otherwise>
                         <tr>
                             <td>No se encontraron resultados</td>
+                            <!-- Empty cells required by data-tables -->
+                            <td></td><td></td><td></td><td></td><c:if test="${not empty listByName}"><td></td></c:if>
                         </tr>
                     </c:otherwise>
                 </c:choose>
@@ -171,7 +177,7 @@
                 
                 <!-- CAMPO 02 / Nombre de categoría   -->
                 <div class="row">
-	                <label for="txt_categoria_nombre">* Nombre</label>
+	                <label for="txt_categoria_nombre" class="text-danger">* Nombre</label>
 	                <!-- <div class="input-group" > -->
 	                    <form:input path="name" id="txt_categoria_nombre" type="text" class="form-control" 
 	                        placeholder="" data-toggle="tooltip" data-placement="top" title="Indique el nombre de la categoría" 
@@ -247,6 +253,8 @@
 
 
 <!-- -------------- SCRIPTS ---------------- -->
+<script src="<c:url value='/resources/js/util/jquery.dataTables.js' />"></script>
+<script src="<c:url value='/resources/js/util/dataTables.bootstrap.js' />"></script>
 <script src="<c:url value='/resources/js/utils.js'/>"></script>
 <script src="<c:url value='/resources/js/categories.js'/>"></script>
 <!-- -------------- SCRIPTS ---------------- -->

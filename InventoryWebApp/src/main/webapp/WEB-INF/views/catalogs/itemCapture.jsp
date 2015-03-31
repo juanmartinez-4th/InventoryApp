@@ -59,7 +59,7 @@
                 </div>
                 
 <!--                CAMPO 02 / Categoría   -->
-                <label for="txt_categoria">* Categoría</label>   
+                <label for="txt_categoria" class="text-danger">* Categoría</label>   
                 <div class="row">        
                     <div class="col-xs-10">
                         <div id="txt_categoria" class="form-control height_auto" 
@@ -83,7 +83,7 @@
                 </div>
                 
 <!--                CAMPO 03 / Descripción   -->
-                <label for="txt_descripcion">* Descripción</label>
+                <label for="txt_descripcion" class="text-danger">* Descripción</label>
                 <form:input path="item.description" id="txt_descripcion" type="text" class="form-control" placeholder="" 
                     data-toggle="tooltip" data-placement="top" title="Capture la descripción del artículo"
                     maxlength="30"/>
@@ -92,7 +92,7 @@
 
 <!--            CAMPO 04 / Imágenes   -->            
             <div class="col-sm-6" id="captura_imagenes">
-                <label for="txt_codigo">* Imágenes</label>
+                <label for="txt_codigo" class="text-danger">* Imágenes</label>
                 <div class="row">
                     <figure class="col-xs-4">
                         <div style='height: 0px;width: 0px; overflow:hidden;'>
@@ -132,27 +132,8 @@
 <!--        SECCION 2 -->
         <section class="row">
             <div class="col-sm-6">
-<!--                CAMPO 05 / Costo y Precios   -->
-                <div class="row">
-                    <div class="col-xs-4">
-                        <label for="txt_costo">Costo</label>
-                        <form:input path="item.cost" type="text" class="form-control decimal_field" id="txt_costo" placeholder="" />
-                    </div>
-                    
-                    <div class="col-xs-4">
-                        <label for="txt_precio_venta">Precio de venta</label>
-                        <form:input path="item.salePrice" type="text" class="form-control decimal_field" id="txt_precio_venta" placeholder="" />
-                    </div>
-                    
-                    <div class="col-xs-4">
-                        <label for="txt_precio_renta">Precio de renta</label>
-                        <form:input path="item.rentPrice" type="text" class="form-control decimal_field" id="txt_precio_renta" placeholder="" />
-                    </div>
-                </div>
-            
-            
 <!--                CAMPO 06 / Existencia -->
-                <label for="txt_existencia">* Existencia</label>   
+                <label for="txt_existencia" class="text-danger">* Existencia</label>   
                 <div class="row">        
                     <div class="col-xs-8">
                         <div class="input-group" >
@@ -178,17 +159,56 @@
                         </ul>
                     </div>
                 </div>
+<!--                CAMPO 07 / Localización -->   
+                <div class="row">
+                    <div class="col-xs-3">
+                        <label for="txt_seccion" class="text-danger">* Sección</label>
+                        <form:input path="location.section" type="text" class="form-control" id="txt_seccion" placeholder="" maxlength="5"/>
+                    </div>
+                    
+                    <div class="col-xs-3">
+                        <label for="txt_pasillo" class="text-danger">* Pasillo</label>
+                        <form:input path="location.hall" type="text" class="form-control" id="txt_pasillo" placeholder="" maxlength="5"/>
+                    </div>
+                    
+                    <div class="col-xs-3">
+                        <label for="txt_anaquel" class="text-danger">* Anaquel</label>
+                        <form:input path="location.rack" type="text" class="form-control" id="txt_anaquel" placeholder="" maxlength="5"/>
+                    </div>
+                    
+                    <div class="col-xs-3">
+                        <label for="txt_casilla" class="text-danger">* Casilla</label>
+                        <form:input path="location.box" type="text" class="form-control" id="txt_casilla" placeholder="" maxlength="5"/>
+                    </div>
+                </div>
             </div>
             
             <div class="col-sm-6">
-                <label for="txt_localización">Producción</label>   
+<!--                CAMPO 05 / Costo y Precios   -->
+                <div class="row">
+                    <div class="col-xs-4">
+                        <label for="txt_costo">Costo</label>
+                        <form:input path="item.cost" type="text" class="form-control decimal_field" id="txt_costo" placeholder="" />
+                    </div>
+                    
+                    <div class="col-xs-4">
+                        <label for="txt_precio_venta">Precio de venta</label>
+                        <form:input path="item.salePrice" type="text" class="form-control decimal_field" id="txt_precio_venta" placeholder="" />
+                    </div>
+                    
+                    <div class="col-xs-4">
+                        <label for="txt_precio_renta">Precio de renta</label>
+                        <form:input path="item.rentPrice" type="text" class="form-control decimal_field" id="txt_precio_renta" placeholder="" />
+                    </div>
+                </div>
+                
+                <label for="txt_produccion">Producción</label>   
                 <div class="row">
                     <div class="col-xs-8">
                         <form:input path="location.production.id" type="hidden" id="productionId" value="0" />
                         <input type="text" class="form-control" id="txt_produccion" readonly 
                             data-toggle="tooltip" data-placement="top" title="Indique la producción del artículo" />
                     </div>
-
                     <div class="col-xs-4">
                         <button type="button" class="btn_chico btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-expanded="false" style="width:100%;">
                             Producciones <span class="caret"></span>
@@ -200,29 +220,6 @@
                                 </c:forEach>
                             </c:if>
                         </ul>
-                    </div>
-                </div>
-<!--                CAMPO 07 / Localización -->
-                <label for="txt_localización">* Localización</label>   
-                <div class="row">
-                    <div class="col-xs-2">
-                        <label for="txt_seccion">Sección</label>
-                        <form:input path="location.section" type="text" class="form-control" id="txt_seccion" placeholder="" maxlength="5"/>
-                    </div>
-                    
-                    <div class="col-xs-2">
-                        <label for="txt_pasillo">Pasillo</label>
-                        <form:input path="location.hall" type="text" class="form-control" id="txt_pasillo" placeholder="" maxlength="5"/>
-                    </div>
-                    
-                    <div class="col-xs-2">
-                        <label for="txt_anaquel">Anaquel</label>
-                        <form:input path="location.rack" type="text" class="form-control" id="txt_anaquel" placeholder="" maxlength="5"/>
-                    </div>
-                    
-                    <div class="col-xs-2">
-                        <label for="txt_casilla">Casilla</label>
-                        <form:input path="location.box" type="text" class="form-control" id="txt_casilla" placeholder="" maxlength="5"/>
                     </div>
                 </div>
             </div>
@@ -302,5 +299,5 @@
 
 <!-- -------------- SCRIPTS ---------------- -->
 <script src="<c:url value='/resources/js/utils.js'/>"></script>
-<script src="<c:url value='/resources/js/items.js'/>"></script>
+<script src="<c:url value='/resources/js/item-capture.js'/>"></script>
 <!-- -------------- SCRIPTS ---------------- -->

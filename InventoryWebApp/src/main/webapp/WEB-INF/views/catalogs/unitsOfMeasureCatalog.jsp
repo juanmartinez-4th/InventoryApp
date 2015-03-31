@@ -3,6 +3,10 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ page session="true" %>
 
+<!-- -------------- CSS ---------------- -->
+<link rel="stylesheet" type="text/css" href="<c:url value='/resources/css/util/data-tables/dataTables.bootstrap.css'/>">
+<!-- -------------- CSS ---------------- -->
+
 <section id="barra_acciones" class="container captura_items">
     <div class="row">
         <section id="nav_nivel_2_b"  class="col-sm-9">
@@ -55,7 +59,7 @@
             </div>
         </div>
         <section class="table-responsive">
-            <table class="table table-condensed table-hover">
+            <table id="unitsTable" class="table table-condensed table-hover">
                 <thead>
                     <tr>
                         <th>Nombre</th>
@@ -92,6 +96,8 @@
                     <c:otherwise>
                         <tr>
                             <td>No se encontraron resultados</td>
+                            <!-- Empty cells required by data-tables -->
+                            <td></td><td></td><td></td>
                         </tr>
                     </c:otherwise>
                 </c:choose>
@@ -116,7 +122,7 @@
             
             <div class="modal-body"><!-- CONTENIDO del modal -->
                 <!-- CAMPO 01 / Nombre de unidad de medida   -->
-                <label for="txt_unidadMedida_nombre">Abreviatura</label>
+                <label for="txt_unidadMedida_nombre" class="text-danger">* Abreviatura</label>
                 <form:input path="name" id="txt_unidadMedida_nombre" type="text" class="form-control" 
                     placeholder="" data-toggle="tooltip" data-placement="top" title="Indique la abreviatura de la unidad de medida. Esta es la que se mostrará en la captura de nuevos artículos." 
                     maxlength="10" />
@@ -179,6 +185,8 @@
 
 
 <!-- -------------- SCRIPTS ---------------- -->
+<script src="<c:url value='/resources/js/util/jquery.dataTables.js' />"></script>
+<script src="<c:url value='/resources/js/util/dataTables.bootstrap.js' />"></script>
 <script src="<c:url value='/resources/js/utils.js'/>"></script>
 <script src="<c:url value='/resources/js/units-of-measure.js'/>"></script>
 <!-- -------------- SCRIPTS ---------------- -->

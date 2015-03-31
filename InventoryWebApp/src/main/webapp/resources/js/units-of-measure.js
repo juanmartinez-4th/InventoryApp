@@ -5,6 +5,12 @@ $(function() {
 		$('#txt_unidadMedida_nombre').focus();
 	});
 	$("[data-toggle=tooltip").tooltip();
+	$('#unitsTable').dataTable({
+		"columnDefs": [{ "targets": [2, 3], "orderable": false , "searchable": false}],
+		"language": {
+            "url": ctx + "/resources/localisation/dataTables.spanish.lang"
+        }
+	});
 });
 
 var saveUnit = function() {

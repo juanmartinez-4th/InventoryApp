@@ -32,7 +32,9 @@
         </div>
 
         <div class="botones_derecha col-xs-12 col-sm-6 pull-right">
-            <div id="botones_vista" class="col-xs-4 col-xs-offset-4">
+            <div class="col-xs-4">
+            </div>
+            <div id="botones_vista" class="col-xs-4">
                 <p class="inline_block">Vista</p>
                 <div class="btn-group" role="group">
                     <a href="<c:url value='/listItems'/>" class="btn_chico btn btn-primary"
@@ -102,10 +104,10 @@
 	                    <figure>
 	                        <a href="<c:url value='/showItem?itemId=${currentItem.id}' />">
 	                           <c:if test="${empty currentItem.defaultPicture}">
-	                               <img src="<c:url value='/resources/images/placeholder_118px_articulo.png' />" alt="Foto de Producto" height="152" width="152" class="img-responsive">
+	                               <img src="<c:url value='/resources/images/placeholder_118px_articulo.png' />" alt="Foto de Producto" class="img-thumbnail img-responsive">
 	                           </c:if>
 	                           <c:if test="${not empty currentItem.defaultPicture}">
-                                   <img src="/uploads/${currentItem.code}/${currentItem.defaultPicture}" alt="Foto de Producto" height="152" width="152" class="img-responsive">
+                                   <img src="/uploads/${currentItem.code}/${currentItem.defaultPicture}" alt="Foto de Producto" class="img-thumbnail img-responsive">
                                </c:if>
 	                        </a>
 	                    </figure>

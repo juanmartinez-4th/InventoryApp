@@ -16,6 +16,7 @@
     
         <security:intercept-url pattern="/" access="isAuthenticated() or isAnonymous()" />
         <security:intercept-url pattern="/cache.appcache" access="isAuthenticated() or isAnonymous()" />
+        <security:intercept-url pattern="/favicon.ico" access="isAuthenticated() or isAnonymous()" />
         <security:intercept-url pattern="/login" access="isAuthenticated() or isAnonymous()" />
         <security:intercept-url pattern="/resources/**" access="isAuthenticated() or isAnonymous()" />
         <security:intercept-url pattern="/admin**" access="hasRole('ROLE_ADMIN')" />

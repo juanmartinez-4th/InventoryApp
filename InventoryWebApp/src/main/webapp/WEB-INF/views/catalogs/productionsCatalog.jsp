@@ -3,6 +3,10 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ page session="true" %>
 
+<!-- -------------- CSS ---------------- -->
+<link rel="stylesheet" type="text/css" href="<c:url value='/resources/css/util/data-tables/dataTables.bootstrap.css'/>">
+<!-- -------------- CSS ---------------- -->
+
 <section id="barra_acciones" class="container captura_items">
     <div class="row">
         <section id="nav_nivel_2_b" class="col-sm-9">
@@ -55,7 +59,7 @@
             </div>
         </div>
         <section class="table-responsive">
-            <table class="table table-condensed table-hover">
+            <table id="productionsTable" class="table table-condensed table-hover">
                 <thead>
                     <tr>
                         <th>Código</th>
@@ -94,6 +98,8 @@
                     <c:otherwise>
                         <tr>
                             <td>No se encontraron resultados</td>
+                            <!-- Empty cells required by data-tables -->
+                            <td></td><td></td><td></td><td></td>
                         </tr>
                     </c:otherwise>
                 </c:choose>
@@ -118,13 +124,13 @@
             
             <div class="modal-body"><!-- CONTENIDO del modal -->
                 <!-- CAMPO 01 / Código de la producción   -->
-                <label for="txt_produccion_codigo">Código</label>
+                <label for="txt_produccion_codigo" class="text-danger">* Código</label>
                 <form:input path="code" id="txt_produccion_codigo" type="text" class="form-control" 
                     placeholder="" data-toggle="tooltip" data-placement="top" title="Indique el código de la producción" 
                     maxlength="10" />
                 
                 <!-- CAMPO 02 / Nombre de la producción   -->
-                <label for="txt_produccion_nombre">Nombre</label>
+                <label for="txt_produccion_nombre" class="text-danger">* Nombre</label>
                 <form:input path="name" id="txt_produccion_nombre" type="text" class="form-control" 
                     placeholder="" data-toggle="tooltip" data-placement="top" title="Indique el nombre de la producción" 
                     maxlength="30" />
@@ -187,6 +193,8 @@
 
 
 <!-- -------------- SCRIPTS ---------------- -->
+<script src="<c:url value='/resources/js/util/jquery.dataTables.js' />"></script>
+<script src="<c:url value='/resources/js/util/dataTables.bootstrap.js' />"></script>
 <script src="<c:url value='/resources/js/utils.js'/>"></script>
 <script src="<c:url value='/resources/js/productions.js'/>"></script>
 <!-- -------------- SCRIPTS ---------------- -->

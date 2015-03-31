@@ -5,6 +5,12 @@ $(function() {
 		subMenusSubOffsetX: 1,
 		subMenusSubOffsetY: -8
 	});
+	$('#itemsTable').dataTable({
+		"columnDefs": [{ "targets": [3, 4], "orderable": false , "searchable": false}],
+		"language": {
+            "url": ctx + "/resources/localisation/dataTables.spanish.lang"
+        }
+	});
 });
 
 function setSelectedCategory(selectedCategory) {

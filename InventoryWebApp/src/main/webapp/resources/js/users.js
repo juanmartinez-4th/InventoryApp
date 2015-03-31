@@ -6,6 +6,12 @@ $(function() {
 		$('#txt_nombre_usuario').focus();
 	});
 	$("[data-toggle=tooltip").tooltip();
+	$('#usersTable').dataTable({
+		"columnDefs": [{ "targets": [3, 4], "orderable": false , "searchable": false}],
+		"language": {
+            "url": ctx + "/resources/localisation/dataTables.spanish.lang"
+        }
+	});
 });
 
 var saveUser = function() {

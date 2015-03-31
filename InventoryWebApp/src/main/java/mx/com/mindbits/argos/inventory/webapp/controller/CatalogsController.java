@@ -150,11 +150,24 @@ public class CatalogsController {
 	}
 
 	@RequestMapping(value = "/showItem", method = RequestMethod.GET)
-	public String showItem(Model model, @RequestParam("itemId") Integer itemId) {
+	public String showItem(Model model, @RequestParam("itemId") Integer itemId, RedirectAttributes redirectAttrs) {
 		ItemCaptureForm itemForm = new ItemCaptureForm();
-		List<ItemLocationVO> itemLocation = inventoryManager.getItemLocations(itemId);
-		ItemClassificationVO itemClassification = inventoryManager.getItemClassification(itemId);
-		List<ItemPictureVO> itemPictures = inventoryManager.getItemPictures(itemId);
+		List<ItemLocationVO> itemLocation;
+		ItemClassificationVO itemClassification;
+		List<ItemPictureVO> itemPictures;
+		
+		try {
+			itemLocation = inventoryManager.getItemLocations(itemId);
+			itemClassification = inventoryManager.getItemClassification(itemId);
+			itemPictures = inventoryManager.getItemPictures(itemId);
+		}catch(Exception e) {
+			LOGGER.error("Error retrieving item detail: " + e.getMessage(), e);
+			Message message = Message.failMessage("No fue posible obtener los detalles del artículo");
+			redirectAttrs.addFlashAttribute("alertMsg", message);
+			
+			return "redirect:/listItems";
+		}
+		
 		List<String> itemPictureLocations = new ArrayList<String>(itemPictures.size());
 		
 		itemForm.setCategory(itemClassification.getCategory());

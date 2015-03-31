@@ -5,6 +5,12 @@ $(function() {
 		$('#txt_produccion_codigo').focus();
 	});
 	$("[data-toggle=tooltip").tooltip();
+	$('#productionsTable').dataTable({
+		"columnDefs": [{ "targets": [3, 4], "orderable": false , "searchable": false}],
+		"language": {
+            "url": ctx + "/resources/localisation/dataTables.spanish.lang"
+        }
+	});
 });
 
 var saveProduction = function() {	

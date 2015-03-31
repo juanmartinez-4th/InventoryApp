@@ -2,6 +2,10 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page session="true" %>
 
+<!-- -------------- CSS ---------------- -->
+<link rel="stylesheet" type="text/css" href="<c:url value='/resources/css/util/data-tables/dataTables.bootstrap.css'/>">
+<!-- -------------- CSS ---------------- -->
+
 <c:if test="${not empty selectedCategory}">
     <input id="itemCategory" type="hidden" value="${selectedCategory}">
 </c:if>
@@ -30,7 +34,9 @@
         </div>
 
         <div class="botones_derecha col-xs-12 col-sm-6 pull-right">
-            <div id="botones_vista" class="col-xs-4 col-xs-offset-4">
+            <div class="col-xs-4">
+            </div>
+            <div id="botones_vista" class="col-xs-4">
                 <p class="inline_block">Vista</p>
                 <div class="btn-group" role="group">
                     <button type="button" class="btn_chico btn btn-primary btn_dark" 
@@ -93,7 +99,7 @@
     
         <!-- <section class="row"> -->
         <section class="table-responsive">
-            <table class="table table-condensed table-hover">
+            <table id="itemsTable" class="table table-condensed table-hover">
                 <thead>
                     <tr>
                         <th>Código</th>
@@ -130,6 +136,8 @@
 			            <c:otherwise>
 			                <tr>
 	                            <td>No se encontraron resultados</td>
+	                            <!-- Empty cells required by data-tables -->
+	                            <td></td><td></td><td></td><td></td>
 	                        </tr>
 			            </c:otherwise>
 			        </c:choose>
@@ -140,6 +148,8 @@
 </main>
 
 <!-- -------------- SCRIPTS ---------------- -->
+<script src="<c:url value='/resources/js/util/jquery.dataTables.js' />"></script>
+<script src="<c:url value='/resources/js/util/dataTables.bootstrap.js' />"></script>
 <script src="<c:url value='/resources/js/utils.js' />"></script>
 <script src="<c:url value='/resources/js/items-catalog.js' />"></script>
 <!-- -------------- SCRIPTS ---------------- -->

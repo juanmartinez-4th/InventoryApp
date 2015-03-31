@@ -27,11 +27,13 @@
 		</mvc:interceptors>
 		 -->
 
+        <mvc:resources mapping="/cache.appcache" location="/cache.appcache" />
+        <mvc:resources mapping="/favicon.ico" location="/favicon.ico" />
 		<mvc:resources mapping="/resources/css/**" location="/resources/css/" />
 		<mvc:resources mapping="/resources/fonts/**" location="/resources/fonts/" />
 		<mvc:resources mapping="/resources/images/**" location="/resources/images/" />
 		<mvc:resources mapping="/resources/js/**" location="/resources/js/" />
-		
+		<mvc:resources mapping="/resources/localisation/**" location="/resources/localisation/" />
 		
 		<bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver" />
         
