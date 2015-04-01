@@ -39,7 +39,7 @@ Configure environment (All commands are executed throuwh MINGW32):
 
 Steps to deploy WAR:
 1. Put the war file inside webapps folder (a context with the name of the war is created, if deploy to root is desired name the war to deploy as ROOT.war)
-2. commit and push changes to repository (the application is automatically deploye)
+2. commit and push changes to repository (the application is automatically deployed)
 
 ---------------------------------
 
