@@ -161,7 +161,7 @@ public class CatalogsController {
 			itemClassification = inventoryManager.getItemClassification(itemId);
 			itemPictures = inventoryManager.getItemPictures(itemId);
 		}catch(Exception e) {
-			LOGGER.error("Error retrieving item detail: " + e.getMessage(), e);
+			LOGGER.error("Error retrieving details of item [ " + itemId + "]");
 			Message message = Message.failMessage("No fue posible obtener los detalles del artículo");
 			redirectAttrs.addFlashAttribute("alertMsg", message);
 			
@@ -368,7 +368,6 @@ public class CatalogsController {
 				response = Message.failMessage("Imposible realizar la operación, "
 						+ "algunos elementos ya se encuentran asignados a esta categoría.");
 			}else {
-				LOGGER.error("Error saving category: " + e.getMessage(), e);
 				response = Message.failMessage("No fue posible realizar la operación, intente más tarde.");
 			}
 		}
@@ -549,7 +548,6 @@ public class CatalogsController {
 				response = Message.failMessage("Imposible realizar la operación, "
 						+ "algunos elementos ya se encuentran asignados a esta producción.");
 			}else {
-				LOGGER.error("Error saving production: " + e.getMessage(), e);
 				response = Message.failMessage("No fue posible realizar la operación, intente más tarde.");
 			}
 		}
@@ -602,8 +600,6 @@ public class CatalogsController {
 	    headers.setCacheControl("must-revalidate, post-check=0, pre-check=0");
 	    
 	    String responseStr = Base64.encodeBytes(pdfByteArray);
-	    
-//	    ResponseEntity<byte[]> response = new ResponseEntity<byte[]>(pdfByteArray, headers, HttpStatus.OK);
 	    ResponseEntity<String> response = new ResponseEntity<String>(responseStr, headers, HttpStatus.OK);
 	    
 	    return response;

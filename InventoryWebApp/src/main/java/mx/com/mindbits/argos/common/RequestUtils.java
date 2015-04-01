@@ -62,5 +62,18 @@ public class RequestUtils {
 		
 		return targetUrl;
 	}
+
+	public static String getCurrentUser() {
+		String userName = "";
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		
+		if(authentication != null) {
+			userName = authentication.getName();
+		}else {
+			userName = "NOT AUTHENTICATED";
+		}
+		
+		return userName;
+	}
 	
 }

@@ -3,7 +3,7 @@
 <%@ page session="true" %>
 
 <!DOCTYPE html>
-<html lang="en" manifest="cache.appcache">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">

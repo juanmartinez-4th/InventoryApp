@@ -52,3 +52,7 @@ $(window).resize (function(){
 	    $("main").css("margin-bottom", newHeight);
 	}
 });
+
+$(document).on("contextmenu",function(e){
+	e.preventDefault();
+});

@@ -20,14 +20,10 @@
             <context:include-filter expression="org.springframework.stereotype.Controller" type="annotation"/>
         </context:component-scan>
 		
-		<!-- Interceptors -->
-		<!-- 
 		<mvc:interceptors>
-		    <bean class="mx.com.mindbits.argos.inventory.webapp.controller.SomeInterceptor" />
+		    <bean class="mx.com.mindbits.argos.inventory.webapp.logging.NavigationLogger" />
 		</mvc:interceptors>
-		 -->
 
-        <mvc:resources mapping="/cache.appcache" location="/cache.appcache" />
         <mvc:resources mapping="/favicon.ico" location="/favicon.ico" />
 		<mvc:resources mapping="/resources/css/**" location="/resources/css/" />
 		<mvc:resources mapping="/resources/fonts/**" location="/resources/fonts/" />

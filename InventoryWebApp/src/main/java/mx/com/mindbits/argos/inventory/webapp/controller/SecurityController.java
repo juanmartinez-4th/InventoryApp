@@ -11,6 +11,7 @@ import mx.com.mindbits.argos.common.Message;
 import mx.com.mindbits.argos.inventory.vo.UserVO;
 import mx.com.mindbits.argos.inventory.webapp.form.ResultsFilter;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -29,6 +30,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @Controller
 public class SecurityController {
 	
+	private static final Logger LOGGER = Logger.getLogger(SecurityController.class);
+	
 	private static final String LOGIN_VIEW = "appLogin";
 	
 	private static final String UNAUTHORIZED_VIEW = "unauthorized";
@@ -45,7 +48,9 @@ public class SecurityController {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
 		if (!(auth instanceof AnonymousAuthenticationToken)) {
-			 return "redirect:/listItems";
+			UserDetails userDetail = (UserDetails) auth.getPrincipal();
+			LOGGER.info("User [" + userDetail.getUsername() + "] logged in");
+			return "redirect:/listItems";
 		}else {
 			return LOGIN_VIEW;
 		}
