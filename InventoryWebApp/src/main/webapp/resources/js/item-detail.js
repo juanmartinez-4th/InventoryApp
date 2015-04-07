@@ -6,6 +6,19 @@ $(function() {
 	});
 	$("[data-toggle=tooltip").tooltip();
 	setCategory($('#itemCategory').val());
+	$('#itemCode').attr('readonly', '');
+	$('#existencia_value').attr('readonly', '');
+	$('#existencia_unit').attr('readonly', '');
+	$('#itemDescription').attr('readonly', '');
+	$('#itemDetail').attr('readonly', '');
+	$('#txt_seccion').attr('readonly', '');
+	$('#txt_pasillo').attr('readonly', '');
+	$('#txt_anaquel').attr('readonly', '');
+	$('#txt_casilla').attr('readonly', '');
+	$('#txt_proyecto').attr('readonly', '');
+	$('#txt_costo').attr('readonly', '');
+	$('#txt_precio_venta').attr('readonly', '');
+	$('#txt_precio_renta').attr('readonly', '');
 });
 
 function updateZoomPlugin(imageSource) {

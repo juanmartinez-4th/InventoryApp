@@ -3,6 +3,7 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ page session="true" %>
 
+<form:form modelAttribute="selectedItem" id="selectedItemForm" action="editItem" method="POST">
 <main class="detalle_articulo">
     <article class="container">
 
@@ -11,12 +12,14 @@
         <section class="row subraya_gris">
             <div class="col-sm-4 col-xs-6">
                 <label>Código: </label>
-                <input id="itemCode" type="text" value="${selectedItem.item.code}" readonly class="resalta_rojo">
+                <form:input id="itemCode" path="item.code" />
             </div>
 
             <div class="pull-right">
                 <label>Existencia: </label>
-                <input type="text" value="${selectedItem.item.existence}&nbsp;${selectedItem.item.unitOfMeasure.name}" readonly id="existencia_value" class="resalta_rojo">
+                <form:input path="item.existence" id="existencia_value" />
+                <form:hidden path="item.unitOfMeasure.id" id="itemUnitId" />
+                <form:input path="item.unitOfMeasure.name" id="existencia_unit" />
             </div>
         </section>
 
@@ -28,47 +31,49 @@
             <div class="col-sm-4">
                 <div class="subraya_gris">
                     <label>Categoría: </label>
-                    <input type="hidden" id="itemCategory" value="${selectedItem.category.id}">
+                    <form:hidden id="itemCategory" path="category.id" />
                     <ol id="breadcumbCategory" class="breadcrumb">
                     </ol>
 
                     <label class="diplay_block">Descripción: </label>
-                    <input type="text" value="${selectedItem.item.description}" class="resalta_negro width_100" readonly>
+                    <form:input id="itemDescription" path="item.description" class="resalta_negro width_100" />
                 </div>
 
                 <div class="subraya_gris">
                     <label>Características / Observaciones: </label>
-                    <textarea type="text" readonly  name="" id="" class="resalta_negro width_100">${selectedItem.item.detail}</textarea>
+                    <form:textarea id="itemDetail" path="item.detail" class="resalta_negro width_100"/>
                 </div>
 
                 <div>
                     <label>Localización: </label>
-                    <input type="text" value="Almacén" readonly  class="resalta_negro">
+                    <label class="resalta_negro">Almacén</label>
 
                     <div class="row">
+                        <form:hidden path="location.id" id="locationId"  />
                         <div class="col-xs-2">
                             <label for="txt_seccion" class="width_100 text-center">Sección</label>
-                            <input type="text" value="${selectedItem.location.section}" readonly id="txt_seccion" class="resalta_negro width_100 text-center">
+                            <form:input path="location.section" id="txt_seccion" class="resalta_negro width_100 text-center" />
                         </div>
 
                         <div class="col-xs-2">
                             <label for="txt_pasillo" class="width_100 text-center">Pasillo</label>
-                            <input type="text" value="${selectedItem.location.hall}" readonly id="txt_pasillo" class="resalta_negro width_100 text-center">
+                            <form:input path="location.hall" id="txt_pasillo" class="resalta_negro width_100 text-center" />
                         </div>
 
                         <div class="col-xs-2">
                             <label for="txt_anaquel" class="width_100 text-center">Anaquel</label>
-                            <input type="text" value="${selectedItem.location.rack}" readonly id="txt_anaquel" class="resalta_negro width_100 text-center">
+                            <form:input path="location.rack" id="txt_anaquel" class="resalta_negro width_100 text-center" />
                         </div>
 
                         <div class="col-xs-2">
                             <label for="txt_casilla" class="width_100 text-center">Casilla</label>
-                            <input type="text" value="${selectedItem.location.box}" readonly id="txt_casilla" class="resalta_negro width_100 text-center">
+                            <form:input path="location.box" id="txt_casilla" class="resalta_negro width_100 text-center" />
                         </div>
                         
                         <div class="col-xs-2">
                             <label for="txt_proyecto" class="width_100 text-center">Proyecto</label>
-                            <input type="text" value="${selectedItem.location.production.code}" readonly id="txt_proyecto" class="resalta_negro width_100 text-center">
+                            <form:hidden path="location.production.id" id="projectId" />
+                            <form:input path="location.production.code" id="txt_proyecto" class="resalta_negro width_100 text-center" />
                         </div>
                     </div>
 
@@ -80,22 +85,22 @@
             <!-- CÓDIGO DE BARRAS y precios -->
             <div class="col-sm-4">
                 <figure id="codigo_barras" class="width_100">
-                    <%-- <img src="<c:url value='/resources/images/codigo_barras_ejemplo.png'/>" alt="Código de barras del producto" class="img-responsive img_centered"> --%>
-                    <a onclick="javascript:showLabelsModal();" href="#">
+                    <a onclick="javascript:showLabelsModal();" href="#" 
+                            data-toggle="tooltip" title="Imprimir etiquetas" data-placement="bottom">
                         <img src="data:image/png;base64,${selectedItem.itemBarcode}" alt="Código de barras del producto" class="img-responsive img_centered">
                     </a>
                 </figure>
                 <div class="row">
-                    <div class="col-xs-6"><label for="txt_costo" class="width_100 text-right">Costo:</label></div>
-                    <div class="col-xs-6"><input type="text" value="$ ${selectedItem.item.cost}" readonly id="txt_costo" class="resalta_negro width_100 text-left"></div>
+                    <div class="col-xs-6"><label for="txt_costo" class="width_100 text-right">Costo: $ </label></div>
+                    <div class="col-xs-6"><form:input path="item.cost" id="txt_costo" class="resalta_negro width_100 text-left" /></div>
                 </div>
                 <div class="row">
-                    <div class="col-xs-6"><label for="txt_precio_venta" class="width_100 text-right">Precio de Venta:</label></div>
-                    <div class="col-sm-6"><input type="text" value="$ ${selectedItem.item.salePrice}" readonly id="txt_precio_venta" class="resalta_negro width_100 text-left"></div>
+                    <div class="col-xs-6"><label for="txt_precio_venta" class="width_100 text-right">Precio de Venta: $</label></div>
+                    <div class="col-sm-6"><form:input path="item.salePrice" id="txt_precio_venta" class="resalta_negro width_100 text-left" /></div>
                 </div>
                 <div class="row">
-                    <div class="col-xs-6"><label for="txt_precio_renta" class="width_100 text-right">Precio de Renta:</label></div>
-                    <div class="col-xs-6"><input type="text" value="$ ${selectedItem.item.rentPrice}" readonly id="txt_precio_renta" class="resalta_negro width_100 text-left"></div>
+                    <div class="col-xs-6"><label for="txt_precio_renta" class="width_100 text-right">Precio de Renta: $ </label></div>
+                    <div class="col-xs-6"><form:input path="item.rentPrice" id="txt_precio_renta" class="resalta_negro width_100 text-left" /></div>
                 </div>
             </div>
 
@@ -129,12 +134,25 @@
 
 <footer class="navbar navbar-default navbar-fixed-bottom">
     <article class="container">
-        <a href="<c:url value='/listItems'/>" class="btn btn-primary btn_dark">
-            <span class="glyphicon glyphicon-arrow-left"></span>
-            Regresar
-        </a>
+        <div class="col-xs-6">
+	        <a href="<c:url value='/listItems'/>" class="btn btn-primary btn_dark">
+	            <span class="glyphicon glyphicon-arrow-left"></span>
+	            Regresar
+	        </a>
+        </div>
+        <div class="col-xs-6">
+	        <button type="submit" class="btn btn-success">
+	            <span class="fa fa-pencil fa-lg"></span>
+	            Modificar artículo
+	        </button>
+	        <a class="btn btn-default pull-right" href="#">
+                <span class="glyphicon glyphicon-remove"></span>
+                Eliminar sartículo
+            </a>
+	    </div>
     </article>
 </footer>
+</form:form>
 
 
 <!-- MODAL [imprimir etiquetas] -->

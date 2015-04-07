@@ -60,6 +60,7 @@ public class CatalogsController {
 	
 	private static final String ITEM_CAPTURE_VIEW = "itemCapture";
 	private static final String ITEM_CAPTURE_VIEW_TITLE = "Captura de artículo";
+	private static final String ITEM_EDIT_VIEW_TITLE = "Modificar de artículo";
 	
 	private static final String ITEM_DETAIL_VIEW = "itemDetail";
 	private static final String ITEM_DETAIL_VIEW_TITLE = "Detalle de artículo";
@@ -264,6 +265,24 @@ public class CatalogsController {
 			return "redirect:/listItems";
 		}
 		
+	}
+	
+	@RequestMapping(value = "/editItem", method = RequestMethod.POST)
+	public String editItem(@ModelAttribute(value="selectedItem") ItemCaptureForm selectedItem, 
+			Model model, HttpServletRequest request) {
+		List<CategoryVO> categories = inventoryManager.getAllCategories();
+		List<UnitOfMeasureVO> unitsOfMeasure = inventoryManager.getAllUnitsOfMeasure();
+		List<ProductionVO> productions = inventoryManager.getAllProductions();
+		
+		model.addAttribute("itemCaptureForm", selectedItem);
+		model.addAttribute("editItem", "true");
+		model.addAttribute("categoriesList", categories);
+		model.addAttribute("unitsList", unitsOfMeasure);
+		model.addAttribute("productionsList", productions);
+		model.addAttribute("nextItemId", selectedItem.getItem().getId());
+		model.addAttribute("pageTitle", ITEM_EDIT_VIEW_TITLE);
+		
+		return ITEM_CAPTURE_VIEW;
 	}
 	
 	@RequestMapping(value = "/updateItem", method = RequestMethod.POST)

@@ -29,8 +29,8 @@
                     
             <!-- <h1>Empresa</h1> -->
             <figure id="logo_empresa" class="col-sm-6">
-                <!-- <img src="http://placehold.it/203x36&text=Logotipo" alt="Logotipo de Empresa" class="img-responsive pull_left_md"> -->
-                <img src="<c:url value='/resources/images/logotipo_argos.png'/>" alt="Logotipo de Empresa" class="img-responsive">
+                <img src="http://placehold.it/203x36&text=Logotipo" alt="Logotipo de Empresa" class="img-responsive pull_left_md">
+                <%-- <img src="<c:url value='/resources/images/logotipo_argos.png'/>" alt="Logotipo de Empresa" class="img-responsive"> --%>
             </figure>
             
             <div id="Subtitulo" class="col-sm-6">
