@@ -56,11 +56,13 @@ public class ItemPictureVO implements Serializable {
 	
 	@Override
 	public String toString() {
-		return getClass().getName() + 
-				"[id=" +  getId() + 
-				", fileName=" + fileName + 
-				", item={" + 
-				item != null ? item.toString() : "NONE" + "}]";
+		StringBuilder strB = new StringBuilder();
+		strB.append(getClass().getName());
+		strB.append("[id=" +  getId());
+		strB.append(", fileName=" + fileName);
+		strB.append(", item={");
+		strB.append(item != null ? item.toString() : "NONE" + "}]");
+		return strB.toString();
 	}
 
 }
