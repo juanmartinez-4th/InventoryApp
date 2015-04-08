@@ -10,7 +10,7 @@ $(function() {
 	$('#modal_nueva_categoria').on('shown.bs.modal', function() {
 		$('#txt_categoria_nombre').focus();
 	});
-	$("[data-toggle=tooltip").tooltip();
+	$("[data-toggle=tooltip]").tooltip();
 	var colTargets;
 	
 	if($('#listByName') != null && $('#listByName').val() == 'true') {
@@ -70,7 +70,7 @@ function setSelectedCategory(breadcumb, selectedCategory) {
 				breadcumb.html('');
 				$('#parentCategory').val(selectedCategory);
 			},
-			complete: maskPage(),
+			complete: maskPage()
 		});
 	}
 	
@@ -80,11 +80,10 @@ function setSelectedCategory(breadcumb, selectedCategory) {
 }
 
 var saveCategory = function() {
-	var name = $('#txt_categoria_nombre').val();
+	var nameInput = $('#txt_categoria_nombre');
 	
-	if(name.trim() == '') {
-		$('#txt_categoria_nombre').tooltip('show');
-		$('#txt_categoria_nombre').focus();
+	if(nameInput.val().trim() == '') {
+		nameInput.tooltip('show').focus();
 		return false;
 	}else {
 		var actionPath;
@@ -137,7 +136,7 @@ var saveCategory = function() {
 			return false;
 		});
 	}
-}
+};
 
 var deleteCategory = function() {
 	$.ajax({
@@ -171,7 +170,7 @@ var deleteCategory = function() {
 	});
 	
 	return false;
-}
+};
 
 function showCategoryModal(id, name, description, parentCategory) {
 	if(id != null && id > 0) {
