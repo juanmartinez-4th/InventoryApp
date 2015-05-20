@@ -18,7 +18,7 @@ MySQL credentials:
 
 Connection URL: mysql://$OPENSHIFT_MYSQL_DB_HOST:$OPENSHIFT_MYSQL_DB_PORT/
 
-Configure environment (All commands are executed throuwh MINGW32):
+Configure environment (All commands are executed through MINGW32):
 1. Clone git repository and cd into it
 2. Delete src folder and pom.xml file
 3. Add the next Context element inside the Host one in .openshift/config/server.xml file:
