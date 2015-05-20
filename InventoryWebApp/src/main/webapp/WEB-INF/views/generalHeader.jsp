@@ -1,4 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="utf-8" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
@@ -66,7 +66,7 @@
 	                    </div>
 	                </c:if>
 	                <c:if test="${not empty resultsFilter}">
-	                    <form:form modelAttribute="resultsFilter" id="resultsFilter" action="${resultsFilter.filterName}" method="GET">
+	                    <form:form accept-charset="ISO-8859-1" modelAttribute="resultsFilter" id="resultsFilter" action="${resultsFilter.filterName}" method="GET">
 	                        <div id="barra_buscar" class="input-group" >
 	                            <form:input path="filter1" id="txt_filter" type="text" class="form-control" placeholder="Buscar..." />
 	                            <span class="input-group-btn">
