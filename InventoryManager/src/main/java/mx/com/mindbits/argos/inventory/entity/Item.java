@@ -22,7 +22,7 @@ import javax.persistence.Table;
 				query = "select coalesce(max(ITEM_ID), 0) + 1 as id from Item"),
 	@NamedNativeQuery(name="findItemByDescription", 
 				query="select * from Item where match(DESCRIPTION, DETAIL) "
-						+ "against(:itemDescription", resultClass=Item.class)
+						+ "against(:itemDescription in boolean mode)", resultClass=Item.class)
 })
 public class Item extends BaseEntity<Integer> {
 	private static final long serialVersionUID = 6637860018554874375L;
