@@ -6,6 +6,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.NamedNativeQueries;
+import javax.persistence.NamedNativeQuery;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToOne;
@@ -17,10 +19,12 @@ import javax.persistence.Table;
 	@NamedQuery(name="getCategoryDescendants", 
 				query="from Category where PARENT_CATEGORY = :parentId"), 
 	@NamedQuery(name="getMainCategories", 
-				query="from Category where PARENT_CATEGORY is NULL"),
-	@NamedQuery(name="findCategoryByName", 
-				query="from Category where lower(NAME) like :categoryName OR "
-						+ "lower(DESCRIPTION) like :categoryName")
+				query="from Category where PARENT_CATEGORY is NULL")
+})
+@NamedNativeQueries({
+	@NamedNativeQuery(name="findCategoryByName", 
+			query="select category_id, name, description, parent_category from Category where match(NAME, DESCRIPTION) "
+					+ "against(:categoryName in boolean mode)", resultClass=Category.class)
 })
 public class Category extends BaseEntity<Integer> {	
 	

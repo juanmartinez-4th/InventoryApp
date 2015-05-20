@@ -29,7 +29,7 @@ public class ItemDAOImpl extends HibernateBaseDAO<Integer, Item> implements Item
 	@SuppressWarnings("unchecked")
 	public List<Item> findByDescription(String itemDescription) {
 		Query query = sessionFactory.getCurrentSession().getNamedQuery("findItemByDescription");
-		query.setString("itemDescription", "%" + itemDescription + "%");
+		query.setString("itemDescription", itemDescription + "*");
 		
 		return (List<Item>)query.list();
 	}

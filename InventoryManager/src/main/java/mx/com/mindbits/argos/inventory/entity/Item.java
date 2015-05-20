@@ -13,21 +13,16 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedNativeQueries;
 import javax.persistence.NamedNativeQuery;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
 @Entity
 @Table(name="ITEM")
-@NamedQueries({
-	@NamedQuery(name="findItemByDescription", 
-				query="from Item where lower(CODE) like :itemDescription OR "
-						+ "lower(DESCRIPTION) like :itemDescription OR "
-						+ "lower(DETAIL) like :itemDescription")
-})
 @NamedNativeQueries({
 	@NamedNativeQuery(name = "getNextId", 
-				query = "select coalesce(max(ITEM_ID), 0) + 1 as id from Item")
+				query = "select coalesce(max(ITEM_ID), 0) + 1 as id from Item"),
+	@NamedNativeQuery(name="findItemByDescription", 
+				query="select * from Item where match(DESCRIPTION, DETAIL) "
+						+ "against(:itemDescription", resultClass=Item.class)
 })
 public class Item extends BaseEntity<Integer> {
 	private static final long serialVersionUID = 6637860018554874375L;

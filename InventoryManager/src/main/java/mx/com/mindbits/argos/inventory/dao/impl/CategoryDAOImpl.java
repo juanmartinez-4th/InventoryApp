@@ -45,7 +45,7 @@ public class CategoryDAOImpl extends HibernateBaseDAO<Integer, Category> impleme
 	@SuppressWarnings("unchecked")
 	public List<Category> findByName(String categoryName) {
 		Query query = sessionFactory.getCurrentSession().getNamedQuery("findCategoryByName");
-		query.setString("categoryName", "%" + categoryName + "%");
+		query.setString("categoryName", categoryName + "*");
 		
 		return (List<Category>)query.list();
 	}
