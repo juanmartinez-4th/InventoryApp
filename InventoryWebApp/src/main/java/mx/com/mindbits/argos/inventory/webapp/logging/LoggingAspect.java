@@ -30,7 +30,7 @@ public class LoggingAspect {
 	
 	@AfterReturning(pointcut = "execution(* mx.com.mindbits.argos.inventory.bsn.impl.*.*(..))",
 			returning = "result")
-	public void logServiceReturnList(JoinPoint joinPoint, Object result) throws Throwable {
+	public void logServiceReturn(JoinPoint joinPoint, Object result) throws Throwable {
 		String serviceName = joinPoint.getSignature().toShortString();
 		if(serviceName.endsWith("(..)")) {
 			serviceName = serviceName.substring(0, serviceName.indexOf("(..)"));

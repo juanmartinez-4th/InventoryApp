@@ -24,10 +24,11 @@ Configure environment (All commands are executed through MINGW32):
 3. Add the next Context element inside the Host one in .openshift/config/server.xml file:
    <Context docBase="/var/lib/openshift/551302385973ca9a52000022/app-root/data/picts/" path="/uploads" reloadable="true" crossContext="true" />
 4. Add javassist* to the tomcat.util.scan.DefaultJarScanner.jarsToSkip element in the catalina.properties file
-5. scp database.sql 551302385973ca9a52000022@inventory-argosapps.rhcloud.com:/var/lib/openshift/551302385973ca9a52000022/app-root/data
-6. scp dml_insert_users.sql 551302385973ca9a52000022@inventory-argosapps.rhcloud.com:/var/lib/openshift/551302385973ca9a52000022/app-root/data
-7. scp dml_insert_authorities.sql 551302385973ca9a52000022@inventory-argosapps.rhcloud.com:/var/lib/openshift/551302385973ca9a52000022/app-root/data
-8. ssh 551302385973ca9a52000022@inventory-argosapps.rhcloud.com
+5. Add parameter "app.environment=prod" to the catalina.properties file
+6. scp database.sql 551302385973ca9a52000022@inventory-argosapps.rhcloud.com:/var/lib/openshift/551302385973ca9a52000022/app-root/data
+7. scp dml_insert_users.sql 551302385973ca9a52000022@inventory-argosapps.rhcloud.com:/var/lib/openshift/551302385973ca9a52000022/app-root/data
+8. scp dml_insert_authorities.sql 551302385973ca9a52000022@inventory-argosapps.rhcloud.com:/var/lib/openshift/551302385973ca9a52000022/app-root/data
+9. ssh 551302385973ca9a52000022@inventory-argosapps.rhcloud.com
   a. cd into app-root/data and execute in mysql:
      mysql> source database.sql;
      mysql> source dml_insert_users.sql;

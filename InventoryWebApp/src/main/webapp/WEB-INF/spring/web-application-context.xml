@@ -13,7 +13,7 @@
        
 		<mvc:annotation-driven/>
 
-        <context:property-placeholder location="classpath:application.properties" />
+        <context:property-placeholder location="classpath:config/${app.environment}/application.properties" />
         
 		<!-- Load @Controllers only -->
         <context:component-scan base-package="mx.com.mindbits.argos.inventory.webapp.*" use-default-filters="false">

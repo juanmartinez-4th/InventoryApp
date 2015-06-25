@@ -109,22 +109,19 @@
             <div class="col-sm-4">
                 <div class="row">
 	                <figure id="vista_producto_grande" class="width_100 img_redondeada">
-	                    <%-- <img id="imgFullSize" src="/uploads/${selectedItem.itemPictures[0]}" alt="Foto del producto" class="img-responsive img_centered"> --%>
-	                    <img id="efecto_zoom_01" class="hidden-xs efecto_zoom_screen_big img-responsive" src="/uploads/${selectedItem.itemPictures[0]}" data-zoom-image="/uploads/${selectedItem.itemPictures[0]}">
-                        <img id="efecto_zoom_02" class="visible-xs efecto_zoom_screen_small img-responsive" src="/uploads/${selectedItem.itemPictures[0]}" data-zoom-image="/uploads/${selectedItem.itemPictures[0]}">
+	                    <img id="img_01" class="hidden-xs efecto_zoom_screen_big img-responsive" src="/uploads/${selectedItem.itemPictures[0]}" data-zoom-image="/uploads/${selectedItem.itemPictures[0]}">
+                        <img id="img_01" class="visible-xs efecto_zoom_screen_small img-responsive" src="/uploads/${selectedItem.itemPictures[0]}" data-zoom-image="/uploads/${selectedItem.itemPictures[0]}">
 	                </figure>
 	            </div>
 
-                <div class="row">
-                    <c:forEach items="${selectedItem.itemPictures}" var="itemPict">
-                    <div class="col-sm-3 col-xs-2">
-                        <figure class="width_100 img_redondeada" onclick="javascript:showPicture('/uploads/${itemPict}')">
-                            <a href="#">
-                                <img src="/uploads/${itemPict}" alt="Foto del producto" class="img-responsive img_centered">
-                            </a>
-                        </figure>
-                    </div>
-                    </c:forEach>
+                <div id="gallery1" class="row">
+	                <c:forEach items="${selectedItem.itemPictures}" var="itemPict">
+	                <div class="col-sm-3 col-xs-2">
+	                    <a href="#" data-image="/uploads/${itemPict}" data-zoom-image="/uploads/${itemPict}">
+	                        <img id="img_01" class="img-responsive img_centered img_redondeada" alt="Foto del producto" src="/uploads/${itemPict}" />
+	                    </a>
+	                </div>
+	                </c:forEach>
                 </div>
             </div>
         </section>

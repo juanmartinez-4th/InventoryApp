@@ -4,7 +4,7 @@ $(function() {
 	$('#modal_print_labels').on('shown.bs.modal', function() {
 		$('#txt_label_copies').focus();
 	});
-	$("[data-toggle=tooltip").tooltip();
+	$('[data-toggle=tooltip').tooltip();
 	setCategory($('#itemCategory').val());
 	$('#itemCode').attr('readonly', '');
 	$('#existencia_value').attr('readonly', '');
@@ -21,15 +21,10 @@ $(function() {
 	$('#txt_precio_renta').attr('readonly', '');
 });
 
-function updateZoomPlugin(imageSource) {
-	if(imageSource != null) {
-		$('#efecto_zoom_01').attr('src', imageSource);
-		$("#efecto_zoom_01").data('zoom-image', imageSource);
-		$('#efecto_zoom_02').attr('src', imageSource);
-		$("#efecto_zoom_02").data('zoom-image', imageSource);
-	}
-	
-	$(".efecto_zoom_screen_big").elevateZoom({
+function updateZoomPlugin(imageSource) {	
+	$('.efecto_zoom_screen_big').elevateZoom({
+		gallery:'gallery1',
+		galleryActiveClass: 'active',
 		zoomWindowPosition: 11,
         zoomWindowHeight: 350,
         zoomWindowWidth:350,
@@ -40,15 +35,24 @@ function updateZoomPlugin(imageSource) {
         borderSize: 10
 	});
 	
-	$(".efecto_zoom_screen_small").elevateZoom({
-		zoomType: "inner",
-        cursor: "crosshair"
+	$('.efecto_zoom_screen_small').elevateZoom({
+		gallery:'gallery1',
+		galleryActiveClass: 'active',
+		zoomType: 'inner',
+        cursor: 'crosshair'
 	});
-}
-
-function showPicture(imgSource) {
-	updateZoomPlugin(imgSource);
-	event.preventDefault();
+	
+	$('.efecto_zoom_screen_big').bind('click', function(e) {
+		var ez = $('.efecto_zoom_screen_big').data('elevateZoom');
+		$.fancybox(ez.getGalleryList()); 
+		return false; 
+	});
+	
+	$('.efecto_zoom_screen_small').bind('click', function(e) {
+		var ez = $('.efecto_zoom_screen_big').data('elevateZoom');
+		$.fancybox(ez.getGalleryList()); 
+		return false; 
+	});
 }
 
 function showLabelsModal() {
@@ -67,7 +71,7 @@ var printLabels = function () {
 	}else {$.ajax({
 			type : 'POST',
 			url : ctx + '/getItemTag',
-			data : 'code=' + code + "&copies=" + copies,
+			data : 'code=' + code + '&copies=' + copies,
 			beforeSend: maskPage(),
 			success : function(response) {
 				window.open('data:application/pdf;base64, ' + response, '_blank', 'menubar=no,status=no,scrollbars=yes,width=500,height=600');
@@ -111,6 +115,6 @@ function setCategory(selectedCategory) {
 
 // ESCUCHA: Si cambia el tamaño de pantalla para volver a calcular el plugin
 $(window).resize(function(){
-    $(".zoomContainer").remove();
+    $('.zoomContainer').remove();
     updateZoomPlugin(null);
 }).resize();//trigger the resize event on page load.

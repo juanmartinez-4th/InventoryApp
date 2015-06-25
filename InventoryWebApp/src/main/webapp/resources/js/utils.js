@@ -53,6 +53,7 @@ $(window).resize (function(){
 	}
 });
 
-$(document).on("contextmenu",function(e){
-	e.preventDefault();
-});
+// Disable right click (context menu)
+//$(document).on("contextmenu",function(e){
+//	e.preventDefault();
+//});
