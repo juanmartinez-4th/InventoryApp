@@ -21,6 +21,16 @@
 
 	<aop:aspectj-autoproxy />
 	
+	<bean id="log4jConfigurer" class="org.springframework.beans.factory.config.MethodInvokingFactoryBean" >
+        <property name="targetClass"><value>org.springframework.util.Log4jConfigurer</value></property>
+        <property name="targetMethod"><value>initLogging</value></property>
+        <property name="arguments">
+            <list>
+                <value>classpath:config/${app.environment}/log4j.properties</value>
+            </list>
+        </property>
+    </bean>
+	
 	<bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
 		<property name="locations">
 			<list>
