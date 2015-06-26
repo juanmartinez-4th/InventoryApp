@@ -13,6 +13,7 @@ public abstract class BaseEntity<K extends Serializable> implements Entity<K>, S
 		return id;
 	}
 
+	@Override
 	public void setId(K id) {
 		this.id = id;
 	}

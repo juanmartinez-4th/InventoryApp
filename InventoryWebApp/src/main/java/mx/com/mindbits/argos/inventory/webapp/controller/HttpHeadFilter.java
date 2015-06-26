@@ -20,6 +20,14 @@ import javax.servlet.http.HttpServletResponseWrapper;
 
 import org.apache.log4j.Logger;
 
+/**
+ * A filter to handle http HEAD requests not managed by Spring Controller.
+ * This filter simulates a GET request before passing it to Spring Controller. 
+ * Based on {@link <a href="http://axelfontaine.com/blog/http-head.html">this article.</a>}
+ * 
+ * @author Juan Carlos MS
+ *
+ */
 public class HttpHeadFilter implements Filter {
 	private static final Logger LOGGER = Logger.getLogger(HttpHeadFilter.class);
 	
